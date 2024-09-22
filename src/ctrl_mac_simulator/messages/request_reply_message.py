@@ -12,3 +12,6 @@ class _RequestSlot:
 class RequestReplyMessage:
     def __init__(self, request_slots: int = 5):
         self.message = [_RequestSlot("free", 0, 0) for i in range(request_slots)]
+
+    def __repr__(self) -> str:
+        return str(self.message)

@@ -6,10 +6,11 @@ class Sensor:
         self.env = env
         self.id = id
         self.get_rrm_message_event_fn = get_rrm_message_event_fn
+        self.logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
         self.env.process(self.run())
 
     def run(self):
         while True:
             event = self.get_rrm_message_event_fn()
             message = yield event
-            logging.info(f"Time {self.env.now:.2f}: Sensor {self.id} received: {message}")
+            self.logger.info(f"Time {self.env.now:.2f}: received: {message}")
