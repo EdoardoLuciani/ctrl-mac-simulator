@@ -16,10 +16,6 @@ class RequestReplyMessage:
         self.ftr = 0
 
 
-    def __repr__(self) -> str:
-        return json.dumps(self, default=lambda obj: obj.__dict__)
-
-
     def get_message_len(self) -> int:
         # 2 bits for the state, 4 bits for the data_slot, 2 bits for the data_channel
         # 4 bits for the ftr

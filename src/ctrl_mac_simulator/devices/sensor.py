@@ -13,4 +13,4 @@ class Sensor:
         while True:
             event = self.get_rrm_message_event_fn()
             message = yield event
-            self.logger.info(f"Time {self.env.now:.2f}: received: {message}")
+            self.logger.info(f"Time {self.env.now:.2f}: received RRM message")
