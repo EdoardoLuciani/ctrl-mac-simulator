@@ -1,7 +1,7 @@
 import math
 
 
-def airtime(
+def get_lora_airtime(
     payload_len: int,
     crc_on: bool,
     explicit_header: bool,
