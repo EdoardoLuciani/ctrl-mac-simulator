@@ -1,3 +1,4 @@
+import math, json
 from typing import TypedDict, Literal
 from dataclasses import dataclass
 
@@ -11,7 +12,15 @@ class _RequestSlot:
 
 class RequestReplyMessage:
     def __init__(self, request_slots: int = 5):
-        self.message = [_RequestSlot("free", 0, 0) for i in range(request_slots)]
+        self.request_slots = [_RequestSlot("free", 0, 0) for i in range(request_slots)]
+        self.ftr = 0
+
 
     def __repr__(self) -> str:
-        return str(self.message)
+        return json.dumps(self, default=lambda obj: obj.__dict__)
+
+
+    def get_message_len(self) -> int:
+        # 2 bits for the state, 4 bits for the data_slot, 2 bits for the data_channel
+        # 4 bits for the ftr
+        return math.ceil(((2 + 4 + 2) * len(self.request_slots) + 4) / 8)
