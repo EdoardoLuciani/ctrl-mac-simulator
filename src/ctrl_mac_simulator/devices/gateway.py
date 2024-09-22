@@ -1,7 +1,7 @@
 import simpy, logging
 from ..messages import RequestReplyMessage
-from ..airtime import get_lora_airtime
-from ..message_json_formatter import convert_message_to_json
+from ..utils.airtime import get_lora_airtime
+from ..utils.message_json_formatter import convert_message_to_json
 
 class Gateway:
     def __init__(self, env):
