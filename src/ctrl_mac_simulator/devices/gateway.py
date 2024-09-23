@@ -1,6 +1,7 @@
 import simpy, logging
 from ..messages import RequestReplyMessage
 
+
 class Gateway:
     def __init__(self, env):
         self.env: simpy.Environment = env
@@ -8,7 +9,6 @@ class Gateway:
         self.sensor_messages_queue = simpy.Store(env)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.env.process(self.run())
-
 
     def run(self):
         while True:
@@ -39,10 +39,8 @@ class Gateway:
                     # Timeout occurred, exit the inner loop
                     break
 
-
     def get_rrm_message_event(self):
         return self.rrm_message_event
-
 
     def get_sensor_messages_queue(self):
         return self.sensor_messages_queue

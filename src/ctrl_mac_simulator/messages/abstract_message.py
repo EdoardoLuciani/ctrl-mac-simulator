@@ -8,8 +8,15 @@ class AbstractMessage(ABC):
     def get_message_len(self) -> int:
         pass
 
-
-    def get_airtime(self, crc_on: bool, explicit_header: bool, sf: int = 7, bw: int = 125000, coding_rate: int = 1, preamble: int = 8) -> float:
+    def get_airtime(
+        self,
+        crc_on: bool,
+        explicit_header: bool,
+        sf: int = 7,
+        bw: int = 125000,
+        coding_rate: int = 1,
+        preamble: int = 8,
+    ) -> float:
         """
         Calculate the airtime for a LoRa transmission.
 
@@ -41,17 +48,16 @@ class AbstractMessage(ABC):
         payload_duration = nbr_symbols * symbol_duration  # mutliply by symbol duration
         return preambule_duration + payload_duration
 
-
     def to_json(self, start_time: float, arrive_time: float) -> str:
         dt = self.__dict__
-        dt['start_time'] = start_time
-        dt['arrive_time'] = arrive_time
-        dt['message_type'] = self.__class__.__name__
+        dt["start_time"] = start_time
+        dt["arrive_time"] = arrive_time
+        dt["message_type"] = self.__class__.__name__
 
         def custom_encoder(obj):
             if isinstance(obj, bytes):
                 return obj.hex()
-            elif hasattr(obj, '__dict__'):
+            elif hasattr(obj, "__dict__"):
                 return obj.__dict__
             else:
                 return str(obj)

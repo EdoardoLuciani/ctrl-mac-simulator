@@ -3,8 +3,8 @@ import simpy, random, logging, argparse
 from ctrl_mac_simulator.messages import RequestReplyMessage
 from ctrl_mac_simulator.devices import Sensor, Actuator, Gateway
 
-parser = argparse.ArgumentParser(description='Simulate the Ctrl-Mac protocol')
-parser.add_argument('--log', dest='loglevel', default='INFO', help='Set the log level')
+parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
+parser.add_argument("--log", dest="loglevel", default="INFO", help="Set the log level")
 args = parser.parse_args()
 
 logging.basicConfig(level=getattr(logging, args.loglevel.upper()))

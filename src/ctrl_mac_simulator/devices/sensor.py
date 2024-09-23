@@ -1,10 +1,19 @@
-from ctrl_mac_simulator.messages.sensor_measurement_message import SensorMeasurementMessage
+from ctrl_mac_simulator.messages.sensor_measurement_message import (
+    SensorMeasurementMessage,
+)
 import random, simpy, logging
 from typing import Callable
 from ctrl_mac_simulator.messages.request_reply_message import RequestReplyMessage
 
+
 class Sensor:
-    def __init__(self, env, id, get_rrm_message_event_fn: Callable[[], simpy.Event], sensor_messages_queue: simpy.Store):
+    def __init__(
+        self,
+        env,
+        id,
+        get_rrm_message_event_fn: Callable[[], simpy.Event],
+        sensor_messages_queue: simpy.Store,
+    ):
         self.env = env
         self.id = id
         self.get_rrm_message_event_fn = get_rrm_message_event_fn
