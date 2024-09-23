@@ -56,8 +56,8 @@ class Gateway:
         for i in range(1, n):
             current_start, current_end = sorted_intervals[i][1].start_time, sorted_intervals[i][1].arrive_time
 
-            prev_index = sorted_intervals[i-1][0]
-            prev_start, prev_end = sorted_intervals[i-1][1].start_time, sorted_intervals[i-1][1].arrive_time
+            prev_index = sorted_intervals[i - 1][0]
+            prev_start, prev_end = sorted_intervals[i - 1][1].start_time, sorted_intervals[i - 1][1].arrive_time
 
             if current_start < prev_end:
                 collisions[sorted_intervals[i][0]] = True
