@@ -14,13 +14,13 @@ class Gateway:
 
     def run(self):
         while True:
-            # Send RRM every half a second
+            # Send RRM
             start_time = self.env.now
             self.logger.info(f"Time {start_time:.2f}: Started RRM transmission")
             rrm = RequestReplyMessage()
 
             # Simulate airtime
-            yield self.env.timeout(get_lora_airtime(rrm.get_message_len(), True, False))
+            yield simpy.Timeout(self.env, get_lora_airtime(rrm.get_message_len(), True, False))
 
             self.logger.debug(f"{convert_message_to_json(rrm, start_time, self.env.now)}")
             self.logger.info(f"Time {self.env.now:.2f}: Finished RRM message transmission")
@@ -29,8 +29,8 @@ class Gateway:
             self.rrm_message_event = simpy.Event(self.env)
 
 
-            # Listen for sensor messages
-            timeout = self.env.timeout(0.5)
+            # Listen on sensor messages for 0.5s
+            timeout = simpy.Timeout(self.env, 0.5)
 
             while True:
                 get_event = self.sensor_messages_queue.get()

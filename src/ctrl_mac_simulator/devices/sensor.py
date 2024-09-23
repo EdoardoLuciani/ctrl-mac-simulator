@@ -22,7 +22,7 @@ class Sensor:
             data = random.randbytes(12)
 
             self.logger.info(f"Time {self.env.now:.2f}: Started measurement transmission")
-            yield self.env.timeout(get_lora_airtime(12, True, False))
+            yield simpy.Timeout(self.env, get_lora_airtime(12, True, False))
 
             self.logger.info(f"Time {self.env.now:.2f}: Finished measurement transmission")
             yield self.sensor_messages_queue.put(data)
