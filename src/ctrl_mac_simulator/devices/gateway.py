@@ -13,13 +13,10 @@ class Gateway:
     def run(self):
         while True:
             # Send RRM
-            self.logger.info(f"Time {self.env.now:.2f}: Started RRM transmission")
             rrm = RequestReplyMessage(self.env.now)
 
-            yield simpy.Timeout(self.env, rrm.get_airtime())
+            yield self.env.process(rrm.send_message(self.env, self.logger))
 
-            self.logger.debug(rrm.to_json())
-            self.logger.info(f"Time {self.env.now:.2f}: Finished RRM transmission")
             self.rrm_message_event.succeed(rrm)
             self.rrm_message_event = simpy.Event(self.env)
 

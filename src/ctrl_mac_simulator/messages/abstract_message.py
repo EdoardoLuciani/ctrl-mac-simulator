@@ -1,4 +1,4 @@
-import math, json
+import math, json, simpy
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -7,6 +7,14 @@ class AbstractMessage(ABC):
     @abstractmethod
     def get_message_len(self) -> int:
         pass
+
+    def send_message(self, env, logger):
+        logger.info(f"Time {self.start_time:.2f}: Started {self.__class__.__name__} transmission")
+
+        yield simpy.Timeout(env, self.get_airtime())
+
+        logger.debug(self.to_json())
+        logger.info(f"Time {env.now:.2f}: Finished {self.__class__.__name__} transmission")
 
     def get_airtime(
         self,

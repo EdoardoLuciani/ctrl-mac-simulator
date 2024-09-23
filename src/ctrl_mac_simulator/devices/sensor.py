@@ -30,10 +30,6 @@ class Sensor:
 
             # Send the measured data
             message = SensorMeasurementMessage(self.id, self.env.now)
-            self.logger.info(f"Time {self.env.now:.2f}: Started measurement transmission")
-            yield simpy.Timeout(self.env, message.get_airtime())
-
-            self.logger.debug(message.to_json())
-            self.logger.info(f"Time {self.env.now:.2f}: Finished measurement transmission")
+            self.env.process(message.send_message(self.env, self.logger))
 
             yield self.sensor_messages_queue.put(message)
