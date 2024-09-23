@@ -1,7 +1,5 @@
 import simpy, logging
 from ..messages import RequestReplyMessage
-from ..utils.airtime import get_lora_airtime
-from ..utils.message_json_formatter import convert_message_to_json
 
 class Gateway:
     def __init__(self, env):
@@ -19,9 +17,9 @@ class Gateway:
             self.logger.info(f"Time {start_time:.2f}: Started RRM transmission")
             rrm = RequestReplyMessage()
 
-            yield simpy.Timeout(self.env, get_lora_airtime(rrm.get_message_len(), True, False))
+            yield simpy.Timeout(self.env, rrm.get_airtime(True, False))
 
-            self.logger.debug(convert_message_to_json(rrm, start_time, self.env.now))
+            self.logger.debug(rrm.to_json(start_time, self.env.now))
             self.logger.info(f"Time {self.env.now:.2f}: Finished RRM message transmission")
             self.rrm_message_event.succeed(rrm)
             self.rrm_message_event = simpy.Event(self.env)

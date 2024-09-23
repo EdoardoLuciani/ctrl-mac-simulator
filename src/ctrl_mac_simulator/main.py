@@ -1,7 +1,6 @@
 import simpy, random, logging, argparse
 
 from ctrl_mac_simulator.messages import RequestReplyMessage
-from ctrl_mac_simulator.utils.airtime import get_lora_airtime
 from ctrl_mac_simulator.devices import Sensor, Actuator, Gateway
 
 parser = argparse.ArgumentParser(description='Simulate the Ctrl-Mac protocol')

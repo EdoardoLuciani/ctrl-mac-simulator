@@ -2,6 +2,8 @@ import math, json
 from typing import TypedDict, Literal
 from dataclasses import dataclass
 
+from ctrl_mac_simulator.messages.abstract_message import AbstractMessage
+
 
 @dataclass
 class _RequestSlot:
@@ -10,7 +12,7 @@ class _RequestSlot:
     data_channel: int
 
 
-class RequestReplyMessage:
+class RequestReplyMessage(AbstractMessage):
     def __init__(self, request_slots: int = 5):
         self.request_slots = [_RequestSlot("free", 0, 0) for i in range(request_slots)]
         self.ftr = 0
