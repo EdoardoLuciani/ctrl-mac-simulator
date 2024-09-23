@@ -29,13 +29,11 @@ class Sensor:
             self.logger.info(f"Time {self.env.now:.2f}: Received RRM message")
 
             # Send the measured data
-            message = SensorMeasurementMessage(self.id)
-
-            start_time = self.env.now
+            message = SensorMeasurementMessage(self.id, self.env.now)
             self.logger.info(f"Time {self.env.now:.2f}: Started measurement transmission")
-            yield simpy.Timeout(self.env, message.get_airtime(True, False))
+            yield simpy.Timeout(self.env, message.get_airtime())
 
-            self.logger.debug(message.to_json(start_time, self.env.now))
+            self.logger.debug(message.to_json())
             self.logger.info(f"Time {self.env.now:.2f}: Finished measurement transmission")
 
             yield self.sensor_messages_queue.put(message)

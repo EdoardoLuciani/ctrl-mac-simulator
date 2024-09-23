@@ -10,8 +10,8 @@ class AbstractMessage(ABC):
 
     def get_airtime(
         self,
-        crc_on: bool,
-        explicit_header: bool,
+        crc_on: bool = True,
+        explicit_header: bool = False,
         sf: int = 7,
         bw: int = 125000,
         coding_rate: int = 1,
@@ -48,10 +48,8 @@ class AbstractMessage(ABC):
         payload_duration = nbr_symbols * symbol_duration  # mutliply by symbol duration
         return preambule_duration + payload_duration
 
-    def to_json(self, start_time: float, arrive_time: float) -> str:
+    def to_json(self) -> str:
         dt = self.__dict__
-        dt["start_time"] = start_time
-        dt["arrive_time"] = arrive_time
         dt["message_type"] = self.__class__.__name__
 
         def custom_encoder(obj):
