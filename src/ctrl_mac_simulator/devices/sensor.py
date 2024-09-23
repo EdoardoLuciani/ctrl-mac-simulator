@@ -30,6 +30,6 @@ class Sensor:
 
             # Send the measured data
             message = SensorMeasurementMessage(self.id, self.env.now)
-            self.env.process(message.send_message(self.env, self.logger))
+            yield self.env.process(message.send_message(self.env, self.logger))
 
             yield self.sensor_messages_queue.put(message)

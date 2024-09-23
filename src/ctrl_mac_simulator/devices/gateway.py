@@ -14,7 +14,6 @@ class Gateway:
         while True:
             # Send RRM
             rrm = RequestReplyMessage(self.env.now)
-
             yield self.env.process(rrm.send_message(self.env, self.logger))
 
             self.rrm_message_event.succeed(rrm)
