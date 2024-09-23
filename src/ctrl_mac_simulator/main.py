@@ -16,4 +16,4 @@ env = simpy.Environment()
 gateway = Gateway(env)
 sensors = [Sensor(env, i, gateway.get_rrm_message_event, gateway.get_sensor_messages_queue()) for i in range(3)]
 
-env.run(until=3)
+env.run(until=1.5)

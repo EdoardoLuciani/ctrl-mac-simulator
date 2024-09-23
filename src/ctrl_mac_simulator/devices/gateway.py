@@ -19,7 +19,7 @@ class Gateway:
             yield simpy.Timeout(self.env, rrm.get_airtime())
 
             self.logger.debug(rrm.to_json())
-            self.logger.info(f"Time {self.env.now:.2f}: Finished RRM message transmission")
+            self.logger.info(f"Time {self.env.now:.2f}: Finished RRM transmission")
             self.rrm_message_event.succeed(rrm)
             self.rrm_message_event = simpy.Event(self.env)
 
@@ -35,10 +35,12 @@ class Gateway:
                 if get_event in result:
                     # A message was received
                     sensor_messages.append(get_event.value)
-                    self.logger.info(f"Time {self.env.now:.2f}: Received sensor message")
+                    self.logger.info(f"Time {self.env.now:.2f}: Received sensor message from Sensor {sensor_messages[-1].sensor_id}")
                 else:
                     # Timeout occurred, exit the inner loop
                     break
+
+            self.logger.info(f"Collision status {Gateway._find_messages_collisions(sensor_messages)}")
 
     def get_rrm_message_event(self):
         return self.rrm_message_event
@@ -46,6 +48,7 @@ class Gateway:
     def get_sensor_messages_queue(self):
         return self.sensor_messages_queue
 
+    @staticmethod
     def _find_messages_collisions(messages):
         n = len(messages)
         collisions = [False] * n
