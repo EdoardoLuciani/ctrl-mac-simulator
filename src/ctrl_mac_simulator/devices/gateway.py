@@ -24,21 +24,14 @@ class Gateway:
             self.rrm_message_event = simpy.Event(self.env)
 
             # Listen on sensor messages for 0.5s
-            timeout = simpy.Timeout(self.env, 0.5)
+            yield simpy.Timeout(self.env, 0.5)
 
             sensor_messages = []
 
-            while True:
-                get_event = self.sensor_messages_queue.get()
-                result = yield simpy.AnyOf(self.env, [get_event, timeout])
-
-                if get_event in result:
-                    # A message was received
-                    sensor_messages.append(get_event.value)
-                    self.logger.info(f"Time {self.env.now:.2f}: Received sensor message from Sensor {sensor_messages[-1].sensor_id}")
-                else:
-                    # Timeout occurred, exit the inner loop
-                    break
+            while len(self.sensor_messages_queue.items):
+                sensor_message = yield self.sensor_messages_queue.get()
+                sensor_messages.append(sensor_message)
+                self.logger.info(f"Time {self.env.now:.2f}: Received sensor message from Sensor {sensor_messages[-1].sensor_id}")
 
             self.logger.info(f"Collision status {Gateway._find_messages_collisions(sensor_messages)}")
 
