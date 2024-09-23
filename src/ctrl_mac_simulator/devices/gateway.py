@@ -27,7 +27,9 @@ class Gateway:
             while len(self.sensor_messages_queue.items):
                 sensor_message = yield self.sensor_messages_queue.get()
                 sensor_messages.append(sensor_message)
-                self.logger.info(f"Time {self.env.now:.2f}: Received sensor message from Sensor {sensor_messages[-1].sensor_id}")
+                self.logger.info(
+                    f"Time {self.env.now:.2f}: Received sensor message from Sensor {sensor_messages[-1].sensor_id}"
+                )
 
             self.logger.info(f"Collision status {Gateway._find_messages_collisions(sensor_messages)}")
 
