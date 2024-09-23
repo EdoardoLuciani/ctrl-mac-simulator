@@ -1,6 +1,9 @@
+from ctrl_mac_simulator.messages.sensor_measurement_message import SensorMeasurementMessage
 import random, simpy, logging
 from typing import Callable
+from ctrl_mac_simulator.messages.request_reply_message import RequestReplyMessage
 from ..utils.airtime import get_lora_airtime
+from ..utils.message_json_formatter import convert_message_to_json
 
 class Sensor:
     def __init__(self, env, id, get_rrm_message_event_fn: Callable[[], simpy.Event], sensor_messages_queue: simpy.Store):
@@ -15,14 +18,17 @@ class Sensor:
         while True:
             # Get the RRM message
             event = self.get_rrm_message_event_fn()
-            rrm_message = yield event
+            rrm_message: RequestReplyMessage = yield event
             self.logger.info(f"Time {self.env.now:.2f}: Received RRM message")
 
             # Send the measured data
-            data = random.randbytes(12)
+            data = SensorMeasurementMessage(self.id)
 
+            start_time = self.env.now
             self.logger.info(f"Time {self.env.now:.2f}: Started measurement transmission")
             yield simpy.Timeout(self.env, get_lora_airtime(12, True, False))
 
+            self.logger.debug(convert_message_to_json(data, start_time, self.env.now))
             self.logger.info(f"Time {self.env.now:.2f}: Finished measurement transmission")
+
             yield self.sensor_messages_queue.put(data)
