@@ -9,13 +9,15 @@ from ctrl_mac_simulator.messages.request_reply_message import RequestReplyMessag
 class Sensor:
     def __init__(
         self,
-        env,
-        id,
+        env: simpy.Environment,
+        id: int,
+        measurement_chance: float,
         get_rrm_message_event_fn: Callable[[], simpy.Event],
         sensor_messages_queue: simpy.Store,
     ):
         self.env = env
         self.id = id
+        self.measurement_chance = measurement_chance
         self.get_rrm_message_event_fn = get_rrm_message_event_fn
         self.sensor_messages_queue = sensor_messages_queue
         self.logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
@@ -28,8 +30,11 @@ class Sensor:
             rrm_message: RequestReplyMessage = yield event
             self.logger.info(f"Time {self.env.now:.2f}: Received RRM message")
 
-            # Send the measured data
-            message = SensorMeasurementMessage(self.id, self.env.now)
-            yield self.env.process(message.send_message(self.env, self.logger))
+            if random.random() < self.measurement_chance:
+                # Send the measured data
+                message = SensorMeasurementMessage(self.id, self.env.now)
+                yield self.env.process(message.send_message(self.env, self.logger))
 
-            yield self.sensor_messages_queue.put(message)
+                yield self.sensor_messages_queue.put(message)
+            else:
+                self.logger.info(f"Time {self.env.now:.2f}: Skipping message transmission")
