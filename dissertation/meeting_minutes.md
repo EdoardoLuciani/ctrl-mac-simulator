@@ -20,5 +20,7 @@ Cyber-Physical Systems"
 - Variable parameters in the simulation
 
 ### Objectives for the next week
-- Sensor slot allocation
+- Implement Transmission Request message
 - Allocation of channels and slots in RRM
+- Sensor logic to transmit data
+- Gateway logic to detect collisions
