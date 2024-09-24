@@ -12,12 +12,12 @@ Cyber-Physical Systems"
 - Sensor's messages collision detection
 
 ### Issues discussed and solutions agreed
-- Meeting schedule
-- Project is engineering based?
-- Clarity on subdivisions of channels between uplink and downlink
-- Requirements on simulation of duty cycle?
-- Simulation of actuators?
-- Variable parameters in the simulation
+- Meeting schedule -> Tuesday@10
+- Project is engineering based? -> Yes
+- Clarity on subdivisions of channels between uplink and downlink -> x data channels, 2 channels for data transmission request and gateway downlink
+- Requirements on simulation of duty cycle? -> No
+- Simulation of actuators? -> Not needed right now, maybe in the future
+- Variable parameters in the simulation -> request_slots, sensors
 
 ### Objectives for the next week
 - Implement Transmission Request message
