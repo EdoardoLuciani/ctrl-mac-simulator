@@ -14,6 +14,9 @@ logging.basicConfig(level=getattr(logging, args.loglevel.upper()))
 env = simpy.Environment()
 
 gateway = Gateway(env, 3, 3)
-sensors = [Sensor(env, i, 1, gateway.get_rrm_message_event, gateway.get_transmission_request_messages_queue()) for i in range(3)]
+sensors = [
+    Sensor(env, i, 1, gateway.get_rrm_message_event, gateway.get_transmission_request_messages_queue())
+    for i in range(3)
+]
 
 env.run(until=1.5)
