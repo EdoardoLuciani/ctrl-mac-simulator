@@ -1,4 +1,4 @@
-import math, json
+import math, json, random
 from typing import TypedDict, Literal
 from dataclasses import dataclass
 
@@ -6,15 +6,27 @@ from ctrl_mac_simulator.messages.abstract_message import AbstractMessage
 
 
 @dataclass
-class _RequestSlot:
+class RequestSlot:
     state: Literal["free", "no_collision", "collision_occurred"]
-    data_slot: int
     data_channel: int
+    data_slot: int
 
 
 class RequestReplyMessage(AbstractMessage):
-    def __init__(self, start_time: float, request_slots: int = 5):
-        self.request_slots = [_RequestSlot("free", 0, 0) for i in range(request_slots)]
+    def __init__(self, start_time: float, data_channels, data_slots_per_channel, request_slots: int = 5):
+        if request_slots > data_channels * data_slots_per_channel:
+            raise ValueError("Filled all channels")
+
+        self.request_slots = []
+        channel = 0
+        slot = 0
+        for i in range(request_slots):
+            self.request_slots.append(RequestSlot("free", channel, slot))
+            channel += 1
+            if channel >= data_channels:
+                channel = 0
+                slot += 1
+
         self.ftr = 0
         self.start_time = start_time
         self.arrive_time = start_time + self.get_airtime()
@@ -23,3 +35,9 @@ class RequestReplyMessage(AbstractMessage):
         # 2 bits for the state, 4 bits for the data_slot, 2 bits for the data_channel
         # 4 bits for the ftr
         return math.ceil(((2 + 4 + 2) * len(self.request_slots) + 4) / 8)
+
+    def sample_free_request_slot(self) -> int | None:
+        free_slots = [slot for slot in self.request_slots if slot.state == "free"]
+        if free_slots:
+            return self.request_slots.index(random.choice(free_slots))
+        return None
