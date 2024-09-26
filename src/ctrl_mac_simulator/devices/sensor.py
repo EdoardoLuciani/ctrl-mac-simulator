@@ -36,13 +36,11 @@ class Sensor:
 
             if self.need_to_send_measurement:
                 # Send the measured data
-                free_request_slot = rrm_message.sample_free_request_slot()
+                free_request_slot_idx = rrm_message.sample_free_request_slot()
 
-                if free_request_slot != None:
-
-                    message = TransmissionRequestMessage(self.id, free_request_slot, self.env.now)
+                if free_request_slot_idx != None:
+                    message = TransmissionRequestMessage(self.id, free_request_slot_idx, self.env.now)
                     yield self.env.process(message.send_message(self.env, self.logger))
-
                     yield self.sensor_messages_queue.put(message)
 
                 #message = SensorMeasurementMessage(self.id, self.env.now)
