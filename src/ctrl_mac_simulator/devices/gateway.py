@@ -3,11 +3,15 @@ from ..messages import RequestReplyMessage
 
 
 class Gateway:
-    def __init__(self, env):
-        self.env: simpy.Environment = env
+    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int):
+        self.env = env
+        self.data_channels = data_channels
+        self.data_slots_per_channel = data_slots_per_channel
+
         self.rrm_message_event = simpy.Event(env)
         self.sensor_messages_queue = simpy.Store(env)
         self.logger = logging.getLogger(self.__class__.__name__)
+
         self.env.process(self.run())
 
     def run(self):
