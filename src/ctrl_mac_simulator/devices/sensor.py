@@ -36,7 +36,7 @@ class Sensor:
             self.logger.info(f"Time {self.env.now:.2f}: Received RRM message")
 
             # Proceed with the state action
-            self.env.process(self._state.handle(rrm_message))
+            yield from self._state.handle(rrm_message)
 
 
     def transition_to(self, state):

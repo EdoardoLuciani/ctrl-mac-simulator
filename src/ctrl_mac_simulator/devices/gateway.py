@@ -17,7 +17,7 @@ class Gateway:
         while True:
             # Send RRM
             self.rrm.start_time = self.env.now
-            yield self.env.process(self.rrm.send_message(self.env, self.logger))
+            yield from self.rrm.send_message(self.env, self.logger)
 
             self.rrm_message_event.succeed(self.rrm)
             self.rrm_message_event = simpy.Event(self.env)
