@@ -16,6 +16,7 @@ class Gateway:
     def run(self):
         while True:
             # Send RRM
+            self.rrm.start_time = self.env.now
             yield self.env.process(self.rrm.send_message(self.env, self.logger))
 
             self.rrm_message_event.succeed(self.rrm)
@@ -35,6 +36,8 @@ class Gateway:
             for state, idxs in Gateway._get_request_slots_status(sensor_messages).items():
                 for idx in idxs:
                     self.rrm.request_slots[idx].state = state
+
+            self.rrm.update_ftr()
 
     def get_rrm_message_event(self):
         return self.rrm_message_event

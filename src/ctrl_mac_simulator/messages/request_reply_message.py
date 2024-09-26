@@ -28,8 +28,16 @@ class RequestReplyMessage(AbstractMessage):
                 slot += 1
 
         self.ftr = 0
-        self.start_time = start_time
-        self.arrive_time = start_time + self.get_airtime()
+        self._start_time = start_time
+
+    @property
+    def start_time(self) -> float:
+        return self._start_time
+
+    @start_time.setter
+    def start_time(self, start_time: float) -> None:
+        self._start_time = start_time
+        self._arrive_time = start_time + self.get_airtime()
 
     def get_message_len(self) -> int:
         # 2 bits for the state, 4 bits for the data_slot, 2 bits for the data_channel
@@ -41,3 +49,6 @@ class RequestReplyMessage(AbstractMessage):
         if free_slots:
             return self.request_slots.index(random.choice(free_slots))
         return None
+
+    def update_ftr(self) -> None:
+        self.ftr += len([slot for slot in self.request_slots if slot.state == "collision_occurred"])
