@@ -5,8 +5,7 @@ from ..messages import RequestReplyMessage, TransmissionRequestMessage
 class Gateway:
     def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int):
         self.env = env
-        self.data_channels = data_channels
-        self.data_slots_per_channel = data_slots_per_channel
+        self.rrm = RequestReplyMessage(self.env.now, data_channels, data_slots_per_channel)
 
         self.rrm_message_event = simpy.Event(env)
         self.transmission_request_messages = simpy.Store(env)
@@ -17,10 +16,9 @@ class Gateway:
     def run(self):
         while True:
             # Send RRM
-            rrm = RequestReplyMessage(self.env.now, self.data_channels, self.data_slots_per_channel)
-            yield self.env.process(rrm.send_message(self.env, self.logger))
+            yield self.env.process(self.rrm.send_message(self.env, self.logger))
 
-            self.rrm_message_event.succeed(rrm)
+            self.rrm_message_event.succeed(self.rrm)
             self.rrm_message_event = simpy.Event(self.env)
 
             # Listen on transmission request messages for 0.5s
@@ -34,7 +32,9 @@ class Gateway:
                     f"Time {self.env.now:.2f}: Received transmission request message from Sensor {sensor_messages[-1].sensor_id}"
                 )
 
-            self.logger.info(f"Collision status {Gateway._get_duplicate_request_slots(sensor_messages)}")
+            for state, idxs in Gateway._get_request_slots_status(sensor_messages).items():
+                for idx in idxs:
+                    self.rrm.request_slots[idx].state = state
 
     def get_rrm_message_event(self):
         return self.rrm_message_event
@@ -43,7 +43,7 @@ class Gateway:
         return self.transmission_request_messages
 
     @staticmethod
-    def _get_duplicate_request_slots(messages: list[TransmissionRequestMessage]) -> list[int]:
+    def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:
         slot_counts = {}
 
         # Count the occurrences of each chosen_request_slot
@@ -52,7 +52,10 @@ class Gateway:
             slot_counts[slot] = slot_counts.get(slot, 0) + 1
 
         # Find slots that have been picked more than once
-        return [slot for slot, count in slot_counts.items() if count > 1]
+        return {
+            "no_collision": [slot for slot, count in slot_counts.items() if count == 1],
+            "collision_occurred": [slot for slot, count in slot_counts.items() if count > 1]
+        }
 
     @staticmethod
     def _find_messages_collisions(messages):
