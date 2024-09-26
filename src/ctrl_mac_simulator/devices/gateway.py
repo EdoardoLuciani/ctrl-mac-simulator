@@ -57,5 +57,5 @@ class Gateway:
         # Find slots that have been picked more than once
         return {
             "no_collision": [slot for slot, count in slot_counts.items() if count == 1],
-            "collision_occurred": [slot for slot, count in slot_counts.items() if count > 1]
+            "collision_occurred": [slot for slot, count in slot_counts.items() if count > 1],
         }

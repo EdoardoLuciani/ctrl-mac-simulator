@@ -38,7 +38,6 @@ class Sensor:
             # Proceed with the state action
             yield from self._state.handle(rrm_message)
 
-
     def transition_to(self, state):
         """
         The Context allows changing the State object at runtime.
@@ -48,7 +47,6 @@ class Sensor:
 
 
 class _State(ABC):
-
     @property
     def context(self) -> Sensor:
         return self._context
@@ -65,10 +63,14 @@ class _State(ABC):
 class _IdleState(_State):
     def handle(self, rrm_message):
         if random.random() <= self._context.measurement_chance:
-            self.context.logger.info(f"Time {self.context.env.now:.2f}: Data is available, syncing to next RRM for transmission request")
+            self.context.logger.info(
+                f"Time {self.context.env.now:.2f}: Data is available, syncing to next RRM for transmission request"
+            )
             self.context.transition_to(_TransmissionRequestState())
         else:
-            self.context.logger.info(f"Time {self.context.env.now:.2f}: No data available, skipping transmission request")
+            self.context.logger.info(
+                f"Time {self.context.env.now:.2f}: No data available, skipping transmission request"
+            )
         yield from ()
 
 
@@ -87,4 +89,6 @@ class _TransmissionRequestState(_State):
 
             self.context.transition_to(_IdleState())
         else:
-            self.context.logger.info(f"Time {self.context.env.now:.2f}: No available free slot to choose, skipping transmission request")
+            self.context.logger.info(
+                f"Time {self.context.env.now:.2f}: No available free slot to choose, skipping transmission request"
+            )
