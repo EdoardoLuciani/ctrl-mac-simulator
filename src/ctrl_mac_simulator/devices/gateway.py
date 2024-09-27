@@ -30,6 +30,9 @@ class Gateway:
             # Listen on transmission request messages for the specified period
             yield simpy.Timeout(self._env, self._rrm_period)
 
+            # Reset the request slots status
+            self._rrm.reset_slots_to_free()
+
             sensor_messages = []
             while len(self._transmission_request_messages.items):
                 sensor_message = yield self._transmission_request_messages.get()
@@ -38,11 +41,11 @@ class Gateway:
                     f"Time {self._env.now:.2f}: Received transmission request message from Sensor {sensor_messages[-1].sensor_id}"
                 )
 
+            # Update the slots based on the transmission request messages
             for state, idxs in Gateway._get_request_slots_status(sensor_messages).items():
                 for idx in idxs:
                     self._rrm.request_slots[idx].state = state
 
-            self._rrm.update_ftr()
 
             # Listen on data messages as well
             while len(self._sensor_data_messages.items):
@@ -50,6 +53,8 @@ class Gateway:
                 self._logger.info(
                     f"Time {self._env.now:.2f}: Received data message from Sensor {message.sensor_id}"
                 )
+
+            self._rrm.update_ftr()
 
 
     def rrm_message_event(self) -> simpy.Event:
