@@ -9,14 +9,11 @@ from ctrl_mac_simulator.messages.abstract_message import AbstractMessage
 class RequestSlot:
     state: Literal["free", "no_contention", "contention_occurred"]
     data_channel: int
-    data_slot: int
+    data_slot: float
 
 
 class RequestReplyMessage(AbstractMessage):
-    def __init__(self, start_time: float, data_channels, data_slots_per_channel, request_slots: int = 5):
-        if request_slots > data_channels * data_slots_per_channel:
-            raise ValueError("Filled all channels")
-
+    def __init__(self, start_time: float, data_channels: int, data_slot_time_offset: float, request_slots: int):
         self.request_slots = []
         channel = 0
         slot = 0
@@ -25,7 +22,7 @@ class RequestReplyMessage(AbstractMessage):
             channel += 1
             if channel >= data_channels:
                 channel = 0
-                slot += 1
+                slot += data_slot_time_offset
 
         self.ftr = 0
         self._start_time = start_time
