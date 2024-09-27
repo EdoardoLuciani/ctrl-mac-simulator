@@ -3,7 +3,7 @@ from ..messages import RequestReplyMessage, TransmissionRequestMessage
 
 
 class Gateway:
-    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int):
+    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int, rmm_period: float = 0.5):
         self._env = env
         self._rrm = RequestReplyMessage(self._env.now, data_channels, data_slots_per_channel)
 
@@ -23,8 +23,8 @@ class Gateway:
             self._rrm_message_event.succeed(self._rrm)
             self._rrm_message_event = simpy.Event(self._env)
 
-            # Listen on transmission request messages for 0.5s
-            yield simpy.Timeout(self._env, 0.5)
+            # Listen on transmission request messages for the specified period
+            yield simpy.Timeout(self._env, self.rrm_period)
 
             sensor_messages = []
             while len(self._transmission_request_messages.items):
