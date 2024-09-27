@@ -57,12 +57,12 @@ class _State(ABC):
         self._sensor = sensor
 
     @abstractmethod
-    def handle(self, rrm_message):
+    def handle(self, rrm_message: RequestReplyMessage):
         pass
 
 
 class _IdleState(_State):
-    def handle(self, rrm_message):
+    def handle(self, rrm_message: RequestReplyMessage):
         if random.random() <= self.sensor._measurement_chance:
             self.sensor._logger.info(
                 f"Time {self.sensor._env.now:.2f}: Data is available, syncing to next RRM for transmission request"
@@ -79,7 +79,7 @@ class _TransmissionRequestState(_State):
     def __init__(self, backoff: int = 0):
         self.backoff = backoff
 
-    def handle(self, rrm_message):
+    def handle(self, rrm_message: RequestReplyMessage):
         if self.backoff:
             self.backoff -= 1
             yield from ()
@@ -102,10 +102,11 @@ class _DataTransmissionState():
     def __init__(self, free_request_slot_idx) -> None:
         self._free_request_slot_idx = free_request_slot_idx
 
-    def handle(self, rrm_message):
+    def handle(self, rrm_message: RequestReplyMessage):
         chosen_request_slot = rrm_message.request_slots[self._free_request_slot_idx]
 
         if chosen_request_slot.state == 'no_contention':
+            yield simpy.Timeout(self.sensor._env, chosen_request_slot.data_slot)
             message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
 
             yield from message.send_message(self.sensor._env, self.sensor._logger)
