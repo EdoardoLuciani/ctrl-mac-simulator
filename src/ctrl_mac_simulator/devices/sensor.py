@@ -15,13 +15,15 @@ class Sensor:
         id: int,
         measurement_chance: float,
         get_rrm_message_event_fn: Callable[[], simpy.Event],
-        sensor_messages_queue: simpy.Store,
+        transmission_requests_queue: simpy.Store,
+        data_messages_queue: simpy.Store,
     ):
         self._env = env
         self._id = id
         self._measurement_chance = measurement_chance
         self._get_rrm_message_event_fn = get_rrm_message_event_fn
-        self._sensor_messages_queue = sensor_messages_queue
+        self._transmission_requests_queue = transmission_requests_queue
+        self._data_messages_queue = data_messages_queue
 
         self._logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
         self._env.process(self.run())
@@ -83,11 +85,29 @@ class _TransmissionRequestState(_State):
         if free_request_slot_idx != None:
             message = TransmissionRequestMessage(self.sensor._id, free_request_slot_idx, self.sensor._env.now)
 
-            yield self.sensor._env.process(message.send_message(self.sensor._env, self.sensor._logger))
-            yield self.sensor._sensor_messages_queue.put(message)
+            yield from message.send_message(self.sensor._env, self.sensor._logger)
+            yield self.sensor._transmission_requests_queue.put(message)
 
-            self.sensor.transition_to(_IdleState())
+            self.sensor.transition_to(_DataTransmissionState(free_request_slot_idx))
         else:
             self.sensor._logger.info(
                 f"Time {self.sensor._env.now:.2f}: No available free slot to choose, skipping transmission request"
             )
+
+class _DataTransmissionState():
+    def __init__(self, free_request_slot_idx) -> None:
+        self._free_request_slot_idx = free_request_slot_idx
+
+    def handle(self, rrm_message):
+        chosen_request_slot = rrm_message.request_slots[self._free_request_slot_idx]
+
+        if chosen_request_slot.state == 'no_contention':
+            message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
+
+            yield from message.send_message(self.sensor._env, self.sensor._logger)
+            yield self.sensor._data_messages_queue.put(message)
+
+            self.sensor.transition_to(_IdleState())
+        else:
+            self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, skipping measurement transmission")
+            self.sensor.transition_to(_TransmissionRequestState())

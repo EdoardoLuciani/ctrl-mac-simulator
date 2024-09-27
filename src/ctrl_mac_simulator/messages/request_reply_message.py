@@ -7,7 +7,7 @@ from ctrl_mac_simulator.messages.abstract_message import AbstractMessage
 
 @dataclass
 class RequestSlot:
-    state: Literal["free", "no_collision", "collision_occurred"]
+    state: Literal["free", "no_contention", "contention_occurred"]
     data_channel: int
     data_slot: int
 
@@ -51,4 +51,4 @@ class RequestReplyMessage(AbstractMessage):
         return None
 
     def update_ftr(self) -> None:
-        self.ftr += len([slot for slot in self.request_slots if slot.state == "collision_occurred"])
+        self.ftr += len([slot for slot in self.request_slots if slot.state == "contention_occurred"])
