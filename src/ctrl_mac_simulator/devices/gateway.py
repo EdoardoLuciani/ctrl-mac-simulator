@@ -3,9 +3,13 @@ from ..messages import RequestReplyMessage, TransmissionRequestMessage
 
 
 class Gateway:
-    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int, rmm_period: float = 0.5):
+    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int, request_slots: int = 5, rrm_period: float = 0.5):
         self._env = env
-        self._rrm = RequestReplyMessage(self._env.now, data_channels, data_slots_per_channel)
+        self._rrm_period = rrm_period
+
+        if request_slots > data_channels * data_slots_per_channel:
+            raise ValueError("Not enough data channels or data slots to fill all the rrm request slots")
+        self._rrm = RequestReplyMessage(self._env.now, data_channels, rrm_period / data_slots_per_channel, request_slots)
 
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
@@ -24,7 +28,7 @@ class Gateway:
             self._rrm_message_event = simpy.Event(self._env)
 
             # Listen on transmission request messages for the specified period
-            yield simpy.Timeout(self._env, self.rrm_period)
+            yield simpy.Timeout(self._env, self._rrm_period)
 
             sensor_messages = []
             while len(self._transmission_request_messages.items):
