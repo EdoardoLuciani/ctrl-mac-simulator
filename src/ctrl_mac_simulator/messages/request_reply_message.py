@@ -57,5 +57,9 @@ class RequestReplyMessage(AbstractMessage):
         self.old_ftr, self.old_contentions = self.ftr, self.total_contentions()
 
     def total_contentions(self, before_slot: int | None = None) -> int:
-            end_slot = before_slot if before_slot is not None else len(self.request_slots)
-            return sum(1 for slot in self.request_slots[:end_slot] if slot.state == "contention_occurred")
+        end_slot = before_slot if before_slot is not None else len(self.request_slots)
+        return sum(1 for slot in self.request_slots[:end_slot] if slot.state == "contention_occurred")
+
+    def reset_slots_to_free(self) -> None:
+        for request_slot in self.request_slots:
+            request_slot.state = 'free'
