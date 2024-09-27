@@ -19,4 +19,4 @@ sensors = [
     for i in range(3)
 ]
 
-env.run(until=2)
+env.run(until=5)

@@ -80,6 +80,10 @@ class _TransmissionRequestState(_State):
         self.backoff = backoff
 
     def handle(self, rrm_message):
+        if self.backoff:
+            self.backoff -= 1
+            yield from ()
+
         free_request_slot_idx = rrm_message.sample_free_request_slot()
 
         if free_request_slot_idx != None:
@@ -109,5 +113,7 @@ class _DataTransmissionState():
 
             self.sensor.transition_to(_IdleState())
         else:
-            self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, skipping measurement transmission")
-            self.sensor.transition_to(_TransmissionRequestState())
+            backoff = rrm_message.ftr + (rrm_message.total_contentions() - 1) - rrm_message.total_contentions(self._free_request_slot_idx)
+
+            self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, backing off for {backoff} periods")
+            self.sensor.transition_to(_TransmissionRequestState(backoff))
