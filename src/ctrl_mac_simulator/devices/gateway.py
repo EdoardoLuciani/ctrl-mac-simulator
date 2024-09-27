@@ -9,6 +9,7 @@ class Gateway:
 
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
+        self._sensor_data_messages = simpy.Store(env)
         self._logger = logging.getLogger(self.__class__.__name__)
 
         self._env.process(self.run())
@@ -39,12 +40,24 @@ class Gateway:
 
             self._rrm.update_ftr()
 
+            # Listen on data messages as well
+            while len(self._sensor_data_messages.items):
+                message = yield self._sensor_data_messages.get()
+                self._logger.info(
+                    f"Time {self._env.now:.2f}: Received data message from Sensor {message.sensor_id}"
+                )
+
+
     def rrm_message_event(self) -> simpy.Event:
         return self._rrm_message_event
 
     @property
     def transmission_request_messages(self) -> simpy.Store:
         return self._transmission_request_messages
+
+    @property
+    def sensor_data_messages(self) -> simpy.Store:
+        return self._sensor_data_messages
 
     @staticmethod
     def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:
@@ -57,8 +70,8 @@ class Gateway:
 
         # Find slots that have been picked more than once
         return {
-            "no_collision": [slot for slot, count in slot_counts.items() if count == 1],
-            "collision_occurred": [slot for slot, count in slot_counts.items() if count > 1],
+            "no_contention": [slot for slot, count in slot_counts.items() if count == 1],
+            "contention_occurred": [slot for slot, count in slot_counts.items() if count > 1],
         }
 
     @staticmethod
