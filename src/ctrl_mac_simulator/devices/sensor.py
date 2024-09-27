@@ -82,6 +82,7 @@ class _TransmissionRequestState(_State):
     def handle(self, rrm_message: RequestReplyMessage):
         if self.backoff:
             self.backoff -= 1
+            self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: On timeout for {self.backoff} more periods")
             yield from ()
 
         free_request_slot_idx = rrm_message.sample_free_request_slot()
