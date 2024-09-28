@@ -31,14 +31,18 @@ class CreateCircle(Scene):
 
 
     def display_rrm(self, sensor_radius):
-        expanding_circle = Circle(radius=0)
+        expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5)
         expanding_circle.move_to(self._gateway.get_center())
-
-        def update_circle(c, alpha):
-            c.become(Circle(radius=sensor_radius * alpha, color=YELLOW, stroke_opacity=0.5))
-
-        self.play(UpdateFromAlphaFunc(expanding_circle, update_circle, run_time=1))
+        self.play(GrowFromCenter(expanding_circle, run_time=1))
         self.play(FadeOut(expanding_circle))
+
+
+    def display_transmission_request_message(self, sensor_id):
+        req_arrow = Arrow(self._sensors[sensor_id].get_center(), self._gateway.get_center(), buff=0.3, color=YELLOW)
+        req_label = Text("Request", font_size=16, color=YELLOW).next_to(req_arrow, LEFT)
+        self.play(GrowArrow(req_arrow), Write(req_label))
+        self.wait(0.5)
+        self.play(FadeOut(req_arrow), FadeOut(req_label))
 
 
     def construct(self):
@@ -48,15 +52,10 @@ class CreateCircle(Scene):
 
         self.display_rrm(sensor_radius)
 
-
         # Transmission request animation
         for i in range(len(self._sensors)):
-            if i % 2 == 0:  # Only some sensors send requests
-                req_arrow = Arrow(self._sensors[i].get_center(), self._gateway.get_center(), buff=0.3, color=YELLOW)
-                req_label = Text("Request", font_size=16, color=YELLOW).next_to(req_arrow, LEFT)
-                self.play(GrowArrow(req_arrow), Write(req_label))
-                self.wait(0.5)
-                self.play(FadeOut(req_arrow), FadeOut(req_label))
+            if i % 2 == 0:
+                self.display_transmission_request_message(i)
 
         self.wait(2)
 
