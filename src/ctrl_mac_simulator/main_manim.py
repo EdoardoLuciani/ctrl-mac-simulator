@@ -25,7 +25,20 @@ class CreateCircle(Scene):
             label = Text(f"S{i}", font_size=16, color=RED).move_to(sensor.get_center())
             sensor_labels.add(label)
 
+
+        # Time counter
+        self.time = 0
+        self._timer = Text("Time: 0s", font_size=24).to_corner(UL)
+
+
+        # Create the table for keeping track of the events
+        self._table = Table(
+            [["This", "is a"],
+            ["simple", "Table in \n Manim."]]).scale(0.3).next_to(self._timer, DOWN)
+
+
         self.play(Create(sensors), FadeIn(sensor_labels))
+        self.play(FadeIn(self._timer), FadeIn(self._table))
 
         return gateway, sensors
 
