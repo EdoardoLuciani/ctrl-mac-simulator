@@ -27,8 +27,8 @@ class CreateCircle(Scene):
 
 
         # Time counter
-        self.time = 0
-        self._timer = Text("Time: 0s", font_size=24).to_corner(UL)
+        self._time = 0
+        self._timer = Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
 
 
         # Create the table for keeping track of the events
@@ -57,6 +57,11 @@ class CreateCircle(Scene):
         self.wait(0.5)
         self.play(FadeOut(req_arrow), FadeOut(req_label))
 
+    def update_timer(self, dt):
+        self._time += dt
+        new_timer = Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
+        self.play(Transform(self._timer, new_timer), run_time=0.1)
+
 
     def construct(self):
         sensor_radius = 4
@@ -64,6 +69,8 @@ class CreateCircle(Scene):
         self._gateway, self._sensors = self.setup_scene(5, sensor_radius)
 
         self.display_rrm(sensor_radius)
+
+        self.update_timer(1)
 
         # Transmission request animation
         for i in range(len(self._sensors)):
