@@ -12,13 +12,82 @@
 -e file:.
 bitarray==2.9.2
     # via ctrl-mac-simulator
+click==8.1.7
+    # via cloup
+    # via manim
+cloup==3.0.5
+    # via manim
+decorator==5.1.1
+    # via manim
+glcontext==3.0.0
+    # via moderngl
 iniconfig==2.0.0
     # via pytest
+isosurfaces==0.1.2
+    # via manim
+manim==0.18.1
+    # via ctrl-mac-simulator
+manimpango==0.6.0
+    # via manim
+mapbox-earcut==1.0.2
+    # via manim
+markdown-it-py==3.0.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
+moderngl==5.11.1
+    # via manim
+    # via moderngl-window
+moderngl-window==2.4.6
+    # via manim
+multipledispatch==1.0.0
+    # via pyrr
+networkx==3.3
+    # via manim
+numpy==1.26.4
+    # via isosurfaces
+    # via manim
+    # via mapbox-earcut
+    # via moderngl-window
+    # via pyrr
+    # via scipy
 packaging==24.1
     # via pytest
+pillow==10.4.0
+    # via manim
+    # via moderngl-window
 pluggy==1.5.0
     # via pytest
+pycairo==1.27.0
+    # via manim
+pydub==0.25.1
+    # via manim
+pyglet==2.0.17
+    # via moderngl-window
+pygments==2.18.0
+    # via manim
+    # via rich
+pyrr==0.10.3
+    # via moderngl-window
 pytest==8.3.3
     # via ctrl-mac-simulator
+rich==13.8.1
+    # via manim
+scipy==1.14.1
+    # via manim
+screeninfo==0.8.1
+    # via manim
 simpy==4.1.1
     # via ctrl-mac-simulator
+skia-pathops==0.8.0.post1
+    # via manim
+srt==3.5.3
+    # via manim
+svgelements==1.9.6
+    # via manim
+tqdm==4.66.5
+    # via manim
+typing-extensions==4.12.2
+    # via manim
+watchdog==5.0.3
+    # via manim
