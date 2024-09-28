@@ -99,14 +99,15 @@ class _TransmissionRequestState(_State):
                 f"Time {self.sensor._env.now:.2f}: No available free slot to choose, skipping transmission request"
             )
 
-class _DataTransmissionState():
+
+class _DataTransmissionState:
     def __init__(self, free_request_slot_idx) -> None:
         self._free_request_slot_idx = free_request_slot_idx
 
     def handle(self, rrm_message: RequestReplyMessage):
         chosen_request_slot = rrm_message.request_slots[self._free_request_slot_idx]
 
-        if chosen_request_slot.state == 'no_contention':
+        if chosen_request_slot.state == "no_contention":
             yield simpy.Timeout(self.sensor._env, chosen_request_slot.data_slot)
             message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
 
@@ -115,7 +116,13 @@ class _DataTransmissionState():
 
             self.sensor.transition_to(_IdleState())
         else:
-            backoff = rrm_message.ftr + (rrm_message.total_contentions() - 1) - rrm_message.total_contentions(self._free_request_slot_idx)
+            backoff = (
+                rrm_message.ftr
+                + (rrm_message.total_contentions() - 1)
+                - rrm_message.total_contentions(self._free_request_slot_idx)
+            )
 
-            self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, backing off for {backoff} periods")
+            self.sensor._logger.info(
+                f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, backing off for {backoff} periods"
+            )
             self.sensor.transition_to(_TransmissionRequestState(backoff))
