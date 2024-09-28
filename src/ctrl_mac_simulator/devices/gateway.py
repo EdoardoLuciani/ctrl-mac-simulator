@@ -8,11 +8,13 @@ class Gateway:
         env: simpy.Environment,
         data_channels: int,
         data_slots_per_channel: int,
-        request_slots: int = 5,
-        rrm_period: float = 0.5,
+        request_slots: int,
+        rrm_period: float,
+        total_rrm_messages
     ):
         self._env = env
         self._rrm_period = rrm_period
+        self._total_rrm_messages = 3
 
         if request_slots > data_channels * data_slots_per_channel:
             raise ValueError("Not enough data channels or data slots to fill all the rrm request slots")
@@ -28,7 +30,7 @@ class Gateway:
         self._env.process(self.run())
 
     def run(self):
-        while True:
+        for _ in range(self._total_rrm_messages):
             # Send RRM
             self._rrm.start_time = self._env.now
             yield from self._rrm.send_message(self._env, self._logger)

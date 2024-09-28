@@ -13,10 +13,10 @@ logging.basicConfig(level=getattr(logging, args.loglevel.upper()))
 # Set up and run the simulation
 env = simpy.Environment()
 
-gateway = Gateway(env, 3, 2, 6)
+gateway = Gateway(env, 3, 2, 6, 0.5, 3)
 sensors = [
     Sensor(env, i, 1, gateway.rrm_message_event, gateway.transmission_request_messages, gateway.sensor_data_messages)
     for i in range(6)
 ]
 
-env.run(until=5)
+env.run()
