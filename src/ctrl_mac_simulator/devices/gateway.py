@@ -3,13 +3,22 @@ from ..messages import RequestReplyMessage, TransmissionRequestMessage
 
 
 class Gateway:
-    def __init__(self, env: simpy.Environment, data_channels: int, data_slots_per_channel: int, request_slots: int = 5, rrm_period: float = 0.5):
+    def __init__(
+        self,
+        env: simpy.Environment,
+        data_channels: int,
+        data_slots_per_channel: int,
+        request_slots: int = 5,
+        rrm_period: float = 0.5,
+    ):
         self._env = env
         self._rrm_period = rrm_period
 
         if request_slots > data_channels * data_slots_per_channel:
             raise ValueError("Not enough data channels or data slots to fill all the rrm request slots")
-        self._rrm = RequestReplyMessage(self._env.now, data_channels, rrm_period / data_slots_per_channel, request_slots)
+        self._rrm = RequestReplyMessage(
+            self._env.now, data_channels, rrm_period / data_slots_per_channel, request_slots
+        )
 
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
@@ -46,16 +55,12 @@ class Gateway:
                 for idx in idxs:
                     self._rrm.request_slots[idx].state = state
 
-
             # Listen on data messages as well
             while len(self._sensor_data_messages.items):
                 message = yield self._sensor_data_messages.get()
-                self._logger.info(
-                    f"Time {self._env.now:.2f}: Received data message from Sensor {message.sensor_id}"
-                )
+                self._logger.info(f"Time {self._env.now:.2f}: Received data message from Sensor {message.sensor_id}")
 
             self._rrm.update_ftr()
-
 
     def rrm_message_event(self) -> simpy.Event:
         return self._rrm_message_event

@@ -26,7 +26,7 @@ def test_rrm_message_filled():
 def test_rrm_message_contentions():
     rrm = RequestReplyMessage(0, 3, 2, 3)
 
-    for request_slot, new_state in zip(rrm.request_slots, ['contention_occurred', 'contention_occurred', 'free']):
+    for request_slot, new_state in zip(rrm.request_slots, ["contention_occurred", "contention_occurred", "free"]):
         request_slot.state = new_state
 
     assert rrm.total_contentions() == 2
@@ -37,7 +37,7 @@ def test_rrm_message_contentions():
 def test_rrm_message_ftr_contention_not_resolved():
     rrm = RequestReplyMessage(0, 3, 2, 3)
 
-    for request_slot, new_state in zip(rrm.request_slots, ['contention_occurred', 'contention_occurred', 'free']):
+    for request_slot, new_state in zip(rrm.request_slots, ["contention_occurred", "contention_occurred", "free"]):
         request_slot.state = new_state
 
     rrm.update_ftr()
@@ -46,7 +46,7 @@ def test_rrm_message_ftr_contention_not_resolved():
     rrm.update_ftr()
     assert rrm.ftr == 1
 
-    for request_slot, new_state in zip(rrm.request_slots, ['free', 'no_contention', 'no_contention']):
+    for request_slot, new_state in zip(rrm.request_slots, ["free", "no_contention", "no_contention"]):
         request_slot.state = new_state
 
     rrm.update_ftr()
@@ -56,13 +56,13 @@ def test_rrm_message_ftr_contention_not_resolved():
 def test_rrm_message_ftr_contetion_resolved():
     rrm = RequestReplyMessage(0, 3, 2, 3)
 
-    for request_slot, new_state in zip(rrm.request_slots, ['contention_occurred', 'contention_occurred', 'free']):
+    for request_slot, new_state in zip(rrm.request_slots, ["contention_occurred", "contention_occurred", "free"]):
         request_slot.state = new_state
 
     rrm.update_ftr()
     assert rrm.ftr == 0
 
-    for request_slot, new_state in zip(rrm.request_slots, ['no_contention', 'no_contention', 'free']):
+    for request_slot, new_state in zip(rrm.request_slots, ["no_contention", "no_contention", "free"]):
         request_slot.state = new_state
 
     rrm.update_ftr()

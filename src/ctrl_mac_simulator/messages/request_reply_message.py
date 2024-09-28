@@ -46,10 +46,7 @@ class RequestReplyMessage(AbstractMessage):
         return math.ceil(((2 + 4 + 2) * len(self.request_slots) + 4) / 8)
 
     def sample_free_request_slot(self) -> Optional[int]:
-        free_slot_indices = [
-            index for index, slot in enumerate(self.request_slots)
-            if slot.state == "free"
-        ]
+        free_slot_indices = [index for index, slot in enumerate(self.request_slots) if slot.state == "free"]
         return random.choice(free_slot_indices) if free_slot_indices else None
 
     def update_ftr(self) -> None:
@@ -62,4 +59,4 @@ class RequestReplyMessage(AbstractMessage):
 
     def reset_slots_to_free(self) -> None:
         for request_slot in self.request_slots:
-            request_slot.state = 'free'
+            request_slot.state = "free"
