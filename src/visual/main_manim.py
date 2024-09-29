@@ -44,10 +44,13 @@ class CreateCircle(Scene):
 
 
     def display_rrm(self, sensor_radius):
-        expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5)
-        expanding_circle.move_to(self._gateway.get_center())
-        self.play(GrowFromCenter(expanding_circle, run_time=1))
-        self.play(FadeOut(expanding_circle))
+        expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5).move_to(self._gateway.get_center())
+
+        text = Text(f"RRM", color=YELLOW, font_size=24).move_to(self._gateway.get_center())
+        text_dst = text.copy().move_to(UR / np.linalg.norm(UR) * sensor_radius)
+
+        self.play(GrowFromCenter(expanding_circle, run_time=1), Transform(text, text_dst, run_time=1))
+        self.play(FadeOut(expanding_circle), FadeOut(text))
 
 
     def display_transmission_request_message(self, sensor_id):
@@ -56,6 +59,7 @@ class CreateCircle(Scene):
         self.play(GrowArrow(req_arrow), Write(req_label))
         self.wait(0.5)
         self.play(FadeOut(req_arrow), FadeOut(req_label))
+
 
     def update_timer(self, dt):
         self._time += dt
