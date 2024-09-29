@@ -4,21 +4,29 @@ from manim import *
 class RRMTable():
     def __init__(self, request_slots: int, down_from: Mobject):
         # Create the table for keeping track of the events
-        self.table = Table(
+        self._table = Table(
             [["FTR"] + [f"Slot {i}" for i in range(request_slots)],
-                ['dunno' for i in range(request_slots + 1)]]).scale(0.3).next_to(down_from, DOWN)
-        self.table.add_highlighted_cell((2,2), color=GREEN)
+                ['dunno' for i in range(request_slots + 1)]]).scale(0.3).next_to(down_from, DOWN).to_edge(LEFT)
+        self._table.add_highlighted_cell((2,2), color=GREEN)
+
+    @property
+    def object(self):
+        return self._table
 
 
 class Timer():
     def __init__(self):
         # Create the table for keeping track of the events
         self._time = 0
-        self.text = self._get_timer_text()
+        self._text = self._get_timer_text()
+
+    @property
+    def object(self):
+        return self._text
 
     def update_timer(self, dt, scene):
         self._time += dt
-        scene.play(Transform(self.text, self._get_timer_text()), run_time=0.1)
+        scene.play(Transform(self._text, self._get_timer_text()), run_time=0.1)
 
     def _get_timer_text(self):
         return Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
@@ -32,9 +40,9 @@ class LeftSidebar():
         # Create timer
         self._timer = Timer()
 
-        self._rrm_table = RRMTable(5, self._timer.text)
+        self._rrm_table = RRMTable(3, self._timer._text)
 
-        self._scene.play(FadeIn(self._timer.text), FadeIn(self._rrm_table.table))
+        self._scene.play(FadeIn(self._timer.object), FadeIn(self._rrm_table.object))
 
     def update_timer(self, dt):
         self._timer.update_timer(dt, self._scene)
