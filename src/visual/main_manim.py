@@ -49,14 +49,15 @@ class CreateCircle(Scene):
 
     def construct(self):
         sensor_radius = 3.8
+        request_slots = 7
 
         self._gateway, self._sensors = self.setup_scene(5, sensor_radius, np.array((3, 0, 0)))
-
-        self._left_sidebar = LeftSidebar(self)
+        self._left_sidebar = LeftSidebar(self, request_slots)
 
         self.display_rrm(sensor_radius)
 
         self._left_sidebar.update_timer(1)
+        self._left_sidebar.add_row(list(map(str, range(request_slots + 1))))
 
         # Transmission request animation
         for i in range(len(self._sensors)):
