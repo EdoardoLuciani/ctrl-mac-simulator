@@ -1,4 +1,4 @@
-import simpy, random, logging, argparse
+import simpy, random, logging, argparse, random
 
 from simulation.messages import RequestReplyMessage
 from simulation.devices import Sensor, Actuator, Gateway
@@ -9,6 +9,8 @@ args = parser.parse_args()
 
 logging.basicConfig(level=getattr(logging, args.loglevel.upper()))
 
+# Set seed for deterministic runs
+random.seed(834)
 
 # Set up and run the simulation
 env = simpy.Environment()
