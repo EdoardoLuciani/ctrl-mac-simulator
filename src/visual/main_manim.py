@@ -1,6 +1,6 @@
 from typing import Tuple
 from manim import *
-from visual.components.left_sidebar import RRMTable
+from visual.components import LeftSidebar
 
 class CreateCircle(Scene):
     def setup_scene(self, num_sensors, sensor_radius) -> Tuple[Circle, VGroup]:
@@ -28,7 +28,7 @@ class CreateCircle(Scene):
 
         self.play(Create(sensors), FadeIn(sensor_labels))
 
-        self._left_sidebar = RRMTable(self)
+        self._left_sidebar = LeftSidebar(self)
 
         return gateway, sensors
 
