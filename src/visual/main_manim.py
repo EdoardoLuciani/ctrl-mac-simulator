@@ -2,6 +2,7 @@ from typing import Tuple
 from manim import *
 from visual.components import LeftSidebar
 
+
 class CreateCircle(Scene):
     def setup_scene(self, num_sensors, sensor_radius) -> Tuple[Circle, VGroup]:
         # Create gateway
@@ -10,7 +11,6 @@ class CreateCircle(Scene):
 
         gateway_label = Text("Gateway", font_size=16).next_to(gateway, DOWN)
         self.play(Create(gateway), Write(gateway_label))
-
 
         # Create sensors in a circular arrangement
         angle = TAU / num_sensors  # Angle between each sensor
@@ -32,9 +32,10 @@ class CreateCircle(Scene):
 
         return gateway, sensors
 
-
     def display_rrm(self, sensor_radius):
-        expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5).move_to(self._gateway.get_center())
+        expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5).move_to(
+            self._gateway.get_center()
+        )
 
         text = Text(f"RRM", color=YELLOW, font_size=24).move_to(self._gateway.get_center())
         text_dst = text.copy().move_to(UR / np.linalg.norm(UR) * sensor_radius)
@@ -42,14 +43,12 @@ class CreateCircle(Scene):
         self.play(GrowFromCenter(expanding_circle, run_time=1), Transform(text, text_dst, run_time=1))
         self.play(FadeOut(expanding_circle), FadeOut(text))
 
-
     def display_transmission_request_message(self, sensor_id):
         req_arrow = Arrow(self._sensors[sensor_id].get_center(), self._gateway.get_center(), buff=0.3, color=YELLOW)
         req_label = Text("Request", font_size=16, color=YELLOW).next_to(req_arrow, LEFT)
         self.play(GrowArrow(req_arrow), Write(req_label))
         self.wait(0.5)
         self.play(FadeOut(req_arrow), FadeOut(req_label))
-
 
     def construct(self):
         sensor_radius = 4
@@ -69,7 +68,7 @@ class CreateCircle(Scene):
 
 
 if __name__ == "__main__":
-    config.quality = 'low_quality'
+    config.quality = "low_quality"
 
     scene = CreateCircle()
     scene.render(preview=True)
