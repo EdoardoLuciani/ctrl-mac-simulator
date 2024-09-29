@@ -14,6 +14,7 @@ class _RRMTable:
         return self._table
 
     def add_row(self, new_row: List, scene):
+        assert len(new_row) == len(self._array[0])
         self._array.append(new_row)
         scene.play(Transform(self.object, self._get_table()), run_time=0.1)
 
