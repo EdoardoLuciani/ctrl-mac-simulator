@@ -1,12 +1,15 @@
 from manim import *
 
-class RRMTable():
+class LeftSidebar():
     def __init__(self, scene):
         self._scene = scene
 
         # Create timer
         self._time = 0
-        self._timer = Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
+        self._timer = Variable(
+            0,
+            "uug"
+        ).to_corner(UL)
 
 
         # Create the table for keeping track of the events
