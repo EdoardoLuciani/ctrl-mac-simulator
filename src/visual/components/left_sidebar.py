@@ -1,7 +1,7 @@
 from manim import *
 
 
-class RRMTable():
+class _RRMTable():
     def __init__(self, request_slots: int, down_from: Mobject):
         # Create the table for keeping track of the events
         self._table = Table(
@@ -14,7 +14,7 @@ class RRMTable():
         return self._table
 
 
-class Timer():
+class _Timer():
     def __init__(self):
         # Create the table for keeping track of the events
         self._time = 0
@@ -38,9 +38,9 @@ class LeftSidebar():
         self._scene = scene
 
         # Create timer
-        self._timer = Timer()
+        self._timer = _Timer()
 
-        self._rrm_table = RRMTable(3, self._timer._text)
+        self._rrm_table = _RRMTable(3, self._timer._text)
 
         self._scene.play(FadeIn(self._timer.object), FadeIn(self._rrm_table.object))
 
