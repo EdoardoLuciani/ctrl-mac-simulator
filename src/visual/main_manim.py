@@ -1,5 +1,6 @@
 from typing import Tuple
 from manim import *
+from visual.components.rrm_table import RRMTable
 
 class CreateCircle(Scene):
     def setup_scene(self, num_sensors, sensor_radius) -> Tuple[Circle, VGroup]:
@@ -25,20 +26,9 @@ class CreateCircle(Scene):
             label = Text(f"S{i}", font_size=16, color=RED).move_to(sensor.get_center())
             sensor_labels.add(label)
 
-
-        # Time counter
-        self._time = 0
-        self._timer = Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
-
-
-        # Create the table for keeping track of the events
-        self._table = Table(
-            [["This", "is a"],
-            ["simple", "Table in \n Manim."]]).scale(0.3).next_to(self._timer, DOWN)
-
-
         self.play(Create(sensors), FadeIn(sensor_labels))
-        self.play(FadeIn(self._timer), FadeIn(self._table))
+
+        self._rrm_table = RRMTable(self)
 
         return gateway, sensors
 
@@ -61,12 +51,6 @@ class CreateCircle(Scene):
         self.play(FadeOut(req_arrow), FadeOut(req_label))
 
 
-    def update_timer(self, dt):
-        self._time += dt
-        new_timer = Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
-        self.play(Transform(self._timer, new_timer), run_time=0.1)
-
-
     def construct(self):
         sensor_radius = 4
 
@@ -74,7 +58,7 @@ class CreateCircle(Scene):
 
         self.display_rrm(sensor_radius)
 
-        self.update_timer(1)
+        self._rrm_table.update_timer(1)
 
         # Transmission request animation
         for i in range(len(self._sensors)):
