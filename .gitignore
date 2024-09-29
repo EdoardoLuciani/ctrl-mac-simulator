@@ -11,3 +11,6 @@ wheels/
 
 # manim generated files
 media/
+
+# zed editor files
+.zed
