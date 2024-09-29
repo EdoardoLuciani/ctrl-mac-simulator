@@ -1,6 +1,6 @@
 from typing import Tuple
 from manim import *
-from visual.components.rrm_table import RRMTable
+from visual.components.left_sidebar import RRMTable
 
 class CreateCircle(Scene):
     def setup_scene(self, num_sensors, sensor_radius) -> Tuple[Circle, VGroup]:
@@ -28,7 +28,7 @@ class CreateCircle(Scene):
 
         self.play(Create(sensors), FadeIn(sensor_labels))
 
-        self._rrm_table = RRMTable(self)
+        self._left_sidebar = RRMTable(self)
 
         return gateway, sensors
 
@@ -58,7 +58,7 @@ class CreateCircle(Scene):
 
         self.display_rrm(sensor_radius)
 
-        self._rrm_table.update_timer(1)
+        self._left_sidebar.update_timer(1)
 
         # Transmission request animation
         for i in range(len(self._sensors)):
