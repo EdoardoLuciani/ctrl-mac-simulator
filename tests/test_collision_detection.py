@@ -1,5 +1,5 @@
-from ctrl_mac_simulator.devices.gateway import Gateway
-from ctrl_mac_simulator.messages.sensor_measurement_message import SensorMeasurementMessage
+from simulation.devices.gateway import Gateway
+from simulation.messages.sensor_measurement_message import SensorMeasurementMessage
 
 
 def test_all_collisions():

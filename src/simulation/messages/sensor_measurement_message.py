@@ -1,6 +1,6 @@
 import random
 
-from ctrl_mac_simulator.messages.abstract_message import AbstractMessage
+from simulation.messages.abstract_message import AbstractMessage
 
 
 class SensorMeasurementMessage(AbstractMessage):

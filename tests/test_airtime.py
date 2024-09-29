@@ -1,4 +1,4 @@
-from ctrl_mac_simulator.messages.sensor_measurement_message import SensorMeasurementMessage
+from simulation.messages.sensor_measurement_message import SensorMeasurementMessage
 import pytest
 
 
