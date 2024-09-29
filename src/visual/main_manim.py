@@ -4,10 +4,9 @@ from visual.components import LeftSidebar
 
 
 class CreateCircle(Scene):
-    def setup_scene(self, num_sensors, sensor_radius) -> Tuple[Circle, VGroup]:
+    def setup_scene(self, num_sensors, sensor_radius, gateway_position) -> Tuple[Circle, VGroup]:
         # Create gateway
-        gateway = Circle(radius=0.3, color=BLUE)
-        gateway.to_edge(ORIGIN)
+        gateway = Circle(radius=0.3, color=BLUE).move_to(gateway_position)
 
         gateway_label = Text("Gateway", font_size=16).next_to(gateway, DOWN)
         self.play(Create(gateway), Write(gateway_label))
@@ -20,15 +19,13 @@ class CreateCircle(Scene):
 
         for i in range(num_sensors):
             sensor = Circle(radius=0.2, color=RED)
-            sensor.move_to(sensor_radius * np.array([np.cos(i * angle), np.sin(i * angle), 0]))
+            sensor.move_to(sensor_radius * np.array([np.cos(i * angle), np.sin(i * angle), 0]) + gateway.get_center())
             sensors.add(sensor)
 
             label = Text(f"S{i}", font_size=16, color=RED).move_to(sensor.get_center())
             sensor_labels.add(label)
 
         self.play(Create(sensors), FadeIn(sensor_labels))
-
-        self._left_sidebar = LeftSidebar(self)
 
         return gateway, sensors
 
@@ -38,7 +35,7 @@ class CreateCircle(Scene):
         )
 
         text = Text(f"RRM", color=YELLOW, font_size=24).move_to(self._gateway.get_center())
-        text_dst = text.copy().move_to(UR / np.linalg.norm(UR) * sensor_radius)
+        text_dst = text.copy().move_to((UL / np.linalg.norm(UL)))
 
         self.play(GrowFromCenter(expanding_circle, run_time=1), Transform(text, text_dst, run_time=1))
         self.play(FadeOut(expanding_circle), FadeOut(text))
@@ -51,9 +48,11 @@ class CreateCircle(Scene):
         self.play(FadeOut(req_arrow), FadeOut(req_label))
 
     def construct(self):
-        sensor_radius = 4
+        sensor_radius = 3.8
 
-        self._gateway, self._sensors = self.setup_scene(5, sensor_radius)
+        self._gateway, self._sensors = self.setup_scene(5, sensor_radius, np.array((3, 0, 0)))
+
+        self._left_sidebar = LeftSidebar(self)
 
         self.display_rrm(sensor_radius)
 
