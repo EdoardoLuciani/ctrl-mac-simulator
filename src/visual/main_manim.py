@@ -13,7 +13,7 @@ class CreateCircle(Scene):
         request_slots = 7
 
         self._gateway = VisualGateway(self, gateway_center)
-        self._sensors = VisualSensors(self, sensors_count, sensors_arrangement_radius, gateway_center)
+        self._sensors = VisualSensors(self, sensors_count, sensors_arrangement_radius, self._gateway.object)
         self._left_sidebar = LeftSidebar(self, request_slots)
 
         self._gateway.display_rrm(sensors_arrangement_radius)
@@ -25,6 +25,7 @@ class CreateCircle(Scene):
         for i in range(sensors_count):
             if i % 2 == 0:
                 self._sensors.display_transmission_request_message(i)
+                self._sensors.display_data_transmission(i)
 
         self.wait(2)
 
