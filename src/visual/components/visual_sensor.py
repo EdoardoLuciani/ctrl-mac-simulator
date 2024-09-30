@@ -31,12 +31,7 @@ class VisualSensors():
 
     def display_transmission_request_message(self, sensor_id: int):
         start_pos, end_pos = self._get_start_and_end_pos_for_transmission(sensor_id)
-
-        dot = Dot().move_to(start_pos)
-        dot2 = dot.copy().move_to(end_pos)
-
-        self._scene.play(Transform(dot, dot2))
-        self._scene.play(FadeOut(dot))
+        self._move_object_between_points(start_pos, end_pos, Dot())
 
 
     def display_data_transmission(self, sensor_id: int):
@@ -45,11 +40,9 @@ class VisualSensors():
         end_dir = end_pos - self._gateway_object.get_center()
         angle = np.arctan2(end_dir[1], end_dir[0]) + PI
 
-        triangle = Triangle(radius=0.2, fill_color=PURPLE, color=PURPLE, fill_opacity=0.5, start_angle=angle).move_to(start_pos)
-        triangle2 = triangle.copy().move_to(end_pos)
+        triangle = Triangle(radius=0.2, fill_color=PURPLE, color=PURPLE, fill_opacity=0.5, start_angle=angle)
 
-        self._scene.play(Transform(triangle, triangle2))
-        self._scene.play(FadeOut(triangle))
+        self._move_object_between_points(start_pos, end_pos, triangle)
 
 
     def _get_start_and_end_pos_for_transmission(self, sensor_id: int) -> Tuple[Point3D, Point3D]:
@@ -60,3 +53,11 @@ class VisualSensors():
         end_pos = self._gateway_object.get_center() - sensor_to_gateway * (self._gateway_object.width / 2)
 
         return start_pos, end_pos
+
+
+    def _move_object_between_points(self, pos0, pos1, object: Mobject):
+        object.move_to(pos0)
+        object1 = object.copy().move_to(pos1)
+
+        self._scene.play(Transform(object, object1))
+        self._scene.play(FadeOut(object))
