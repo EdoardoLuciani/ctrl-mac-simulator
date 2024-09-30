@@ -9,7 +9,11 @@ class VisualGateway():
 
         scene.play(Create(self._gateway), Write(gateway_label))
 
-    def display_rrm(self, sensor_radius):
+    @property
+    def object(self):
+        return self._gateway
+
+    def display_rrm(self, sensor_radius: float):
         expanding_circle = Circle(radius=sensor_radius, color=YELLOW, stroke_opacity=0.5).move_to(
             self._gateway.get_center()
         )
