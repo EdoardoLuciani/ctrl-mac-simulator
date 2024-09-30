@@ -13,10 +13,10 @@ class _RRMTable:
     def object(self):
         return self._table
 
-    def add_row(self, new_row: List, scene):
+    def add_row(self, new_row: List) -> Animation:
         assert len(new_row) == len(self._array[0])
         self._array.append(new_row)
-        scene.play(Transform(self.object, self._get_table()), run_time=0.1)
+        return Transform(self.object, self._get_table())
 
     def _get_table(self):
         table = (
@@ -39,9 +39,9 @@ class _Timer:
     def object(self):
         return self._text
 
-    def update_timer(self, dt, scene):
+    def update_timer(self, dt) -> Animation:
         self._time += dt
-        scene.play(Transform(self.object, self._get_timer_text()), run_time=0.1)
+        return Transform(self.object, self._get_timer_text())
 
     def _get_timer_text(self):
         return Text(f"Time: {self._time:.2f}s", font_size=24).to_corner(UL)
@@ -59,7 +59,7 @@ class LeftSidebar:
         self._scene.play(FadeIn(self._timer.object), FadeIn(self._rrm_table.object))
 
     def update_timer(self, dt):
-        self._timer.update_timer(dt, self._scene)
+        self._scene.play(self._timer.update_timer(dt), run_time = 0.1)
 
     def add_row(self, new_row):
-        self._rrm_table.add_row(new_row, self._scene)
+        self._scene.play(self._rrm_table.add_row(new_row), run_time = 0.1)
