@@ -24,3 +24,24 @@ Cyber-Physical Systems"
 - Allocation of channels and slots in RRM
 - Sensor logic to transmit data
 - Gateway logic to detect collisions
+
+
+## 1 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented Transmission Request message
+- Implemented Request Slot channel and slot subdivision
+- Implemented logic for slot allocation
+- Initial proof of concept for visualization with manim
+- Deterministic runs
+
+### Issues discussed and solutions agreed
+- Stat visualization -> ftr trend (on video), distribution of of latency time in cycles for sensors measurements first cycle
+- Cloud deployment
+- Does 0th slot mean send imeediately? Yes
+- Is a slot chosen randomly regardless of it current state? Yes
+
+### Objectives for the next week
+- Fix bugs on the simulation
+- Hook up the simulation event loop to the manim frontend
