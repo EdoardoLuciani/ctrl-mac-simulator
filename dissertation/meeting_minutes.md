@@ -38,7 +38,7 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 
 ### Issues discussed and solutions agreed
 - Stat visualization -> ftr trend (on video), distribution of of latency time in cycles for sensors measurements first cycle
-- Cloud deployment
+- Cloud deployment -> Good
 - Does 0th slot mean send imeediately? Yes
 - Is a slot chosen randomly regardless of it current state? Yes
 
