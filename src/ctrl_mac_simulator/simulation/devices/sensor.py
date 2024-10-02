@@ -1,10 +1,8 @@
-from simulation.messages.sensor_measurement_message import (
-    SensorMeasurementMessage,
-)
-from simulation.messages.transmission_request_message import TransmissionRequestMessage
+from ctrl_mac_simulator.simulation.messages import SensorMeasurementMessage
+from ctrl_mac_simulator.simulation.messages import TransmissionRequestMessage
 import random, simpy, logging
 from typing import Callable
-from simulation.messages.request_reply_message import RequestReplyMessage
+from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
 from abc import ABC, abstractmethod
 
 
