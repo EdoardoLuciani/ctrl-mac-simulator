@@ -1,6 +1,7 @@
 from manim import *
 
-class VisualGateway():
+
+class VisualGateway:
     def __init__(self, scene: Scene, gateway_position):
         self._scene = scene
 

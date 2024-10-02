@@ -4,9 +4,7 @@ from manim import *
 class _RRMTable:
     def __init__(self, request_slots: int, down_from: Mobject):
         self._down_from = down_from
-        self._array = [
-            [f"Slot {i}" for i in range(request_slots)] + ["FTR"]
-        ]
+        self._array = [[f"Slot {i}" for i in range(request_slots)] + ["FTR"]]
         self._table = self._get_table()
 
     @property
@@ -19,12 +17,7 @@ class _RRMTable:
         return Transform(self.object, self._get_table())
 
     def _get_table(self):
-        table = (
-            Table(self._array, h_buff=0.5)
-            .scale(0.2)
-            .next_to(self._down_from, DOWN)
-            .to_edge(LEFT)
-        )
+        table = Table(self._array, h_buff=0.5).scale(0.2).next_to(self._down_from, DOWN).to_edge(LEFT)
         table.add_highlighted_cell((1, 1), color=GREEN)
         return table
 
@@ -59,7 +52,7 @@ class LeftSidebar:
         self._scene.play(FadeIn(self._timer.object), FadeIn(self._rrm_table.object))
 
     def update_timer(self, dt):
-        self._scene.play(self._timer.update_timer(dt), run_time = 0.1)
+        self._scene.play(self._timer.update_timer(dt), run_time=0.1)
 
     def add_row(self, new_row):
-        self._scene.play(self._rrm_table.add_row(new_row), run_time = 0.1)
+        self._scene.play(self._rrm_table.add_row(new_row), run_time=0.1)
