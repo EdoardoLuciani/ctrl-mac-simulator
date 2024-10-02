@@ -84,20 +84,20 @@ class _TransmissionRequestState(_State):
             self.backoff -= 1
             self.sensor._logger.info(f"Time {self.sensor._env.now:.2f}: On timeout for {self.backoff} more periods")
             yield from ()
-
-        free_request_slot_idx = rrm_message.sample_free_request_slot()
-
-        if free_request_slot_idx != None:
-            message = TransmissionRequestMessage(self.sensor._id, free_request_slot_idx, self.sensor._env.now)
-
-            yield from message.send_message(self.sensor._env, self.sensor._logger)
-            yield self.sensor._transmission_requests_queue.put(message)
-
-            self.sensor.transition_to(_DataTransmissionState(free_request_slot_idx))
         else:
-            self.sensor._logger.info(
-                f"Time {self.sensor._env.now:.2f}: No available free slot to choose, skipping transmission request"
-            )
+            request_slot_idx = rrm_message.sample_request_slot()
+
+            if request_slot_idx != None:
+                message = TransmissionRequestMessage(self.sensor._id, request_slot_idx, self.sensor._env.now)
+
+                yield from message.send_message(self.sensor._env, self.sensor._logger)
+                yield self.sensor._transmission_requests_queue.put(message)
+
+                self.sensor.transition_to(_DataTransmissionState(request_slot_idx))
+            else:
+                self.sensor._logger.info(
+                    f"Time {self.sensor._env.now:.2f}: No available free slot to choose, skipping transmission request"
+                )
 
 
 class _DataTransmissionState:
@@ -125,4 +125,7 @@ class _DataTransmissionState:
             self.sensor._logger.info(
                 f"Time {self.sensor._env.now:.2f}: Slot {self._free_request_slot_idx} is contended, backing off for {backoff} periods"
             )
-            self.sensor.transition_to(_TransmissionRequestState(backoff))
+            next_state = _TransmissionRequestState(backoff)
+            self.sensor.transition_to(next_state)
+
+            yield from next_state.handle(rrm_message)
