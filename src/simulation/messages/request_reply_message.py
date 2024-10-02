@@ -45,9 +45,8 @@ class RequestReplyMessage(AbstractMessage):
         # 4 bits for the ftr
         return math.ceil(((2 + 4 + 2) * len(self.request_slots) + 4) / 8)
 
-    def sample_free_request_slot(self) -> Optional[int]:
-        free_slot_indices = [index for index, slot in enumerate(self.request_slots) if slot.state == "free"]
-        return random.choice(free_slot_indices) if free_slot_indices else None
+    def sample_request_slot(self) -> int:
+        return random.randint(0, len(self.request_slots) - 1)
 
     def update_ftr(self) -> None:
         self.ftr = max(0, self.old_ftr + self.old_contentions - 1)
