@@ -2,7 +2,7 @@ import math, json, random
 from typing import TypedDict, Literal, Optional
 from dataclasses import dataclass
 
-from simulation.messages.abstract_message import AbstractMessage
+from ctrl_mac_simulator.simulation.messages.abstract_message import AbstractMessage
 
 
 @dataclass

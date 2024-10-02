@@ -1,5 +1,5 @@
 import pytest
-from simulation.messages.request_reply_message import RequestReplyMessage
+from ctrl_mac_simulator.simulation.messages.request_reply_message import RequestReplyMessage
 
 
 def test_rrm_message_even_split():

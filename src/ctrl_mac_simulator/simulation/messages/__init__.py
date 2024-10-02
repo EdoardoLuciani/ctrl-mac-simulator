@@ -1,2 +1,3 @@
 from .request_reply_message import RequestReplyMessage
 from .transmission_request_message import TransmissionRequestMessage
+from .sensor_measurement_message import SensorMeasurementMessage
