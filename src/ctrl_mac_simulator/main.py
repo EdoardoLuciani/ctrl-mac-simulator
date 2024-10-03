@@ -1,12 +1,11 @@
 import simpy, random, logging, argparse, random, sys, pathlib
 
-from src.ctrl_mac_simulator.visual.main_manim import ManimMainScene
-
 # Fix for rye that does not load the src directory as a path
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 
 from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
 from ctrl_mac_simulator.simulation.devices import Sensor, Actuator, Gateway
+from ctrl_mac_simulator.visual.main_manim import ManimMainScene
 
 
 def configure_parser_and_get_args() -> argparse.Namespace:
@@ -69,4 +68,4 @@ if __name__ == "__main__":
         manim.config.quality = args.video_quality
 
         scene = ManimMainScene()
-        scene.render(preview=True)
+        scene.render(preview=args.video == 'show')
