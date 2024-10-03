@@ -5,7 +5,7 @@ from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
 from ctrl_mac_simulator.visual.components.visual_sensor import VisualSensors
 
 
-class CreateCircle(Scene):
+class ManimMainScene(Scene):
     def construct(self):
         gateway_center = np.array((3, 0, 0))
         sensors_count = 5
@@ -28,10 +28,3 @@ class CreateCircle(Scene):
                 self._sensors.display_data_transmission(i)
 
         self.wait(2)
-
-
-if __name__ == "__main__":
-    config.quality = "low_quality"
-
-    scene = CreateCircle()
-    scene.render(preview=True)
