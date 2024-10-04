@@ -1,3 +1,6 @@
+from ctrl_mac_simulator.visual.components.left_sidebar import LeftSidebar
+from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
+from ctrl_mac_simulator.visual.components.visual_sensor import VisualSensors
 import simpy, random, logging, argparse, random, sys, pathlib
 
 # Fix for rye that does not load the src directory as a path
@@ -48,8 +51,8 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         help="Sets how many RRM messages to send before simulation stops",
     )
     parser.add_argument(
-        "--sensors",
-        dest="sensors",
+        "--sensor-count",
+        dest="sensor_count",
         type=int,
         default=6,
         help="Sets how sensors the simulation should have",
@@ -109,17 +112,27 @@ if __name__ == "__main__":
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
         )
-        for i in range(args.sensors)
+        for i in range(args.sensor_count)
     ]
-
-    env.run()
 
     if args.video:
         import manim
-
         manim.config.quality = args.video_quality
-
         scene = ManimMainScene()
-        scene.set_params(args.sensors, args.request_slots)
 
+        def event_loop(gateway: VisualGateway, sensors: VisualSensors, left_sidebar: LeftSidebar):
+            gateway.display_rrm()
+
+            left_sidebar.update_timer(1)
+            left_sidebar.add_row(list(map(str, range(args.request_slots + 1))))
+
+            # Transmission request animation
+            for i in range(args.sensor_count):
+                if i % 2 == 0:
+                    sensors.display_transmission_request_message(i)
+                    sensors.display_data_transmission(i)
+
+        scene.set_params(args.sensor_count, args.request_slots, event_loop)
         scene.render(preview=args.video == "show")
+    else:
+        env.run()
