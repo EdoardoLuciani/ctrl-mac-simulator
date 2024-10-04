@@ -13,11 +13,53 @@ def configure_parser_and_get_args() -> argparse.Namespace:
 
     # Simulation params
     parser.add_argument(
+        "--data-channels",
+        dest="data_channels",
+        type=int,
+        default=3,
+        help="Sets how many data channels are available for data transmission",
+    )
+    parser.add_argument(
+        "--data-slots-per-channel",
+        dest="data_slots_per_channel",
+        type=int,
+        default=2,
+        help="Sets how many data slots each channel have",
+    )
+    parser.add_argument(
+        "--request-slots",
+        dest="request_slots",
+        type=int,
+        default=6,
+        help="Sets how many requests slots the RRM message has",
+    )
+    parser.add_argument(
+        "--rrm-period",
+        dest="rrm_period",
+        type=float,
+        default=0.5,
+        help="How often (in seconds) to send an rrm message",
+    )
+    parser.add_argument(
         "--max-cycles",
         dest="max_cycles",
         type=int,
         default=5,
         help="Sets how many RRM messages to send before simulation stops",
+    )
+    parser.add_argument(
+        "--sensors",
+        dest="sensors",
+        type=int,
+        default=6,
+        help="Sets how sensors the simulation should have",
+    )
+    parser.add_argument(
+        "--sensors-measurement-chance",
+        dest="sensors_measurement_chance",
+        type=float,
+        default=1,
+        help="Sets how often the sensors sense new data when in idle state",
     )
 
     # Misc Params
@@ -42,6 +84,7 @@ def configure_parser_and_get_args() -> argparse.Namespace:
     parser.add_argument("--version", action="version", version="%(prog)s 1.0")
     return parser.parse_args()
 
+
 if __name__ == "__main__":
     args = configure_parser_and_get_args()
 
@@ -54,10 +97,19 @@ if __name__ == "__main__":
     # Set up and run the simulation
     env = simpy.Environment()
 
-    gateway = Gateway(env, 3, 2, 6, 0.5, args.max_cycles)
+    gateway = Gateway(
+        env, args.data_channels, args.data_slots_per_channel, args.request_slots, args.rrm_period, args.max_cycles
+    )
     sensors = [
-        Sensor(env, i, 1, gateway.rrm_message_event, gateway.transmission_request_messages, gateway.sensor_data_messages)
-        for i in range(6)
+        Sensor(
+            env,
+            i,
+            args.sensors_measurement_chance,
+            gateway.rrm_message_event,
+            gateway.transmission_request_messages,
+            gateway.sensor_data_messages,
+        )
+        for i in range(args.sensors)
     ]
 
     env.run()
@@ -68,4 +120,6 @@ if __name__ == "__main__":
         manim.config.quality = args.video_quality
 
         scene = ManimMainScene()
-        scene.render(preview=args.video == 'show')
+        scene.set_params(args.sensors, args.request_slots)
+
+        scene.render(preview=args.video == "show")
