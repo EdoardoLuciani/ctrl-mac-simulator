@@ -65,11 +65,6 @@ class VisualSensors:
             self._scene.play(self._cleanup_animations_queue)
             self._cleanup_animations_queue.clear()
 
-    def change_sensor_color(self, sensor_id: int, color: ManimColor):
-        original_sensor = self._sensors[sensor_id]
-        new_sensor = original_sensor.copy().set_color(color)
-        self._animations_queue.append(Transform(original_sensor, new_sensor, run_time=0.1))
-
     def _get_start_and_end_pos_for_transmission(self, sensor_id: int) -> Tuple[Point3D, Point3D]:
         sensor_to_gateway = self._gateway_object.get_center() - self._sensors[sensor_id].get_center()
         sensor_to_gateway /= np.linalg.norm(sensor_to_gateway)

@@ -143,16 +143,6 @@ if __name__ == "__main__":
                     left_sidebar.add_row([request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)])
                     visual_gateway.display_rrm()
 
-                    for i, sensor in enumerate(sensors):
-                        state_to_color = {
-                            _IdleState: manim.BLUE,
-                            _TransmissionRequestState: manim.PURPLE,
-                            _DataTransmissionState: manim.GREEN,
-                        }
-                        visual_sensors.change_sensor_color(i, state_to_color[type(sensor._state)])
-
-                    visual_sensors.play_queued_animations()
-
                 if global_logger_memory_handler.match_event_in_sublist('Finished TransmissionRequestMessage transmission', log_idx):
                     message = gateway._transmission_request_messages.items[-1]
                     visual_sensors.queue_transmission_request_message(message.sensor_id, message.chosen_request_slot)
