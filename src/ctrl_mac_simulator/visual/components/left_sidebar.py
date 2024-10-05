@@ -18,7 +18,15 @@ class _RRMTable:
 
     def _get_table(self):
         table = Table(self._array, h_buff=0.5).scale(0.2).next_to(self._down_from, DOWN).to_edge(LEFT)
-        table.add_highlighted_cell((1, 1), color=GREEN)
+
+        for row_idx, row in enumerate(self._array):
+            for col_idx, value in enumerate(row):
+                current_cell = (row_idx + 1, col_idx + 1)
+                if value == 'no_contention':
+                    table.add_highlighted_cell(current_cell, color=GREEN)
+                elif value == 'contention':
+                    table.add_highlighted_cell(current_cell, color=RED)
+
         return table
 
 
