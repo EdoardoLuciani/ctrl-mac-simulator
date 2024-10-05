@@ -29,12 +29,12 @@ def test_scenario_1():
     env.run(1.5)
     # Two sets of slots collide and receive different backoff time, some other proceed with data transmission and go idle
     assert [slot.state for slot in gateway._rrm.request_slots] == [
-        "contention_occurred",
+        "contention",
         "free",
         "no_contention",
         "no_contention",
         "free",
-        "contention_occurred",
+        "contention",
     ]
 
     wanted_states = [
