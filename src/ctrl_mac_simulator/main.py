@@ -134,20 +134,21 @@ if __name__ == "__main__":
             log_idx = 0
             while env.peek() < float('inf'):
                 env.step()
+                left_sidebar.update_timer(env.now)
 
                 if global_logger_memory_handler.match_event_in_sublist('Finished RequestReplyMessage transmission', log_idx):
+                    visual_sensors.play_queued_animations()
+
                     left_sidebar.add_row([request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)])
                     visual_gateway.display_rrm()
 
                 if global_logger_memory_handler.match_event_in_sublist('Finished TransmissionRequestMessage transmission', log_idx):
                     sensor_id = gateway._transmission_request_messages.items[-1].sensor_id
-                    visual_sensors.display_transmission_request_message(sensor_id)
+                    visual_sensors.queue_transmission_request_message(sensor_id)
 
                 if global_logger_memory_handler.match_event_in_sublist('Finished SensorMeasurementMessage transmission', log_idx):
                     sensor_id = gateway._sensor_data_messages.items[-1].sensor_id
-                    visual_sensors.display_data_transmission(sensor_id)
-
-                left_sidebar.update_timer(env.now)
+                    visual_sensors.queue_data_transmission(sensor_id)
 
                 log_idx = len(global_logger_memory_handler.logs)
 
