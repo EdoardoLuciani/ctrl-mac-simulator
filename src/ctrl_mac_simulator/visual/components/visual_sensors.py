@@ -1,3 +1,4 @@
+import zlib
 from manim import *
 from manim.utils.bezier import Point3D
 from typing import Tuple
@@ -7,8 +8,8 @@ class VisualSensors:
     def __init__(self, scene: Scene, num_sensors: int, sensor_radius: float, gateway_object: Mobject):
         self._scene = scene
         self._gateway_object = gateway_object
-        self._appear_animations_queue = []
-        self._disappear_animations_queue = []
+        self._animations_queue = []
+        self._cleanup_animations_queue = []
 
         # Create sensors in a circular arrangement
         angle = TAU / num_sensors  # Angle between each sensor
@@ -17,13 +18,13 @@ class VisualSensors:
         sensor_labels = VGroup()
 
         for i in range(num_sensors):
-            sensor = Circle(radius=0.2, color=RED)
+            sensor = Circle(radius=0.2, color=BLUE)
             sensor.move_to(
                 sensor_radius * np.array([np.cos(i * angle), np.sin(i * angle), 0]) + gateway_object.get_center()
             )
             self._sensors.add(sensor)
 
-            label = Text(f"S{i}", font_size=16, color=RED).move_to(sensor.get_center())
+            label = Text(f"S{i}", font_size=16).move_to(sensor.get_center())
             sensor_labels.add(label)
 
         scene.play(Create(self._sensors), FadeIn(sensor_labels))
@@ -35,7 +36,7 @@ class VisualSensors:
     def queue_transmission_request_message(self, sensor_id: int, chosen_request_slot: int):
         start_pos, end_pos = self._get_start_and_end_pos_for_transmission(sensor_id)
 
-        slot_hash = abs(hash(str(chosen_request_slot)))
+        slot_hash = zlib.adler32(chosen_request_slot.to_bytes())
         color = manim_colors._all_manim_colors[(slot_hash % len(manim_colors._all_manim_colors))]
 
         dot = Dot(color=color)
@@ -57,12 +58,17 @@ class VisualSensors:
         self._queue_object_move_between_points(start_pos, end_pos, triangle)
 
     def play_queued_animations(self):
-        if len(self._appear_animations_queue):
-            self._scene.play(self._appear_animations_queue)
-            self._appear_animations_queue.clear()
-        if len(self._disappear_animations_queue):
-            self._scene.play(self._disappear_animations_queue)
-            self._disappear_animations_queue.clear()
+        if len(self._animations_queue):
+            self._scene.play(self._animations_queue)
+            self._animations_queue.clear()
+        if len(self._cleanup_animations_queue):
+            self._scene.play(self._cleanup_animations_queue)
+            self._cleanup_animations_queue.clear()
+
+    def change_sensor_color(self, sensor_id: int, color: ManimColor):
+        original_sensor = self._sensors[sensor_id]
+        new_sensor = original_sensor.copy().set_color(color)
+        self._animations_queue.append(Transform(original_sensor, new_sensor, run_time=0.1))
 
     def _get_start_and_end_pos_for_transmission(self, sensor_id: int) -> Tuple[Point3D, Point3D]:
         sensor_to_gateway = self._gateway_object.get_center() - self._sensors[sensor_id].get_center()
@@ -77,5 +83,5 @@ class VisualSensors:
         object.move_to(pos0)
         object1 = object.copy().move_to(pos1)
 
-        self._appear_animations_queue.append(Transform(object, object1))
-        self._disappear_animations_queue.append(FadeOut(object))
+        self._animations_queue.append(Transform(object, object1))
+        self._cleanup_animations_queue.append(FadeOut(object))
