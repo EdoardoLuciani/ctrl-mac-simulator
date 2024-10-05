@@ -135,19 +135,21 @@ if __name__ == "__main__":
             while env.peek() < float('inf'):
                 env.step()
 
-                if global_logger_memory_handler.match_event_in_sublist('Started RequestReplyMessage transmission', log_idx):
+                if global_logger_memory_handler.match_event_in_sublist('Finished RequestReplyMessage transmission', log_idx):
+                    left_sidebar.add_row([request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)])
                     visual_gateway.display_rrm()
-                    left_sidebar.add_row()
+
+                if global_logger_memory_handler.match_event_in_sublist('Finished TransmissionRequestMessage transmission', log_idx):
+                    sensor_id = gateway._transmission_request_messages.items[-1].sensor_id
+                    visual_sensors.display_transmission_request_message(sensor_id)
+
+                if global_logger_memory_handler.match_event_in_sublist('Finished SensorMeasurementMessage transmission', log_idx):
+                    sensor_id = gateway._sensor_data_messages.items[-1].sensor_id
+                    visual_sensors.display_data_transmission(sensor_id)
 
                 left_sidebar.update_timer(env.now)
 
                 log_idx = len(global_logger_memory_handler.logs)
-
-                # # Transmission request animation
-                # for i in range(args.sensor_count):
-                #     if i % 2 == 0:
-                #         sensors.display_transmission_request_message(i)
-                #         sensors.display_data_transmission(i)
 
         scene.set_params(args.sensor_count, args.request_slots, event_loop)
         scene.render(preview=args.video == "show")
