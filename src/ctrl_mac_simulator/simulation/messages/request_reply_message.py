@@ -7,7 +7,7 @@ from ctrl_mac_simulator.simulation.messages.abstract_message import AbstractMess
 
 @dataclass
 class RequestSlot:
-    state: Literal["free", "no_contention", "contention_occurred"]
+    state: Literal["free", "no_contention", "contention"]
     data_channel: int
     data_slot: float
 
@@ -54,7 +54,7 @@ class RequestReplyMessage(AbstractMessage):
 
     def total_contentions(self, before_slot: int | None = None) -> int:
         end_slot = before_slot if before_slot is not None else len(self.request_slots)
-        return sum(1 for slot in self.request_slots[:end_slot] if slot.state == "contention_occurred")
+        return sum(1 for slot in self.request_slots[:end_slot] if slot.state == "contention")
 
     def reset_slots_to_free(self) -> None:
         for request_slot in self.request_slots:

@@ -87,7 +87,7 @@ class Gateway:
         # Find slots that have been picked more than once
         return {
             "no_contention": [slot for slot, count in slot_counts.items() if count == 1],
-            "contention_occurred": [slot for slot, count in slot_counts.items() if count > 1],
+            "contention": [slot for slot, count in slot_counts.items() if count > 1],
         }
 
     @staticmethod

@@ -33,7 +33,7 @@ class _Timer:
         return self._text
 
     def update_timer(self, dt) -> Animation:
-        self._time += dt
+        self._time = dt
         return Transform(self.object, self._get_timer_text())
 
     def _get_timer_text(self):
