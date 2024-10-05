@@ -1,6 +1,3 @@
-from ctrl_mac_simulator.visual.components.left_sidebar import LeftSidebar
-from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
-from ctrl_mac_simulator.visual.components.visual_sensor import VisualSensors
 import simpy, random, logging, argparse, random, sys, pathlib
 
 # Fix for rye that does not load the src directory as a path
@@ -9,12 +6,16 @@ sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
 from ctrl_mac_simulator.simulation.devices import Sensor, Actuator, Gateway
 from ctrl_mac_simulator.visual.main_manim import ManimMainScene
+from ctrl_mac_simulator.visual.components.left_sidebar import LeftSidebar
+from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
+from ctrl_mac_simulator.visual.components.visual_sensor import VisualSensors
+from ctrl_mac_simulator.global_logger_memory_handler import GlobalLoggerMemoryHandler
 
 
 def configure_parser_and_get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
 
-    # Simulation params
+    # Simulation Settings
     parser.add_argument(
         "--data-channels",
         dest="data_channels",
@@ -55,7 +56,7 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         dest="sensor_count",
         type=int,
         default=6,
-        help="Sets how sensors the simulation should have",
+        help="Sets how many sensors the simulation should have",
     )
     parser.add_argument(
         "--sensors-measurement-chance",
@@ -64,10 +65,6 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         default=1,
         help="Sets how often the sensors sense new data when in idle state",
     )
-
-    # Misc Params
-    parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
-    parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
 
     # Video Settings
     parser.add_argument(
@@ -84,14 +81,27 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         choices=["low_quality", "medium_quality", "high_quality", "production_quality"],
         help="If video output is enabled, sets the quality of the rendered manim simulation",
     )
+
+    # Misc Settings
+    parser.add_argument("--log", dest="log_level", default="debug", choices=["info", "debug"], help="Set the log level")
+    parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
     parser.add_argument("--version", action="version", version="%(prog)s 1.0")
-    return parser.parse_args()
+
+    args = parser.parse_args()
+
+    if args.log_level != 'debug' and args.video != None:
+        parser.error('log-level must be set to debug if video rendering is enabled')
+
+    return args
 
 
 if __name__ == "__main__":
     args = configure_parser_and_get_args()
 
     logging.basicConfig(level=getattr(logging, args.log_level.upper()))
+
+    global_logger_memory_handler = GlobalLoggerMemoryHandler()
+    logging.getLogger().addHandler(global_logger_memory_handler)
 
     # Set seed for deterministic runs
     if args.seed is not None:
@@ -120,17 +130,24 @@ if __name__ == "__main__":
         manim.config.quality = args.video_quality
         scene = ManimMainScene()
 
-        def event_loop(gateway: VisualGateway, sensors: VisualSensors, left_sidebar: LeftSidebar):
-            gateway.display_rrm()
+        def event_loop(visual_gateway: VisualGateway, visual_sensors: VisualSensors, left_sidebar: LeftSidebar):
+            log_idx = 0
+            while env.peek() < float('inf'):
+                env.step()
 
-            left_sidebar.update_timer(1)
-            left_sidebar.add_row(list(map(str, range(args.request_slots + 1))))
+                if global_logger_memory_handler.match_event_in_sublist('Started RequestReplyMessage transmission', log_idx):
+                    visual_gateway.display_rrm()
+                    left_sidebar.add_row()
 
-            # Transmission request animation
-            for i in range(args.sensor_count):
-                if i % 2 == 0:
-                    sensors.display_transmission_request_message(i)
-                    sensors.display_data_transmission(i)
+                left_sidebar.update_timer(env.now)
+
+                log_idx = len(global_logger_memory_handler.logs)
+
+                # # Transmission request animation
+                # for i in range(args.sensor_count):
+                #     if i % 2 == 0:
+                #         sensors.display_transmission_request_message(i)
+                #         sensors.display_data_transmission(i)
 
         scene.set_params(args.sensor_count, args.request_slots, event_loop)
         scene.render(preview=args.video == "show")
