@@ -143,8 +143,8 @@ if __name__ == "__main__":
                     visual_gateway.display_rrm()
 
                 if global_logger_memory_handler.match_event_in_sublist('Finished TransmissionRequestMessage transmission', log_idx):
-                    sensor_id = gateway._transmission_request_messages.items[-1].sensor_id
-                    visual_sensors.queue_transmission_request_message(sensor_id)
+                    message = gateway._transmission_request_messages.items[-1]
+                    visual_sensors.queue_transmission_request_message(message.sensor_id, message.chosen_request_slot)
 
                 if global_logger_memory_handler.match_event_in_sublist('Finished SensorMeasurementMessage transmission', log_idx):
                     sensor_id = gateway._sensor_data_messages.items[-1].sensor_id

@@ -32,9 +32,19 @@ class VisualSensors:
     def object(self):
         return self._sensors
 
-    def queue_transmission_request_message(self, sensor_id: int):
+    def queue_transmission_request_message(self, sensor_id: int, chosen_request_slot: int):
         start_pos, end_pos = self._get_start_and_end_pos_for_transmission(sensor_id)
-        self._queue_object_move_between_points(start_pos, end_pos, Dot())
+
+        slot_hash = abs(hash(str(chosen_request_slot)))
+        color = manim_colors._all_manim_colors[(slot_hash % len(manim_colors._all_manim_colors))]
+
+        dot = Dot(color=color)
+        text = Text(f"Slot {chosen_request_slot}", font_size=16, color=color).next_to(dot, UP)
+
+        vector_offset = (start_pos - end_pos)*0.1
+
+        self._queue_object_move_between_points(start_pos, end_pos, dot)
+        self._queue_object_move_between_points(start_pos + vector_offset, end_pos + vector_offset, text)
 
     def queue_data_transmission(self, sensor_id: int):
         start_pos, end_pos = self._get_start_and_end_pos_for_transmission(sensor_id)
