@@ -10,7 +10,7 @@ class Gateway:
         data_slots_per_channel: int,
         request_slots: int,
         rrm_period: float,
-        total_rrm_messages,
+        total_rrm_messages: int,
     ):
         self._env = env
         self._rrm_period = rrm_period
