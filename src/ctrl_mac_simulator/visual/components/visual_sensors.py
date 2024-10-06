@@ -18,7 +18,7 @@ class VisualSensors:
         sensor_labels = VGroup()
 
         for i in range(num_sensors):
-            sensor = Circle(radius=0.2, color=BLUE)
+            sensor = self._get_sensor(0)
             sensor.move_to(
                 sensor_radius * np.array([np.cos(i * angle), np.sin(i * angle), 0]) + gateway_object.get_center()
             )
@@ -57,6 +57,10 @@ class VisualSensors:
 
         self._queue_object_move_between_points(start_pos, end_pos, triangle)
 
+    def queue_sensor_color_change(self, sensor_id: int, green_split: float):
+        new_sensor = self._get_sensor(green_split).move_to(self._sensors[sensor_id].get_center())
+        self._animations_queue.append(FadeTransform(self._sensors[sensor_id], new_sensor))
+
     def play_queued_animations(self):
         if len(self._animations_queue):
             self._scene.play(self._animations_queue)
@@ -80,3 +84,19 @@ class VisualSensors:
 
         self._animations_queue.append(Transform(object, object1))
         self._cleanup_animations_queue.append(FadeOut(object))
+
+    def _get_sensor(self, green_split: float):
+        green_angle = green_split * TAU
+
+        return VGroup(Arc(
+            radius=0.2,
+            start_angle=PI / 2,
+            angle=-green_angle,
+            color=GREEN
+        ),
+        Arc(
+            radius=0.2,
+            start_angle=PI / 2 - green_angle,
+            angle=-(TAU - green_angle),
+            color=RED
+        ))
