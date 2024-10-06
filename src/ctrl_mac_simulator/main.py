@@ -1,3 +1,4 @@
+from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 import simpy, random, logging, argparse, random, sys, pathlib
 
 # Fix for rye that does not load the src directory as a path
@@ -86,6 +87,7 @@ def configure_parser_and_get_args() -> argparse.Namespace:
     # Misc Settings
     parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
     parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
+    parser.add_argument("--plot", dest="plot", action="store_true", help="Enable plotting of ftr and latency")
     parser.add_argument("--version", action="version", version="%(prog)s 1.0")
 
     args = parser.parse_args()
@@ -170,3 +172,6 @@ if __name__ == "__main__":
         scene.render(preview=args.video == "show")
     else:
         env.run()
+
+    if args.plot:
+        StatTracker.plot_ftr()
