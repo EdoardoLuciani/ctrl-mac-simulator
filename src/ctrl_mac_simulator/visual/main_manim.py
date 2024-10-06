@@ -6,7 +6,12 @@ from ctrl_mac_simulator.visual.components.visual_sensors import VisualSensors
 
 
 class ManimMainScene(Scene):
-    def set_params(self, sensor_count: int, request_slots: int, event_loop_fn: Callable[[VisualGateway, VisualSensors, LeftSidebar], None]):
+    def set_params(
+        self,
+        sensor_count: int,
+        request_slots: int,
+        event_loop_fn: Callable[[VisualGateway, VisualSensors, LeftSidebar], None],
+    ):
         self.sensor_count = sensor_count
         self.request_slots = request_slots
         self.event_loop_fn = event_loop_fn
