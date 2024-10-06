@@ -10,8 +10,6 @@
 #   universal: false
 
 -e file:.
-bitarray==2.9.2
-    # via ctrl-mac-simulator
 click==8.1.7
     # via cloup
     # via manim
@@ -52,10 +50,13 @@ numpy==1.26.4
     # via pyrr
     # via scipy
 packaging==24.1
+    # via plotly
     # via pytest
 pillow==10.4.0
     # via manim
     # via moderngl-window
+plotly==5.24.1
+    # via ctrl-mac-simulator
 pluggy==1.5.0
     # via pytest
 pycairo==1.27.0
@@ -85,6 +86,8 @@ srt==3.5.3
     # via manim
 svgelements==1.9.6
     # via manim
+tenacity==9.0.0
+    # via plotly
 tqdm==4.66.5
     # via manim
 typing-extensions==4.12.2
