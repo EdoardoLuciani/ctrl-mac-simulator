@@ -1,5 +1,6 @@
 from ctrl_mac_simulator.simulation.messages import SensorMeasurementMessage
 from ctrl_mac_simulator.simulation.messages import TransmissionRequestMessage
+from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 import random, simpy, logging
 from typing import Callable
 from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
@@ -22,6 +23,7 @@ class Sensor:
         self._get_rrm_message_event_fn = get_rrm_message_event_fn
         self._transmission_requests_queue = transmission_requests_queue
         self._data_messages_queue = data_messages_queue
+        self._measurement_time = None
 
         self._logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
         self._env.process(self.run())
@@ -65,6 +67,7 @@ class _IdleState(_State):
             self.sensor._logger.info(
                 f"Time {self.sensor._env.now:.2f}: Data is available, syncing to next RRM for transmission request"
             )
+            self.sensor._measurement_time = self.sensor._env.now
             self.sensor.transition_to(_TransmissionRequestState())
         else:
             self.sensor._logger.info(
@@ -108,6 +111,8 @@ class _DataTransmissionState:
         if chosen_request_slot.state == "no_contention":
             yield simpy.Timeout(self.sensor._env, chosen_request_slot.data_slot)
             message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
+
+            StatTracker.append_measurement_latency(message.start_time - self.sensor._measurement_time)
 
             yield from message.send_message(self.sensor._env, self.sensor._logger)
             yield self.sensor._data_messages_queue.put(message)
