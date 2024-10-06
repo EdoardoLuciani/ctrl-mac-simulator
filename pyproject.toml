@@ -29,3 +29,6 @@ packages = ["src/ctrl_mac_simulator"]
 [tool.ruff]
 line-length = 120
 target-version = "py311"
+
+[tool.pytest.ini_options]
+addopts = "-p no:logging"
