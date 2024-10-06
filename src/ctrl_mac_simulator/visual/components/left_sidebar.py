@@ -22,9 +22,9 @@ class _RRMTable:
         for row_idx, row in enumerate(self._array):
             for col_idx, value in enumerate(row):
                 current_cell = (row_idx + 1, col_idx + 1)
-                if value == 'no_contention':
+                if value == "no_contention":
                     table.add_highlighted_cell(current_cell, color=GREEN)
-                elif value == 'contention':
+                elif value == "contention":
                     table.add_highlighted_cell(current_cell, color=RED)
 
         return table
