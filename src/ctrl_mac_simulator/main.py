@@ -174,4 +174,4 @@ if __name__ == "__main__":
         env.run()
 
     if args.plot:
-        StatTracker.plot_ftr()
+        StatTracker.plot_measurements()
