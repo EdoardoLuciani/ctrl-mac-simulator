@@ -84,14 +84,11 @@ def configure_parser_and_get_args() -> argparse.Namespace:
     )
 
     # Misc Settings
-    parser.add_argument("--log", dest="log_level", default="debug", choices=["info", "debug"], help="Set the log level")
+    parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
     parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
     parser.add_argument("--version", action="version", version="%(prog)s 1.0")
 
     args = parser.parse_args()
-
-    if args.log_level != 'debug' and args.video != None:
-        parser.error('log-level must be set to debug if video rendering is enabled')
 
     return args
 
@@ -128,28 +125,44 @@ if __name__ == "__main__":
 
     if args.video:
         import manim
+
         manim.config.quality = args.video_quality
         scene = ManimMainScene()
 
         def event_loop(visual_gateway: VisualGateway, visual_sensors: VisualSensors, left_sidebar: LeftSidebar):
             log_idx = 0
-            while env.peek() < float('inf'):
+            while env.peek() < float("inf"):
                 env.step()
                 left_sidebar.update_timer(env.now)
 
-                if global_logger_memory_handler.match_event_in_sublist('Finished RequestReplyMessage transmission', log_idx):
+                if global_logger_memory_handler.match_events_in_sublist(
+                    "Finished RequestReplyMessage transmission", log_idx
+                ):
                     visual_sensors.play_queued_animations()
-
-                    left_sidebar.add_row([request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)])
+                    left_sidebar.add_row(
+                        [request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)]
+                    )
                     visual_gateway.display_rrm()
 
-                if global_logger_memory_handler.match_event_in_sublist('Finished TransmissionRequestMessage transmission', log_idx):
+                if logger_names := global_logger_memory_handler.match_events_in_sublist(
+                    "Data is available, syncing to next RRM for transmission request", log_idx
+                ):
+                    for logger_name in logger_names:
+                        visual_sensors.queue_sensor_color_change(int(logger_name.split("-")[1]), 0.33)
+
+                if global_logger_memory_handler.match_events_in_sublist(
+                    "Finished TransmissionRequestMessage transmission", log_idx
+                ):
                     message = gateway._transmission_request_messages.items[-1]
                     visual_sensors.queue_transmission_request_message(message.sensor_id, message.chosen_request_slot)
+                    visual_sensors.queue_sensor_color_change(message.sensor_id, 0.66)
 
-                if global_logger_memory_handler.match_event_in_sublist('Finished SensorMeasurementMessage transmission', log_idx):
-                    sensor_id = gateway._sensor_data_messages.items[-1].sensor_id
-                    visual_sensors.queue_data_transmission(sensor_id)
+                if global_logger_memory_handler.match_events_in_sublist(
+                    "Finished SensorMeasurementMessage transmission", log_idx
+                ):
+                    message = gateway._sensor_data_messages.items[-1]
+                    visual_sensors.queue_data_transmission(message.sensor_id)
+                    visual_sensors.queue_sensor_color_change(message.sensor_id, 0)
 
                 log_idx = len(global_logger_memory_handler.logs)
 
