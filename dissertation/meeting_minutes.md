@@ -45,3 +45,19 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 ### Objectives for the next week
 - Fix bugs on the simulation
 - Hook up the simulation event loop to the manim frontend
+
+
+## 8 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented script argument to modify executions before runtime
+- Send transmission request on current period if 0th rrm
+- Hooked up simpy simulation to manim rendering system
+- Implemented stat tracker for latency and ftr values over time
+
+### Issues discussed and solutions agreed
+- Video rendering is slow, around 1-2 mins per 5 cycles. Maybe not good for deployment. Investigate a browser native solution
+- Does the ftr plot look correct?
+
+### Objectives for the next week
