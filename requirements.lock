@@ -63,7 +63,7 @@ pycairo==1.27.0
     # via manim
 pydub==0.25.1
     # via manim
-pyglet==2.0.17
+pyglet==2.0.18
     # via moderngl-window
 pygments==2.18.0
     # via manim
