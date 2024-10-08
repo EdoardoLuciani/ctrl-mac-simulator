@@ -58,6 +58,9 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 
 ### Issues discussed and solutions agreed
 - Video rendering is slow, around 1-2 mins per 5 cycles. Maybe not good for deployment. Investigate a browser native solution
-- Does the ftr plot look correct?
+- Does the ftr plot look correct? -> Yes
 
 ### Objectives for the next week
+- Stats for the FTR value
+- Investigate framework for web animation
+- Web interface
