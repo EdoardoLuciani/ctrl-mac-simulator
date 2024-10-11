@@ -18,7 +18,7 @@ class Sensor:
         data_messages_queue: simpy.Store,
         logger_handler: Optional[logging.Handler] = None,
         logger_level: Optional[int] = None,
-        stat_tracker: Optional[StatTracker] = None
+        stat_tracker: Optional[StatTracker] = None,
     ):
         self._env = env
         self._id = id

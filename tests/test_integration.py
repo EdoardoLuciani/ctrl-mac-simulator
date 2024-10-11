@@ -13,7 +13,13 @@ def test_scenario_1():
     gateway = Gateway(env, 3, 2, 6, 0.5, 6, stat_tracker)
     sensors = [
         Sensor(
-            env, i, 1, gateway.rrm_message_event, gateway.transmission_request_messages, gateway.sensor_data_messages, stat_tracker
+            env,
+            i,
+            1,
+            gateway.rrm_message_event,
+            gateway.transmission_request_messages,
+            gateway.sensor_data_messages,
+            stat_tracker,
         )
         for i in range(6)
     ]
