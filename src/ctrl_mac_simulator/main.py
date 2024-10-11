@@ -1,12 +1,10 @@
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
-import simpy, random, logging, argparse, random, sys, pathlib
+import simpy, random, logging, argparse, sys, pathlib
 
 # Fix for rye that does not load the src directory as a path
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 
-from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
-from ctrl_mac_simulator.simulation.devices import Sensor, Actuator, Gateway
-from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
+from ctrl_mac_simulator.simulation.devices import Sensor, Gateway
 from ctrl_mac_simulator.visual.main_manim import ManimMainScene
 from ctrl_mac_simulator.visual.components.left_sidebar import LeftSidebar
 from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway

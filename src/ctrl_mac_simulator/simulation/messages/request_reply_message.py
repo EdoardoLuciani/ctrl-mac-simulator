@@ -1,5 +1,5 @@
-import math, json, random
-from typing import TypedDict, Literal, Optional
+import math, random
+from typing import Literal
 from dataclasses import dataclass
 
 from ctrl_mac_simulator.simulation.messages.abstract_message import AbstractMessage

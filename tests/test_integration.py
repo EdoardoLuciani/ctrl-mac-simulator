@@ -2,7 +2,7 @@ from ctrl_mac_simulator.simulation.devices import Gateway, Sensor
 from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
-import random, simpy, logging
+import random, simpy
 
 
 def test_scenario_1():

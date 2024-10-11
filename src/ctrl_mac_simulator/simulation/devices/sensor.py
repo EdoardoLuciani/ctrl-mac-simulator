@@ -98,7 +98,7 @@ class _TransmissionRequestState(_State):
         else:
             request_slot_idx = rrm_message.sample_request_slot()
 
-            if request_slot_idx != None:
+            if request_slot_idx is not None:
                 message = TransmissionRequestMessage(self.sensor._id, request_slot_idx, self.sensor._env.now)
 
                 yield from message.send_message(self.sensor._env, self.sensor._logger)
