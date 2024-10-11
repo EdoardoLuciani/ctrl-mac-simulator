@@ -10,19 +10,28 @@
 #   universal: false
 
 -e file:.
+blinker==1.8.2
+    # via flask
 click==8.1.7
     # via cloup
+    # via flask
     # via manim
 cloup==3.0.5
     # via manim
 decorator==5.1.1
     # via manim
+flask==3.0.3
+    # via ctrl-mac-simulator
 glcontext==3.0.0
     # via moderngl
 iniconfig==2.0.0
     # via pytest
 isosurfaces==0.1.2
     # via manim
+itsdangerous==2.2.0
+    # via flask
+jinja2==3.1.4
+    # via flask
 manim==0.18.1
     # via ctrl-mac-simulator
 manimpango==0.6.0
@@ -31,6 +40,9 @@ mapbox-earcut==1.0.2
     # via manim
 markdown-it-py==3.0.0
     # via rich
+markupsafe==3.0.1
+    # via jinja2
+    # via werkzeug
 mdurl==0.1.2
     # via markdown-it-py
 moderngl==5.11.1
@@ -94,3 +106,5 @@ typing-extensions==4.12.2
     # via manim
 watchdog==5.0.3
     # via manim
+werkzeug==3.0.4
+    # via flask
