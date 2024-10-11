@@ -1,4 +1,3 @@
-import pytest
 from ctrl_mac_simulator.simulation.messages.request_reply_message import RequestReplyMessage
 
 
