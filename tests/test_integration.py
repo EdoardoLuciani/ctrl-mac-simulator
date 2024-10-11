@@ -1,17 +1,19 @@
 from ctrl_mac_simulator.simulation.devices import Gateway, Sensor
 from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
+from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 import random, simpy, logging
 
 
 def test_scenario_1():
     random.seed(834)
+    stat_tracker = StatTracker()
 
     env = simpy.Environment()
-    gateway = Gateway(env, 3, 2, 6, 0.5, 6)
+    gateway = Gateway(env, 3, 2, 6, 0.5, 6, stat_tracker)
     sensors = [
         Sensor(
-            env, i, 1, gateway.rrm_message_event, gateway.transmission_request_messages, gateway.sensor_data_messages
+            env, i, 1, gateway.rrm_message_event, gateway.transmission_request_messages, gateway.sensor_data_messages, stat_tracker
         )
         for i in range(6)
     ]
@@ -46,3 +48,6 @@ def test_scenario_1():
         _IdleState,
     ]
     assert all([isinstance(sensor._state, cls) for sensor, cls in zip(sensors, wanted_states)])
+
+    assert len(stat_tracker.ftr_values) != 0
+    assert len(stat_tracker.measurement_latencies) != 0
