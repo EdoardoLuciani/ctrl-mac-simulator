@@ -3,19 +3,17 @@ from plotly.subplots import make_subplots
 import numpy as np
 
 class StatTracker():
-    ftr_tracker = []
-    measurement_latency_tracker = []
+    def __init__():
+        ftr_tracker = []
+        measurement_latency_tracker = []
 
-    @classmethod
-    def append_ftr(cls, ftr):
-        cls.ftr_tracker.append(ftr)
+    def append_ftr(self, ftr):
+        self.ftr_tracker.append(ftr)
 
-    @classmethod
-    def append_measurement_latency(cls, ftr):
-        cls.measurement_latency_tracker.append(ftr)
+    def append_measurement_latency(self, ftr):
+        self.measurement_latency_tracker.append(ftr)
 
-    @classmethod
-    def plot_measurements(cls):
+    def plot_measurements(self):
         # Create subplots: 2 rows, 1 column
         fig = make_subplots(rows=2, cols=1,
                             subplot_titles=('Discrete Values Time Series',

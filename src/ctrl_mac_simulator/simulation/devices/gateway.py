@@ -1,6 +1,7 @@
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 import simpy, logging
 from ..messages import RequestReplyMessage, TransmissionRequestMessage
+from typing import Optional
 
 
 class Gateway:
@@ -12,6 +13,7 @@ class Gateway:
         request_slots: int,
         rrm_period: float,
         total_rrm_messages: int,
+        stat_tracker: Optional[StatTracker] = None
     ):
         self._env = env
         self._rrm_period = rrm_period
@@ -27,6 +29,7 @@ class Gateway:
         self._transmission_request_messages = simpy.Store(env)
         self._sensor_data_messages = simpy.Store(env)
         self._logger = logging.getLogger(self.__class__.__name__)
+        self._stat_tracker = stat_tracker
 
         self._env.process(self.run())
 
@@ -36,7 +39,9 @@ class Gateway:
             self._rrm.start_time = self._env.now
             yield from self._rrm.send_message(self._env, self._logger)
 
-            StatTracker.append_ftr(self._rrm.ftr)
+            if self._stat_tracker:
+                self._stat_tracker.append_ftr(self._rrm.ftr)
+
             self._rrm_message_event.succeed(self._rrm)
             self._rrm_message_event = simpy.Event(self._env)
 

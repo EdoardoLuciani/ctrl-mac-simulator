@@ -2,7 +2,7 @@ from ctrl_mac_simulator.simulation.messages import SensorMeasurementMessage
 from ctrl_mac_simulator.simulation.messages import TransmissionRequestMessage
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 import random, simpy, logging
-from typing import Callable
+from typing import Callable, Optional
 from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
 from abc import ABC, abstractmethod
 
@@ -16,6 +16,7 @@ class Sensor:
         get_rrm_message_event_fn: Callable[[], simpy.Event],
         transmission_requests_queue: simpy.Store,
         data_messages_queue: simpy.Store,
+        stat_tracker: Optional[StatTracker] = None
     ):
         self._env = env
         self._id = id
@@ -23,6 +24,8 @@ class Sensor:
         self._get_rrm_message_event_fn = get_rrm_message_event_fn
         self._transmission_requests_queue = transmission_requests_queue
         self._data_messages_queue = data_messages_queue
+        self._stat_tracker = stat_tracker
+
         self._measurement_time = None
 
         self._logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
@@ -112,7 +115,8 @@ class _DataTransmissionState:
             yield simpy.Timeout(self.sensor._env, chosen_request_slot.data_slot)
             message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
 
-            StatTracker.append_measurement_latency(message.start_time - self.sensor._measurement_time)
+            if self.sensor._stat_tracker:
+                self.sensor._stat_tracker.append_measurement_latency(message.start_time - self.sensor._measurement_time)
 
             yield from message.send_message(self.sensor._env, self.sensor._logger)
             yield self.sensor._data_messages_queue.put(message)
