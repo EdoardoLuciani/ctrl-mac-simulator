@@ -1,5 +1,5 @@
 import logging, re
-from typing import List, Pattern, Optional
+from typing import Optional
 
 
 class GlobalLoggerMemoryHandler(logging.Handler):

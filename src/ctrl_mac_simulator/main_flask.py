@@ -1,13 +1,11 @@
-import simpy, random, logging, argparse, random, sys, pathlib, io
+import simpy, random, logging, sys, pathlib, io
 from flask import Flask, request, jsonify
 
 # Fix for rye that does not load the src directory as a path
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
-from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
-from ctrl_mac_simulator.simulation.devices import Sensor, Actuator, Gateway
-from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
+from ctrl_mac_simulator.simulation.devices import Sensor, Gateway
 from ctrl_mac_simulator.global_logger_memory_handler import GlobalLoggerMemoryHandler
 
 app = Flask(__name__)

@@ -32,7 +32,7 @@ class StatTracker:
         # Add the line trace for ftr_tracker
         fig.add_trace(
             go.Scatter(
-                x=np.arange(len(cls.ftr_tracker)), y=cls.ftr_tracker, mode="lines+markers", name="FTR Time Series"
+                x=np.arange(len(self.ftr_tracker)), y=self.ftr_tracker, mode="lines+markers", name="FTR Time Series"
             ),
             row=1,
             col=1,
@@ -40,7 +40,7 @@ class StatTracker:
 
         # Add histogram trace for measurement_latency_tracker
         fig.add_trace(
-            go.Histogram(x=cls.measurement_latency_tracker, nbinsx=20, name="Measurement Latency"), row=2, col=1
+            go.Histogram(x=self.measurement_latency_tracker, nbinsx=20, name="Measurement Latency"), row=2, col=1
         )
 
         # Update layout
