@@ -10,7 +10,7 @@ def test_scenario_1():
     stat_tracker = StatTracker()
 
     env = simpy.Environment()
-    gateway = Gateway(env, 3, 2, 6, 0.5, 6, stat_tracker)
+    gateway = Gateway(env, 3, 2, 6, 0.5, 6, stat_tracker=stat_tracker,)
     sensors = [
         Sensor(
             env,
@@ -19,7 +19,7 @@ def test_scenario_1():
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
-            stat_tracker,
+            stat_tracker=stat_tracker,
         )
         for i in range(6)
     ]
