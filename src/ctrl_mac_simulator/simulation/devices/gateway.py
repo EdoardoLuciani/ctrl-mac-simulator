@@ -13,7 +13,9 @@ class Gateway:
         request_slots: int,
         rrm_period: float,
         total_rrm_messages: int,
-        stat_tracker: Optional[StatTracker] = None
+        logger_handler: Optional[logging.Handler] = None,
+        logger_level: Optional[int] = None,
+        stat_tracker: Optional[StatTracker] = None,
     ):
         self._env = env
         self._rrm_period = rrm_period
@@ -28,7 +30,13 @@ class Gateway:
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
         self._sensor_data_messages = simpy.Store(env)
+
         self._logger = logging.getLogger(self.__class__.__name__)
+        if logger_handler:
+            self._logger.addHandler(logger_handler)
+        if logger_level:
+            self._logger.setLevel(logger_level)
+
         self._stat_tracker = stat_tracker
 
         self._env.process(self.run())

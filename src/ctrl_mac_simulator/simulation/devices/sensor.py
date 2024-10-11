@@ -16,6 +16,8 @@ class Sensor:
         get_rrm_message_event_fn: Callable[[], simpy.Event],
         transmission_requests_queue: simpy.Store,
         data_messages_queue: simpy.Store,
+        logger_handler: Optional[logging.Handler] = None,
+        logger_level: Optional[int] = None,
         stat_tracker: Optional[StatTracker] = None
     ):
         self._env = env
@@ -29,6 +31,11 @@ class Sensor:
         self._measurement_time = None
 
         self._logger = logging.getLogger(self.__class__.__name__ + f"-{id}")
+        if logger_handler:
+            self._logger.addHandler(logger_handler)
+        if logger_level:
+            self._logger.setLevel(logger_level)
+
         self._env.process(self.run())
 
         self.transition_to(_IdleState())
