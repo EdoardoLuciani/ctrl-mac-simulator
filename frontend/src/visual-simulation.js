@@ -1,42 +1,45 @@
 import Konva from "konva";
+import { VisualGateway } from "./visual-gateway";
 
-const divSize = document.getElementById("canvasColumn").clientWidth;
+export class Scene {
+  constructor(containerId) {
+    const container = document.getElementById(containerId);
 
-var stage = new Konva.Stage({
-  container: "canvasColumn", // id of container <div>
-  width: divSize,
-  height: divSize,
-});
-var layer = new Konva.Layer();
-stage.add(layer);
+    this.stage = new Konva.Stage({
+      container: containerId,
+      width: container.clientWidth,
+      height: container.clientWidth,
+    });
 
-export function setupCanvas(sensorCount) {
-  var gateway = new Konva.Circle({
-    x: stage.width() / 2,
-    y: stage.height() / 2,
-    radius: 70,
-    stroke: "blue",
-    strokeWidth: 4,
-  });
-
-  const sensors = [];
-  const radius = 500;
-
-  const angle = (Math.PI * 2) / sensorCount;
-  for (let i = 0; i < sensorCount; i++) {
-    sensors.push(
-      new Konva.Circle({
-        x: stage.width() / 2 + radius * Math.cos(i * angle),
-        y: stage.height() / 2 + radius * Math.sin(i * angle),
-        radius: 30,
-        stroke: "red",
-      }),
-    );
+    this.layer = new Konva.Layer();
+    this.stage.add(this.layer);
   }
 
-  layer.add(...sensors, gateway);
-}
+  setupScene(sensorCount) {
+    const sensors = [];
+    const radius = 500;
 
-export function clearCanvas() {
-  layer.destroyChildren();
+    const visualGateway = new VisualGateway(
+      this.stage.width() / 2,
+      this.stage.height() / 2,
+    );
+
+    const angle = (Math.PI * 2) / sensorCount;
+    for (let i = 0; i < sensorCount; i++) {
+      sensors.push(
+        new Konva.Circle({
+          x: this.stage.width() / 2 + radius * Math.cos(i * angle),
+          y: this.stage.height() / 2 + radius * Math.sin(i * angle),
+          radius: 30,
+          stroke: "red",
+        }),
+      );
+    }
+
+    this.layer.add(...sensors, visualGateway.shape);
+  }
+
+  clearScene() {
+    this.layer.destroyChildren();
+  }
 }
