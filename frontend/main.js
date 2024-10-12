@@ -1,5 +1,7 @@
 import "./style.css";
-import { clearCanvas, setupCanvas } from "./src/visual-simulation";
+import { Scene } from "./src/visual-simulation";
+
+const scene = new Scene("canvasColumn");
 
 document
   .getElementById("simulationForm")
@@ -19,8 +21,8 @@ document
       .then((data) => {
         document.getElementById("result").textContent = data.logs.join("\n");
 
-        clearCanvas();
-        setupCanvas(formData.get("sensor_count"));
+        scene.clearScene();
+        scene.setupScene(formData.get("sensor_count"));
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -32,6 +34,6 @@ document
 // Add event listener for the reset button
 document.getElementById("resetButton").addEventListener("click", function () {
   // Clear the result area
-  clearCanvas();
+  scene.clearScene();
   document.getElementById("result").textContent = "";
 });
