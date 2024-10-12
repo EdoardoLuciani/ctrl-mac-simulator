@@ -7,7 +7,7 @@ document
     const formData = new FormData(e.target);
     const params = new URLSearchParams(formData);
 
-    fetch(`/simulate?${params.toString()}`)
+    fetch(`/api/simulate?${params.toString()}`)
       .then((response) => response.json())
       .then((data) => {
         document.getElementById("result").textContent = data.logs.join("\n");
