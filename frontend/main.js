@@ -24,3 +24,9 @@ document
           "An error occurred while running the simulation.";
       });
   });
+
+// Add event listener for the reset button
+document.getElementById("resetButton").addEventListener("click", function () {
+  // Clear the result area
+  document.getElementById("result").textContent = "";
+});
