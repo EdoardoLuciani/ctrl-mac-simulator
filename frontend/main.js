@@ -5,7 +5,13 @@ document
   .addEventListener("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const params = new URLSearchParams(formData);
+
+    const params = new URLSearchParams();
+    for (let [key, value] of formData.entries()) {
+      if (value !== "") {
+        params.append(key, value);
+      }
+    }
 
     fetch(`/api/simulate?${params.toString()}`)
       .then((response) => response.json())
