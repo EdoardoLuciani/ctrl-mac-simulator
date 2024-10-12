@@ -1,5 +1,12 @@
 import "./style.css";
-import { setupCanvas } from "./src/visual-simulation";
+import {
+  clearCanvas,
+  setupCanvas,
+  resizeCanvas,
+} from "./src/visual-simulation";
+
+window.addEventListener("load", resizeCanvas);
+window.addEventListener("resize", resizeCanvas);
 
 document
   .getElementById("simulationForm")
@@ -31,5 +38,6 @@ document
 // Add event listener for the reset button
 document.getElementById("resetButton").addEventListener("click", function () {
   // Clear the result area
+  clearCanvas();
   document.getElementById("result").textContent = "";
 });

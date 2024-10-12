@@ -1,24 +1,53 @@
 body {
     font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
+    margin: 0;
     padding: 20px;
 }
+
+#container {
+    display: flex;
+    width: 100%;
+}
+
+#formColumn {
+    width: 20%;
+    padding: 20px;
+}
+
+#canvasColumn {
+    width: 50%;
+    padding: 20px;
+}
+
+#resultColumn {
+    width: 30%;
+    padding: 20px;
+}
+
 form {
     display: grid;
     gap: 10px;
 }
+
 label {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 input,
 select {
     width: 200px;
 }
+
+#canvas {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
 #result {
-    margin-top: 20px;
     border: 1px solid #ccc;
     padding: 10px;
     height: 300px;
