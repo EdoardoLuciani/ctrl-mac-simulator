@@ -31,9 +31,7 @@ document
       });
   });
 
-// Add event listener for the reset button
 document.getElementById("resetButton").addEventListener("click", function () {
-  // Clear the result area
   scene.clearScene();
   document.getElementById("result").textContent = "";
 });
