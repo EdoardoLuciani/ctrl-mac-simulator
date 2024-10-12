@@ -12,7 +12,7 @@ from ctrl_mac_simulator.global_logger_memory_handler import GlobalLoggerMemoryHa
 app = Flask(__name__)
 
 
-@app.route("/simulate", methods=["GET"])
+@app.route("/api/simulate", methods=["GET"])
 def simulate():
     # Parse query parameters
     args = parse_query_params()
