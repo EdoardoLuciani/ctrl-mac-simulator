@@ -4,9 +4,30 @@ const ctx = canvas.getContext("2d");
 export function setupCanvas() {
   clearCanvas();
 
+  createCircle(0.5, 0.5, 40, "Gateway");
+}
+
+export function createCircle(x, y, radius, below_text) {
   ctx.beginPath();
-  ctx.arc(0, 0, 40, 0, 2 * Math.PI);
+  ctx.arc(
+    canvas.width * x + radius,
+    canvas.height * y + radius,
+    radius,
+    0,
+    2 * Math.PI,
+  );
   ctx.stroke();
+
+  // Text under the figure
+  const offset = 10;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(
+    below_text,
+    canvas.width * x + radius,
+    canvas.height * y + radius * 2 + offset,
+  );
 }
 
 export function clearCanvas() {
