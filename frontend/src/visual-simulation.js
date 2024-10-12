@@ -1,48 +1,42 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+import Konva from "konva";
+
+const divSize = document.getElementById("canvasColumn").clientWidth;
+
+var stage = new Konva.Stage({
+  container: "canvasColumn", // id of container <div>
+  width: divSize,
+  height: divSize,
+});
+var layer = new Konva.Layer();
+stage.add(layer);
 
 export function setupCanvas(sensorCount) {
-  clearCanvas();
+  var gateway = new Konva.Circle({
+    x: stage.width() / 2,
+    y: stage.height() / 2,
+    radius: 70,
+    stroke: "blue",
+    strokeWidth: 4,
+  });
 
-  createCircle(0.5, 0.5, 40, "Gateway", "red");
+  const sensors = [];
+  const radius = 500;
 
   const angle = (Math.PI * 2) / sensorCount;
   for (let i = 0; i < sensorCount; i++) {
-    createCircle(
-      0.5 + Math.cos(i * angle) * 0.3,
-      0.5 + Math.sin(i * angle) * 0.3,
-      30,
-      `S${i}`,
-      "blue",
+    sensors.push(
+      new Konva.Circle({
+        x: stage.width() / 2 + radius * Math.cos(i * angle),
+        y: stage.height() / 2 + radius * Math.sin(i * angle),
+        radius: 30,
+        stroke: "red",
+      }),
     );
   }
-}
 
-export function createCircle(x, y, radius, belowText, circleColor) {
-  ctx.lineWidth = 3; // Increase line width for thicker border
-  ctx.strokeStyle = circleColor; // Set border color (e.g., blue)
-
-  ctx.beginPath();
-  ctx.arc(canvas.width * x, canvas.height * y, radius, 0, 2 * Math.PI);
-  ctx.stroke();
-
-  // Render the text inside
-  ctx.font = "16px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(belowText, canvas.width * x, canvas.height * y);
+  layer.add(...sensors, gateway);
 }
 
 export function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-export function resizeCanvas() {
-  const displayWidth = canvas.clientWidth;
-  const displayHeight = canvas.clientHeight;
-
-  if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-    canvas.width = displayWidth;
-    canvas.height = displayHeight;
-  }
+  layer.destroyChildren();
 }

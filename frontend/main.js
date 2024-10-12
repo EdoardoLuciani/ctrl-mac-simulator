@@ -1,12 +1,5 @@
 import "./style.css";
-import {
-  clearCanvas,
-  setupCanvas,
-  resizeCanvas,
-} from "./src/visual-simulation";
-
-window.addEventListener("load", resizeCanvas);
-window.addEventListener("resize", resizeCanvas);
+import { clearCanvas, setupCanvas } from "./src/visual-simulation";
 
 document
   .getElementById("simulationForm")
@@ -26,6 +19,7 @@ document
       .then((data) => {
         document.getElementById("result").textContent = data.logs.join("\n");
 
+        clearCanvas();
         setupCanvas(formData.get("sensor_count"));
       })
       .catch((error) => {
