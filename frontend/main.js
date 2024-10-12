@@ -26,7 +26,7 @@ document
       .then((data) => {
         document.getElementById("result").textContent = data.logs.join("\n");
 
-        setupCanvas();
+        setupCanvas(formData.get("sensor_count"));
       })
       .catch((error) => {
         console.error("Error:", error);
