@@ -1,5 +1,5 @@
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
-import simpy, logging
+import simpy, logging, collections
 from ..messages import RequestReplyMessage, TransmissionRequestMessage
 from typing import Optional
 
@@ -92,12 +92,11 @@ class Gateway:
 
     @staticmethod
     def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:
-        slot_counts = {}
+        slot_counts = collections.defaultdict(int)
 
         # Count the occurrences of each chosen_request_slot
         for message in messages:
-            slot = message.chosen_request_slot
-            slot_counts[slot] = slot_counts.get(slot, 0) + 1
+            slot_counts[message.chosen_request_slot] += 1
 
         # Find slots that have been picked more than once
         return {
