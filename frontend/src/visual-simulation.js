@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 export function setupCanvas(sensorCount) {
   clearCanvas();
 
-  createCircle(0.5, 0.5, 40, "Gateway");
+  createCircle(0.5, 0.5, 40, "Gateway", "red");
 
   const angle = (Math.PI * 2) / sensorCount;
   for (let i = 0; i < sensorCount; i++) {
@@ -13,16 +13,21 @@ export function setupCanvas(sensorCount) {
       0.5 + Math.sin(i * angle) * 0.3,
       30,
       `S${i}`,
+      "blue",
     );
   }
 }
 
-export function createCircle(x, y, radius, belowText) {
+export function createCircle(x, y, radius, belowText, circleColor) {
+  ctx.lineWidth = 3; // Increase line width for thicker border
+  ctx.strokeStyle = circleColor; // Set border color (e.g., blue)
+
   ctx.beginPath();
   ctx.arc(canvas.width * x, canvas.height * y, radius, 0, 2 * Math.PI);
   ctx.stroke();
 
   // Render the text inside
+  ctx.font = "16px Arial";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(belowText, canvas.width * x, canvas.height * y);
