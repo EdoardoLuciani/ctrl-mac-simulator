@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 # Fix for rye that does not load the src directory as a path
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 
+from ctrl_mac_simulator.config import DEFAULT_CONFIG
 from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
 from ctrl_mac_simulator.simulation.devices import Sensor, Gateway
 from ctrl_mac_simulator.global_logger_memory_handler import GlobalLoggerMemoryHandler
@@ -66,18 +67,13 @@ def simulate():
 
 def parse_query_params():
     args = {}
-    args["data_channels"] = int(request.args.get("data-channels", default=3))
-    args["data_slots_per_channel"] = int(request.args.get("data-slots-per-channel", default=2))
-    args["request_slots"] = int(request.args.get("request-slots", default=6))
-    args["rrm_period"] = float(request.args.get("rrm-period", default=0.5))
-    args["max_cycles"] = int(request.args.get("max-cycles", default=5))
-    args["sensor_count"] = int(request.args.get("sensor-count", default=6))
-    args["sensors_measurement_chance"] = float(request.args.get("sensors-measurement-chance", default=1))
-
-    args["seed"] = request.args.get("seed")
-    args["log_level"] = request.args.get("log-level", default="info")
-    args["plot"] = bool(request.args.get("plot", default=False))
-
+    for key, default_value in DEFAULT_CONFIG.items():
+        if isinstance(default_value, bool):
+            args[key] = request.args.get(key, default=default_value, type=lambda v: v.lower() == 'true')
+        elif isinstance(default_value, (int, float)):
+            args[key] = request.args.get(key, default=default_value, type=type(default_value))
+        else:
+            args[key] = request.args.get(key, default=default_value)
     return args
 
 
