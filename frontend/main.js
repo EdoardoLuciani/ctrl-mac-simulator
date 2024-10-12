@@ -1,4 +1,5 @@
 import "./style.css";
+import { setupCanvas } from "./src/visual-simulation";
 
 document
   .getElementById("simulationForm")
@@ -17,6 +18,8 @@ document
       .then((response) => response.json())
       .then((data) => {
         document.getElementById("result").textContent = data.logs.join("\n");
+
+        setupCanvas();
       })
       .catch((error) => {
         console.error("Error:", error);
