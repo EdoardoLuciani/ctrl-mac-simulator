@@ -5,7 +5,7 @@ import simpy, random, logging, argparse, sys, pathlib
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
 
 from ctrl_mac_simulator.simulation.devices import Sensor, Gateway
-from ctrl_mac_simulator.visual.main_manim import ManimMainScene
+from ctrl_mac_simulator.visual.manim_main_scene import ManimMainScene
 from ctrl_mac_simulator.visual.components.left_sidebar import LeftSidebar
 from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
 from ctrl_mac_simulator.visual.components.visual_sensors import VisualSensors
