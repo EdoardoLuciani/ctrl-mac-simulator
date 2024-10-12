@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CTRL-MAC Simulator</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <form id="simulationForm">
+            <label>
+                Sensor Count:
+                <input type="number" name="sensor_count" value="6" />
+            </label>
+            <label>
+                Data Channels:
+                <input type="number" name="data_channels" value="3" />
+            </label>
+            <label>
+                Data Slots per Channel:
+                <input type="number" name="data_slots_per_channel" value="2" />
+            </label>
+            <label>
+                Request Slots:
+                <input type="number" name="request_slots" value="6" />
+            </label>
+            <label>
+                RRM Period:
+                <input type="number" name="rrm_period" value="0.5" />
+            </label>
+            <label>
+                Max Cycles:
+                <input type="number" name="max_cycles" value="6" />
+            </label>
+            <label>
+                Sensors Measurement Chance:
+                <input
+                    type="number"
+                    name="sensors_measurement_chance"
+                    value="1"
+                    min="0"
+                    max="1"
+                />
+            </label>
+            <label>
+                Seed:
+                <input type="number" name="seed" />
+            </label>
+            <button type="submit">Run Simulation</button>
+        </form>
+
+        <div id="result"></div>
+
+        <script type="module" src="/main.js"></script>
+    </body>
+</html>
