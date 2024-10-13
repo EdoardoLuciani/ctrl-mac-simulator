@@ -11,34 +11,11 @@ export class TweenPacer {
   }
 
   playQueue() {
-    if (this.currentGroupIndex >= this.tweenGroupQueue.length) {
-      this.isPlaying = false;
-      this.currentGroupIndex = 0;
+    if (this.isPlaying) {
+      console.warn("Queue is already playing! Skipping play request");
       return;
     }
-
-    const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
-
-    let completedTweens = 0;
-
-    currentGroup.forEach((tween) => {
-      const originalOnFinish = tween.onFinish;
-      tween.onFinish = () => {
-        if (originalOnFinish) {
-          originalOnFinish();
-        }
-
-        completedTweens++;
-        if (completedTweens === currentGroup.length) {
-          this.currentGroupCompleted = true;
-          this.currentGroupIndex++;
-          this.playQueue();
-        }
-      };
-
-      tween.node.visible(true);
-      tween.play();
-    });
+    this.#playNextGroup();
   }
 
   pauseQueue() {
@@ -78,5 +55,36 @@ export class TweenPacer {
     this.tweenGroupQueue = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
+  }
+
+  #playNextGroup() {
+    if (this.currentGroupIndex >= this.tweenGroupQueue.length) {
+      this.isPlaying = false;
+      this.currentGroupIndex = 0;
+      return;
+    }
+
+    const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
+
+    let completedTweens = 0;
+
+    currentGroup.forEach((tween) => {
+      const originalOnFinish = tween.onFinish;
+      tween.onFinish = () => {
+        if (originalOnFinish) {
+          originalOnFinish();
+        }
+
+        completedTweens++;
+        if (completedTweens === currentGroup.length) {
+          this.currentGroupCompleted = true;
+          this.currentGroupIndex++;
+          this.#playNextGroup();
+        }
+      };
+
+      tween.node.visible(true);
+      tween.play();
+    });
   }
 }
