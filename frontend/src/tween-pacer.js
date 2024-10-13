@@ -10,14 +10,6 @@ export class TweenPacer {
     return this;
   }
 
-  stopQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.pause(),
-      );
-    }
-  }
-
   playQueue() {
     if (this.currentGroupIndex >= this.tweenGroupQueue.length) {
       this.isPlaying = false;
@@ -48,8 +40,32 @@ export class TweenPacer {
     });
   }
 
+  pauseQueue() {
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.pause(),
+      );
+    }
+  }
+
+  reverseCurrentGroupToStart() {
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.reset(),
+      );
+    }
+  }
+
+  fastForwardCurrentGroupToFinish() {
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.finish(),
+      );
+    }
+  }
+
   clearQueue() {
-    this.stopQueue();
+    this.pauseQueue();
     this.tweenGroupQueue = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;

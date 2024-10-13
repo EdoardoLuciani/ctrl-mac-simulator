@@ -38,9 +38,17 @@ document.getElementById("resetButton").addEventListener("click", () => {
 });
 
 document.getElementById("resumeButton").addEventListener("click", () => {
-  scene.resumeAnimations();
+  scene.tweenPacer.playQueue();
 });
 
 document.getElementById("pauseButton").addEventListener("click", () => {
-  scene.pauseAnimations();
+  scene.tweenPacer.pauseQueue();
+});
+
+document.getElementById("prevButton").addEventListener("click", () => {
+  scene.tweenPacer.reverseCurrentGroupToStart();
+});
+
+document.getElementById("nextButton").addEventListener("click", () => {
+  scene.tweenPacer.fastForwardCurrentGroupToFinish();
 });
