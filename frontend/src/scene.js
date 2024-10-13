@@ -30,6 +30,14 @@ export class Scene {
     this.visualSensors.animateDataTransmissionRequest(0, 0, 0);
   }
 
+  pauseAnimations() {
+    this.visualSensors.pauseAnimations();
+  }
+
+  resumeAnimations() {
+    this.visualSensors.resumeAnimations();
+  }
+
   clearScene() {
     this.layer.destroyChildren();
   }
