@@ -29,6 +29,8 @@ export class VisualGateway {
   }
 
   animateRequestReplyMessage(circleRadius) {
+    const layer = this.gateway.getLayer();
+
     const messageCircle = new Konva.Circle({
       x: this.gateway.x(),
       y: this.gateway.y(),
@@ -37,7 +39,7 @@ export class VisualGateway {
       strokeWidth: 4,
       visible: false,
     });
-    this.gateway.getLayer().add(messageCircle);
+    layer.add(messageCircle);
 
     return new Konva.Tween({
       node: messageCircle,
@@ -46,7 +48,7 @@ export class VisualGateway {
       easing: Konva.Easings.Linear(),
       onFinish: () => {
         messageCircle.destroy();
-        this.gateway.getLayer().batchDraw();
+        layer.batchDraw();
       },
     });
   }
