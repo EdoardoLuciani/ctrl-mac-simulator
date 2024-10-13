@@ -45,6 +45,7 @@ export class VisualSensors {
       y: sensor.y(),
       radius: 6,
       fill: "black",
+      visible: false,
     });
 
     return this.#tweenObject(dot, destX, destY);
@@ -64,6 +65,7 @@ export class VisualSensors {
       fill: "purple",
       stroke: "black",
       rotation: degs + (180 - 30),
+      visible: false,
     });
 
     return this.#tweenObject(wedge, destX, destY);

@@ -35,6 +35,7 @@ export class VisualGateway {
       radius: 80,
       stroke: "#ebe834",
       strokeWidth: 4,
+      visible: false,
     });
     this.gateway.getLayer().add(messageCircle);
 
