@@ -32,15 +32,15 @@ document
       });
   });
 
-document.getElementById("resetButton").addEventListener("click", function () {
+document.getElementById("resetButton").addEventListener("click", () => {
   scene.clearScene();
   document.getElementById("result").textContent = "";
 });
 
-document.getElementById("resumeButton").addEventListener("click", function () {
+document.getElementById("resumeButton").addEventListener("click", () => {
   scene.resumeAnimations();
 });
 
-document.getElementById("pauseButton").addEventListener("click", function () {
+document.getElementById("pauseButton").addEventListener("click", () => {
   scene.pauseAnimations();
 });
