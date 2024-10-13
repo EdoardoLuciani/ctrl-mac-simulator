@@ -69,14 +69,6 @@ export class Scene {
     this.tweenPacer.playQueue();
   }
 
-  pauseAnimations() {
-    this.tweenPacer.stopQueue();
-  }
-
-  resumeAnimations() {
-    this.tweenPacer.playQueue();
-  }
-
   clearScene() {
     this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
