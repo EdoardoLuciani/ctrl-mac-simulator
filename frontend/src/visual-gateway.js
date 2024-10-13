@@ -27,4 +27,28 @@ export class VisualGateway {
   get shape() {
     return this.gateway;
   }
+
+  animateRequestReplyMessage(circleRadius) {
+    const messageCircle = new Konva.Circle({
+      x: this.gateway.x(),
+      y: this.gateway.y(),
+      radius: 80,
+      stroke: "#ebe834",
+      strokeWidth: 4,
+    });
+    this.gateway.getLayer().add(messageCircle);
+
+    const tween = new Konva.Tween({
+      node: messageCircle,
+      duration: 1,
+      radius: circleRadius,
+      easing: Konva.Easings.Linear(),
+      onFinish: () => {
+        messageCircle.destroy();
+        this.gateway.getLayer().batchDraw();
+      },
+    });
+
+    tween.play();
+  }
 }
