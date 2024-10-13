@@ -51,6 +51,14 @@ export class Scene {
     );
 
     this.tweenPacer.queueTweenGroup(
+      this.visualSensors.animateTransmissionRequest(
+        2,
+        this.centerX,
+        this.centerY,
+      ),
+    );
+
+    this.tweenPacer.queueTweenGroup(
       this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY),
     );
 
@@ -70,6 +78,7 @@ export class Scene {
   }
 
   clearScene() {
+    this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
   }
 }
