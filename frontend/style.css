@@ -41,17 +41,17 @@ select {
     width: 200px;
 }
 
-#canvas {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-}
-
 #result {
     border: 1px solid #ccc;
     padding: 10px;
-    height: 300px;
+    height: 500px;
     overflow-y: auto;
     white-space: pre-wrap;
+}
+
+#simulationControl {
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
 }
