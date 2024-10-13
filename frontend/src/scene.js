@@ -27,7 +27,11 @@ export class Scene {
   }
 
   playAnimations() {
-    this.visualSensors.animateDataTransmissionRequest(0, 0, 0);
+    this.visualSensors.animateDataTransmissionRequest(
+      0,
+      this.layer.width() / 2,
+      this.layer.height() / 2,
+    );
   }
 
   pauseAnimations() {
