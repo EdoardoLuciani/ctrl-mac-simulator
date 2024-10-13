@@ -1,6 +1,7 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { VisualSensors } from "./visual-sensors";
+import { TweenPacer } from "./tween-pacer";
 
 export class Scene {
   constructor(containerId) {
@@ -19,6 +20,8 @@ export class Scene {
     this.centerY = this.layer.height() / 2;
 
     this.sensorRadius = this.layer.width() / 2.5;
+
+    this.tweenPacer = new TweenPacer();
   }
 
   setupScene(sensorCount) {
@@ -34,25 +37,36 @@ export class Scene {
   }
 
   playAnimations() {
-    this.visualSensors.animateTransmissionRequest(
-      0,
-      this.centerX,
-      this.centerY,
+    this.tweenPacer.queueTweenGroup(
+      this.visualSensors.animateTransmissionRequest(
+        0,
+        this.centerX,
+        this.centerY,
+      ),
+      this.visualSensors.animateTransmissionRequest(
+        1,
+        this.centerX,
+        this.centerY,
+      ),
     );
 
-    this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY);
-    this.visualSensors.animateDataTransmission(2, this.centerX, this.centerY);
-    this.visualSensors.animateDataTransmission(3, this.centerX, this.centerY);
+    this.tweenPacer.queueTweenGroup(
+      this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY),
+    );
 
-    this.visualGateway.animateRequestReplyMessage(this.sensorRadius);
+    this.tweenPacer.queueTweenGroup(
+      this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
+    );
+
+    this.tweenPacer.playQueue();
   }
 
   pauseAnimations() {
-    this.visualSensors.pauseAnimations();
+    this.tweenPacer.stopQueue();
   }
 
   resumeAnimations() {
-    this.visualSensors.resumeAnimations();
+    this.tweenPacer.playQueue();
   }
 
   clearScene() {
