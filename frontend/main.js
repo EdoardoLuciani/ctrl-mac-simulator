@@ -1,5 +1,5 @@
 import "./style.css";
-import { Scene } from "./src/visual-simulation";
+import { Scene } from "./src/scene";
 
 const scene = new Scene("canvasColumn");
 
@@ -35,4 +35,12 @@ document
 document.getElementById("resetButton").addEventListener("click", function () {
   scene.clearScene();
   document.getElementById("result").textContent = "";
+});
+
+document.getElementById("resumeButton").addEventListener("click", function () {
+  scene.resumeAnimations();
+});
+
+document.getElementById("pauseButton").addEventListener("click", function () {
+  scene.pauseAnimations();
 });

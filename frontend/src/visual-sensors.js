@@ -3,6 +3,7 @@ import Konva from "konva";
 export class VisualSensors {
   constructor(sensorCount, radius, x, y) {
     this.sensors = new Konva.Group();
+    this.tweens = [];
 
     const angle = (Math.PI * 2) / sensorCount;
     for (let i = 0; i < sensorCount; i++) {
@@ -35,18 +36,28 @@ export class VisualSensors {
     layer.add(dot);
 
     // Animate the dot
-    const tween = new Konva.Tween({
-      node: dot,
-      duration: 2,
-      x: destX,
-      y: destY,
-      easing: Konva.Easings.StrongEaseIn,
-      onFinish: () => {
-        dot.destroy(); // Remove the dot after animation
-        layer.batchDraw();
-      },
-    });
+    this.tweens.push(
+      new Konva.Tween({
+        node: dot,
+        duration: 2,
+        x: destX,
+        y: destY,
+        easing: Konva.Easings.StrongEaseIn,
+        onFinish: () => {
+          dot.destroy(); // Remove the dot after animation
+          layer.batchDraw();
+        },
+      }),
+    );
 
-    tween.play();
+    this.resumeAnimations();
+  }
+
+  pauseAnimations() {
+    this.tweens.forEach((tween) => tween.pause());
+  }
+
+  resumeAnimations() {
+    this.tweens.forEach((tween) => tween.play());
   }
 }
