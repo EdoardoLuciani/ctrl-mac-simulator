@@ -40,6 +40,8 @@ export class TweenPacer {
           this.playQueue();
         }
       };
+
+      tween.node.visible(true);
       tween.play();
     });
   }
