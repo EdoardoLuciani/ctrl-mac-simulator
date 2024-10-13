@@ -14,18 +14,20 @@ export class Scene {
 
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
+
+    this.centerX = this.layer.width() / 2;
+    this.centerY = this.layer.height() / 2;
+
+    this.sensorRadius = this.layer.width() / 2.5;
   }
 
   setupScene(sensorCount) {
-    const centerX = this.layer.width() / 2;
-    const centerY = this.layer.height() / 2;
-
-    this.visualGateway = new VisualGateway(centerX, centerY);
+    this.visualGateway = new VisualGateway(this.centerX, this.centerY);
     this.visualSensors = new VisualSensors(
       sensorCount,
-      this.layer.width() / 2.5,
-      centerX,
-      centerY,
+      this.sensorRadius,
+      this.centerX,
+      this.centerY,
     );
 
     this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
@@ -34,25 +36,15 @@ export class Scene {
   playAnimations() {
     this.visualSensors.animateTransmissionRequest(
       0,
-      this.layer.width() / 2,
-      this.layer.height() / 2,
+      this.centerX,
+      this.centerY,
     );
 
-    this.visualSensors.animateDataTransmission(
-      1,
-      this.layer.width() / 2,
-      this.layer.height() / 2,
-    );
-    this.visualSensors.animateDataTransmission(
-      2,
-      this.layer.width() / 2,
-      this.layer.height() / 2,
-    );
-    this.visualSensors.animateDataTransmission(
-      3,
-      this.layer.width() / 2,
-      this.layer.height() / 2,
-    );
+    this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY);
+    this.visualSensors.animateDataTransmission(2, this.centerX, this.centerY);
+    this.visualSensors.animateDataTransmission(3, this.centerX, this.centerY);
+
+    this.visualGateway.animateRequestReplyMessage(this.sensorRadius);
   }
 
   pauseAnimations() {

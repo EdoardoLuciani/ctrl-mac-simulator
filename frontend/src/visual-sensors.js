@@ -90,7 +90,7 @@ export class VisualSensors {
         y: destY,
         easing: Konva.Easings.StrongEaseIn,
         onFinish: () => {
-          objectToAnimate.destroy(); // Remove the dot after animation
+          objectToAnimate.destroy();
           layer.batchDraw();
         },
       }),
