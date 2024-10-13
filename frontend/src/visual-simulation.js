@@ -20,11 +20,14 @@ export class Scene {
     const centerX = this.layer.width() / 2;
     const centerY = this.layer.height() / 2;
 
-    const visualGateway = new VisualGateway(centerX, centerY);
+    this.visualGateway = new VisualGateway(centerX, centerY);
+    this.visualSensors = new VisualSensors(sensorCount, 500, centerX, centerY);
 
-    const visualSensors = new VisualSensors(sensorCount, 500, centerX, centerY);
+    this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
+  }
 
-    this.layer.add(...visualSensors.shape, visualGateway.shape);
+  playAnimations() {
+    this.visualSensors.animateDataTransmissionRequest(0, 0, 0);
   }
 
   clearScene() {

@@ -23,6 +23,7 @@ document
 
         scene.clearScene();
         scene.setupScene(formData.get("sensor_count"));
+        scene.playAnimations();
       })
       .catch((error) => {
         console.error("Error:", error);
