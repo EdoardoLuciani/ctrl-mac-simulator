@@ -37,9 +37,8 @@ export class VisualSensors {
     return this.sensors;
   }
 
-  animateDataTransmissionRequest(sensorIndex, destX, destY) {
+  animateTransmissionRequest(sensorIndex, destX, destY) {
     const sensor = this.sensors.children[sensorIndex];
-    const layer = this.sensors.getLayer();
 
     const dot = new Konva.Circle({
       x: sensor.x(),
@@ -48,24 +47,26 @@ export class VisualSensors {
       fill: "black",
     });
 
-    layer.add(dot);
+    this.#tweenObject(dot, destX, destY);
+  }
 
-    // Animate the dot
-    this.tweens.push(
-      new Konva.Tween({
-        node: dot,
-        duration: 2,
-        x: destX,
-        y: destY,
-        easing: Konva.Easings.StrongEaseIn,
-        onFinish: () => {
-          dot.destroy(); // Remove the dot after animation
-          layer.batchDraw();
-        },
-      }),
-    );
+  animateDataTransmission(sensorIndex, destX, destY) {
+    const sensor = this.sensors.children[sensorIndex];
 
-    this.resumeAnimations();
+    const degs =
+      (Math.atan2(destY - sensor.y(), destX - sensor.x()) * 180) / Math.PI;
+
+    const wedge = new Konva.Wedge({
+      x: sensor.x(),
+      y: sensor.y(),
+      radius: 30,
+      angle: 60,
+      fill: "purple",
+      stroke: "black",
+      rotation: degs + (180 - 30),
+    });
+
+    this.#tweenObject(wedge, destX, destY);
   }
 
   pauseAnimations() {
@@ -74,5 +75,27 @@ export class VisualSensors {
 
   resumeAnimations() {
     this.tweens.forEach((tween) => tween.play());
+  }
+
+  #tweenObject(objectToAnimate, destX, destY) {
+    const layer = this.sensors.getLayer();
+
+    layer.add(objectToAnimate);
+
+    this.tweens.push(
+      new Konva.Tween({
+        node: objectToAnimate,
+        duration: 2,
+        x: destX,
+        y: destY,
+        easing: Konva.Easings.StrongEaseIn,
+        onFinish: () => {
+          objectToAnimate.destroy(); // Remove the dot after animation
+          layer.batchDraw();
+        },
+      }),
+    );
+
+    this.resumeAnimations();
   }
 }

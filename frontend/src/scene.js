@@ -32,8 +32,24 @@ export class Scene {
   }
 
   playAnimations() {
-    this.visualSensors.animateDataTransmissionRequest(
+    this.visualSensors.animateTransmissionRequest(
       0,
+      this.layer.width() / 2,
+      this.layer.height() / 2,
+    );
+
+    this.visualSensors.animateDataTransmission(
+      1,
+      this.layer.width() / 2,
+      this.layer.height() / 2,
+    );
+    this.visualSensors.animateDataTransmission(
+      2,
+      this.layer.width() / 2,
+      this.layer.height() / 2,
+    );
+    this.visualSensors.animateDataTransmission(
+      3,
       this.layer.width() / 2,
       this.layer.height() / 2,
     );
