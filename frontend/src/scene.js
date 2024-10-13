@@ -21,7 +21,12 @@ export class Scene {
     const centerY = this.layer.height() / 2;
 
     this.visualGateway = new VisualGateway(centerX, centerY);
-    this.visualSensors = new VisualSensors(sensorCount, 500, centerX, centerY);
+    this.visualSensors = new VisualSensors(
+      sensorCount,
+      this.layer.width() / 2.5,
+      centerX,
+      centerY,
+    );
 
     this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
   }
