@@ -38,7 +38,7 @@ export class VisualGateway {
     });
     this.gateway.getLayer().add(messageCircle);
 
-    const tween = new Konva.Tween({
+    return new Konva.Tween({
       node: messageCircle,
       duration: 1,
       radius: circleRadius,
@@ -48,7 +48,5 @@ export class VisualGateway {
         this.gateway.getLayer().batchDraw();
       },
     });
-
-    tween.play();
   }
 }

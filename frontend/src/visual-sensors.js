@@ -47,7 +47,7 @@ export class VisualSensors {
       fill: "black",
     });
 
-    this.#tweenObject(dot, destX, destY);
+    return this.#tweenObject(dot, destX, destY);
   }
 
   animateDataTransmission(sensorIndex, destX, destY) {
@@ -66,36 +66,23 @@ export class VisualSensors {
       rotation: degs + (180 - 30),
     });
 
-    this.#tweenObject(wedge, destX, destY);
-  }
-
-  pauseAnimations() {
-    this.tweens.forEach((tween) => tween.pause());
-  }
-
-  resumeAnimations() {
-    this.tweens.forEach((tween) => tween.play());
+    return this.#tweenObject(wedge, destX, destY);
   }
 
   #tweenObject(objectToAnimate, destX, destY) {
     const layer = this.sensors.getLayer();
-
     layer.add(objectToAnimate);
 
-    this.tweens.push(
-      new Konva.Tween({
-        node: objectToAnimate,
-        duration: 2,
-        x: destX,
-        y: destY,
-        easing: Konva.Easings.StrongEaseIn,
-        onFinish: () => {
-          objectToAnimate.destroy();
-          layer.batchDraw();
-        },
-      }),
-    );
-
-    this.resumeAnimations();
+    return new Konva.Tween({
+      node: objectToAnimate,
+      duration: 2,
+      x: destX,
+      y: destY,
+      easing: Konva.Easings.StrongEaseIn,
+      onFinish: () => {
+        objectToAnimate.destroy();
+        layer.batchDraw();
+      },
+    });
   }
 }
