@@ -19,7 +19,7 @@ export class TweenPacer {
 
     const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
 
-    let completedTweens = new Uint8Array(1);
+    let completedTweens = 0;
 
     currentGroup.forEach((tween) => {
       const originalOnFinish = tween.onFinish;
@@ -28,8 +28,9 @@ export class TweenPacer {
           originalOnFinish();
         }
 
-        Atomics.add(completedTweens, 0, 1);
-        if (Atomics.load(completedTweens, 0) === currentGroup.length) {
+        completedTweens++;
+        if (completedTweens === currentGroup.length) {
+          this.currentGroupCompleted = true;
           this.currentGroupIndex++;
           this.playQueue();
         }
@@ -44,6 +45,14 @@ export class TweenPacer {
     if (this.tweenGroupQueue.length) {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
         tween.pause(),
+      );
+    }
+  }
+
+  resumeQueue() {
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.play(),
       );
     }
   }

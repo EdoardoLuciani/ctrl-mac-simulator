@@ -38,7 +38,7 @@ document.getElementById("resetButton").addEventListener("click", () => {
 });
 
 document.getElementById("resumeButton").addEventListener("click", () => {
-  scene.tweenPacer.playQueue();
+  scene.tweenPacer.resumeQueue();
 });
 
 document.getElementById("pauseButton").addEventListener("click", () => {
