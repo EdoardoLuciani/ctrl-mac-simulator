@@ -14,13 +14,12 @@ export class VisualGateway {
     );
 
     const text = new Konva.Text({
-      x: 0,
-      y: 0,
       text: "Gateway",
       fontSize: 18,
       fontFamily: "Arial",
     });
     text.x(-text.width() / 2);
+    text.y(-text.height() / 2);
 
     this.gateway.add(text);
   }

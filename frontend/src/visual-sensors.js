@@ -7,14 +7,29 @@ export class VisualSensors {
 
     const angle = (Math.PI * 2) / sensorCount;
     for (let i = 0; i < sensorCount; i++) {
-      this.sensors.add(
+      const group = new Konva.Group({
+        x: x + radius * Math.cos(i * angle),
+        y: y + radius * Math.sin(i * angle),
+      });
+
+      group.add(
         new Konva.Circle({
-          x: x + radius * Math.cos(i * angle),
-          y: y + radius * Math.sin(i * angle),
           radius: 30,
           stroke: "red",
         }),
       );
+
+      const text = new Konva.Text({
+        text: `S${i}`,
+        fontSize: 18,
+        fontFamily: "Arial",
+      });
+      text.x(-text.width() / 2);
+      text.y(-text.height() / 2);
+
+      group.add(text);
+
+      this.sensors.add(group);
     }
   }
 
