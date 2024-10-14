@@ -47,7 +47,6 @@ export class VisualGateway {
       radius: circleRadius,
       easing: Konva.Easings.Linear(),
       onFinish: () => {
-        messageCircle.hide();
         layer.batchDraw();
       },
     });

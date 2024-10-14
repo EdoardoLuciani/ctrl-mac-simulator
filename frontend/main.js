@@ -46,9 +46,9 @@ document.getElementById("pauseButton").addEventListener("click", () => {
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
-  scene.tweenPacer.reverseCurrentGroupToStart();
+  scene.tweenPacer.rollbackToPreviousGroup();
 });
 
 document.getElementById("nextButton").addEventListener("click", () => {
-  scene.tweenPacer.fastForwardCurrentGroupToFinish();
+  scene.tweenPacer.fastForwardToNextGroup();
 });
