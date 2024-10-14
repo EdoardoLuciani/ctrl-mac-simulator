@@ -82,7 +82,7 @@ export class VisualSensors {
       y: destY,
       easing: Konva.Easings.StrongEaseIn,
       onFinish: () => {
-        objectToAnimate.destroy();
+        objectToAnimate.hide();
         layer.batchDraw();
       },
     });
