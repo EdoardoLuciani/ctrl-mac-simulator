@@ -105,7 +105,7 @@ export class TweenPacer {
       currentGroup.forEach((tween, index) => {
         tween.onReset = originalOnResetFunctions[index];
         tween.onFinish = originalOnFinishFunctions[index];
-        tween.node.hide();
+        tween.node.visible(false);
       });
 
       if (value === "finished") {

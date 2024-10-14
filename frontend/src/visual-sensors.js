@@ -77,13 +77,9 @@ export class VisualSensors {
 
     return new Konva.Tween({
       node: objectToAnimate,
-      duration: 2,
+      duration: 1,
       x: destX,
       y: destY,
-      easing: Konva.Easings.StrongEaseIn,
-      onFinish: () => {
-        layer.batchDraw();
-      },
     });
   }
 }
