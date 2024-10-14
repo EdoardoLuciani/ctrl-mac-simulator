@@ -64,3 +64,21 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Stats for the FTR value
 - Investigate framework for web animation
 - Web interface
+
+
+## 15 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented simulation via rest api using flask
+- Set up frontend project, research on different display technologies
+- Developed initial web ui for the program as well as a canvas animation
+- Wired up simulation backend request to web ui
+
+### Issues discussed and solutions agreed
+- None raised
+
+### Objectives for the next week
+- Animation restart button
+- Wire up simulation events to animation
+- Better UI style and icon pack
