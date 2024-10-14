@@ -35,7 +35,7 @@ export class TweenPacer {
   }
 
   rollbackToPreviousGroup() {
-    if (this.tweenGroupQueue.length) {
+    if (this.tweenGroupQueue.length && this.currentGroupIndex > 0) {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
         tween.reset();
       });
