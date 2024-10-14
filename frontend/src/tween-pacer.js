@@ -36,17 +36,34 @@ export class TweenPacer {
 
   reverseCurrentGroupToStart() {
     if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.reset(),
-      );
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
+        tween.reset();
+      });
+
+      if (this.currentGroupIndex) {
+        this.currentGroupIndex--;
+      }
+
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
+        tween.reset();
+        tween.play();
+      });
     }
   }
 
   fastForwardCurrentGroupToFinish() {
-    if (this.tweenGroupQueue.length) {
+    if (
+      this.tweenGroupQueue.length &&
+      this.currentGroupIndex < this.tweenGroupQueue.length - 1
+    ) {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
         tween.finish(),
       );
+
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
+        tween.reset();
+        tween.play();
+      });
     }
   }
 
@@ -69,6 +86,10 @@ export class TweenPacer {
     let completedTweens = 0;
 
     currentGroup.forEach((tween) => {
+      tween.onReset = () => {
+        completedTweens = 0;
+      };
+
       const originalOnFinish = tween.onFinish;
       tween.onFinish = () => {
         if (originalOnFinish) {
@@ -77,7 +98,6 @@ export class TweenPacer {
 
         completedTweens++;
         if (completedTweens === currentGroup.length) {
-          this.currentGroupCompleted = true;
           this.currentGroupIndex++;
           this.#playNextGroup();
         }
