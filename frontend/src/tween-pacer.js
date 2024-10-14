@@ -34,24 +34,15 @@ export class TweenPacer {
     }
   }
 
-  reverseCurrentGroupToStart() {
+  rollbackToPreviousGroup() {
     if (this.tweenGroupQueue.length) {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
         tween.reset();
       });
-
-      if (this.currentGroupIndex) {
-        this.currentGroupIndex--;
-      }
-
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
-        tween.reset();
-        tween.play();
-      });
     }
   }
 
-  fastForwardCurrentGroupToFinish() {
+  fastForwardToNextGroup() {
     if (
       this.tweenGroupQueue.length &&
       this.currentGroupIndex < this.tweenGroupQueue.length - 1
@@ -59,11 +50,6 @@ export class TweenPacer {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
         tween.finish(),
       );
-
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
-        tween.reset();
-        tween.play();
-      });
     }
   }
 
@@ -74,37 +60,62 @@ export class TweenPacer {
     this.isPlaying = false;
   }
 
-  #playNextGroup() {
-    if (this.currentGroupIndex >= this.tweenGroupQueue.length) {
-      this.isPlaying = false;
-      this.currentGroupIndex = 0;
-      return;
+  async #playNextGroup() {
+    this.isPlaying = true;
+
+    while (this.currentGroupIndex < this.tweenGroupQueue.length) {
+      const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
+
+      const originalOnResetFunctions = currentGroup.map((e) => e.onReset);
+      const originalOnFinishFunctions = currentGroup.map((e) => e.onFinish);
+
+      const tweenPromise = new Promise((resolve, reject) => {
+        let completedTweens = 0;
+
+        currentGroup.forEach((tween, index) => {
+          tween.reset();
+
+          tween.onReset = () => {
+            if (originalOnResetFunctions[index]) {
+              originalOnResetFunctions[index]();
+            }
+            completedTweens++;
+            if (completedTweens === currentGroup.length) {
+              resolve("reset");
+            }
+          };
+
+          tween.onFinish = () => {
+            if (originalOnFinishFunctions[index]) {
+              originalOnFinishFunctions[index]();
+            }
+            completedTweens++;
+            if (completedTweens === currentGroup.length) {
+              resolve("finished");
+            }
+          };
+
+          tween.node.visible(true);
+          tween.play();
+        });
+      });
+
+      const value = await tweenPromise;
+
+      currentGroup.forEach((tween, index) => {
+        tween.onReset = originalOnResetFunctions[index];
+        tween.onFinish = originalOnFinishFunctions[index];
+        tween.node.hide();
+      });
+
+      if (value === "finished") {
+        this.currentGroupIndex++;
+      } else {
+        this.currentGroupIndex--;
+      }
     }
 
-    const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
-
-    let completedTweens = 0;
-
-    currentGroup.forEach((tween) => {
-      tween.onReset = () => {
-        completedTweens = 0;
-      };
-
-      const originalOnFinish = tween.onFinish;
-      tween.onFinish = () => {
-        if (originalOnFinish) {
-          originalOnFinish();
-        }
-
-        completedTweens++;
-        if (completedTweens === currentGroup.length) {
-          this.currentGroupIndex++;
-          this.#playNextGroup();
-        }
-      };
-
-      tween.node.visible(true);
-      tween.play();
-    });
+    this.isPlaying = false;
+    this.currentGroupIndex = 0;
   }
 }
