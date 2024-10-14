@@ -36,9 +36,9 @@ export class TweenPacer {
 
   rollbackToPreviousGroup() {
     if (this.tweenGroupQueue.length && this.currentGroupIndex > 0) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) => {
-        tween.reset();
-      });
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.reset(),
+      );
     }
   }
 
@@ -54,8 +54,12 @@ export class TweenPacer {
   }
 
   clearQueue() {
-    this.pauseQueue();
-    this.tweenGroupQueue = [];
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween.destroy(),
+      );
+      this.tweenGroupQueue = [];
+    }
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
