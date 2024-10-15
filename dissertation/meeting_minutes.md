@@ -76,7 +76,7 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Wired up simulation backend request to web ui
 
 ### Issues discussed and solutions agreed
-- None raised
+- Different animation with request slots and circles laid out in a linear way
 
 ### Objectives for the next week
 - Animation restart button
