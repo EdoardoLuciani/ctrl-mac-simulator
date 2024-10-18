@@ -1,6 +1,7 @@
 import Konva from "konva";
+import { buildSensor } from "./visual-sensor-helper";
 
-export class VisualSensors {
+export class VisualSensorsGrid {
   constructor(x, y, sensorCount, sensorRadius) {
     this.sensors = new Konva.Group();
 
@@ -8,29 +9,7 @@ export class VisualSensors {
     let newY = y;
 
     for (let i = 0; i < sensorCount; i++) {
-      const group = new Konva.Group({
-        x: newX,
-        y: newY,
-      });
-
-      group.add(
-        new Konva.Circle({
-          radius: sensorRadius,
-          stroke: "red",
-        }),
-      );
-
-      const text = new Konva.Text({
-        text: `S${i}`,
-        fontSize: 18,
-        fontFamily: "Arial",
-      });
-      text.x(-text.width() / 2);
-      text.y(-text.height() / 2);
-
-      group.add(text);
-
-      this.sensors.add(group);
+      this.sensors.add(buildSensor(newX, newY, sensorRadius, i));
 
       if ((i + 1) % 5 === 0) {
         newX = x;

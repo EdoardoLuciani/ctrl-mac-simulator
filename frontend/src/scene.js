@@ -1,6 +1,6 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
-import { VisualSensors } from "./visual-sensors";
+import { VisualSensorsGrid } from "./visual-sensors-grid";
 import { TweenPacer } from "./tween-pacer";
 
 export class Scene {
@@ -30,7 +30,7 @@ export class Scene {
       this.layer.width(),
       requestSlots,
     );
-    this.visualSensors = new VisualSensors(
+    this.visualSensors = new VisualSensorsGrid(
       this.centerX,
       this.centerY,
       sensorCount,
