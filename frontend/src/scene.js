@@ -12,14 +12,13 @@ export class Scene {
       width: container.clientWidth,
       height: container.clientWidth,
     });
-
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
 
     this.centerX = this.layer.width() / 2;
     this.centerY = this.layer.height() / 2;
 
-    this.sensorRadius = this.layer.width() / 2.5;
+    this.sensorRadius = 20;
 
     this.tweenPacer = new TweenPacer();
   }
@@ -34,7 +33,6 @@ export class Scene {
     this.visualSensors = new VisualSensors(
       this.centerX,
       this.centerY,
-      this.layer.width() / 2,
       sensorCount,
       this.sensorRadius,
     );
@@ -43,23 +41,30 @@ export class Scene {
   }
 
   playAnimations() {
-    const requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
+    let requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
+
+    const sensorsWithRequestSlot = [
+      { id: 0, requestSlot: 0 },
+      { id: 1, requestSlot: 0 },
+      { id: 2, requestSlot: 1 },
+    ];
+
+    const tweenGroup = sensorsWithRequestSlot.map((elem) => {
+      const anim = this.visualSensors.animateSensorToPos(
+        elem.id,
+        requestSlotsPos[elem.requestSlot].x,
+        requestSlotsPos[elem.requestSlot].y,
+      );
+      requestSlotsPos[elem.requestSlot].y += this.sensorRadius * 2.25;
+      return anim;
+    });
+    this.tweenPacer.queueTweenGroup(...tweenGroup);
+
+    requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
 
     this.tweenPacer.queueTweenGroup(
       this.visualSensors.animateSensorToPos(
-        0,
-        requestSlotsPos[0].x,
-        requestSlotsPos[0].y,
-      ),
-      this.visualSensors.animateSensorToPos(
-        1,
-        requestSlotsPos[1].x,
-        requestSlotsPos[1].y,
-      ),
-    );
-    this.tweenPacer.queueTweenGroup(
-      this.visualSensors.animateSensorToPos(
-        2,
+        3,
         requestSlotsPos[2].x,
         requestSlotsPos[2].y,
       ),

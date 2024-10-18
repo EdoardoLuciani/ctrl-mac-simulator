@@ -1,7 +1,7 @@
 import Konva from "konva";
 
 export class VisualSensors {
-  constructor(x, y, maxWidth, sensorCount, radius) {
+  constructor(x, y, sensorCount, sensorRadius) {
     this.sensors = new Konva.Group();
 
     let newX = x;
@@ -15,7 +15,7 @@ export class VisualSensors {
 
       group.add(
         new Konva.Circle({
-          radius: 20,
+          radius: sensorRadius,
           stroke: "red",
         }),
       );
