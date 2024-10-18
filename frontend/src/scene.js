@@ -25,7 +25,12 @@ export class Scene {
   }
 
   setupScene(sensorCount, requestSlots) {
-    this.visualGateway = new VisualGateway(0, 0, requestSlots);
+    this.visualGateway = new VisualGateway(
+      0,
+      0,
+      this.layer.width(),
+      requestSlots,
+    );
     this.visualSensors = new VisualSensors(
       sensorCount,
       this.sensorRadius,
@@ -64,8 +69,6 @@ export class Scene {
     // );
     // this.tweenPacer.playQueue();
     //
-    this.visualGateway.addRrm();
-    this.visualGateway.addRrm();
   }
 
   clearScene() {
