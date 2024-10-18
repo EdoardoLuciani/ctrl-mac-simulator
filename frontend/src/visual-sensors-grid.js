@@ -44,11 +44,11 @@ export class VisualSensorsGrid {
   animateSensorToPos(sensorIndex, destX, destY) {
     const sensor = this.sensors.children[sensorIndex];
 
-    return new Konva.Tween({
+    return {
       node: sensor,
       duration: 1,
       x: destX,
       y: destY,
-    });
+    };
   }
 }
