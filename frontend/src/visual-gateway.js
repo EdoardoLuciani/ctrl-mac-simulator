@@ -37,7 +37,7 @@ export class VisualGateway {
   }
 
   get shape() {
-    return this.gateway;
+    return [this.gateway];
   }
 
   getNextRequestSlotsPos() {
