@@ -31,7 +31,7 @@ export class Scene {
       requestSlots,
     );
     this.visualSensors = new VisualSensorsGrid(
-      this.centerX,
+      0,
       this.centerY,
       sensorCount,
       this.sensorRadius,
