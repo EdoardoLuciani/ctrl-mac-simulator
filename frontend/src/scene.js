@@ -41,15 +41,27 @@ export class Scene {
   }
 
   playAnimations() {
-    let requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
-
-    const sensorsWithRequestSlot = [
+    let sensorsWithRequestSlot = [
       { id: 0, requestSlot: 0 },
       { id: 1, requestSlot: 0 },
       { id: 2, requestSlot: 1 },
     ];
+    this.tweenPacer.queueTweenGroup(
+      ...this.#getTweenGroup(sensorsWithRequestSlot),
+    );
 
-    const tweenGroup = sensorsWithRequestSlot.map((elem) => {
+    sensorsWithRequestSlot = [{ id: 3, requestSlot: 2 }];
+    this.tweenPacer.queueTweenGroup(
+      ...this.#getTweenGroup(sensorsWithRequestSlot),
+    );
+
+    this.tweenPacer.playQueue();
+  }
+
+  #getTweenGroup(sensorsWithRequestSlot) {
+    let requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
+
+    return sensorsWithRequestSlot.map((elem) => {
       const anim = this.visualSensors.animateSensorToPos(
         elem.id,
         requestSlotsPos[elem.requestSlot].x,
@@ -58,19 +70,6 @@ export class Scene {
       requestSlotsPos[elem.requestSlot].y += this.sensorRadius * 2.25;
       return anim;
     });
-    this.tweenPacer.queueTweenGroup(...tweenGroup);
-
-    requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
-
-    this.tweenPacer.queueTweenGroup(
-      this.visualSensors.animateSensorToPos(
-        3,
-        requestSlotsPos[2].x,
-        requestSlotsPos[2].y,
-      ),
-    );
-
-    this.tweenPacer.playQueue();
   }
 
   clearScene() {
