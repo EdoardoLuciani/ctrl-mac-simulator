@@ -39,16 +39,12 @@ export class Scene {
   }
 
   playAnimations() {
-    let sensorsWithRequestSlot = [
-      { id: 0, requestSlot: 0 },
-      { id: 1, requestSlot: 0 },
-      { id: 2, requestSlot: 1 },
-    ];
+    let sensorsWithRequestSlot = [{ id: 0, requestSlot: 0 }];
     this.tweenPacer.queueTweenGroup(
       ...this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
-    sensorsWithRequestSlot = [{ id: 3, requestSlot: 2 }];
+    sensorsWithRequestSlot = [{ id: 0, requestSlot: 3 }];
     this.tweenPacer.queueTweenGroup(
       ...this.#getTweenGroup(sensorsWithRequestSlot),
     );
