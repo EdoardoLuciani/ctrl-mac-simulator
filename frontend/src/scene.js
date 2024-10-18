@@ -32,10 +32,11 @@ export class Scene {
       requestSlots,
     );
     this.visualSensors = new VisualSensors(
-      sensorCount,
-      this.sensorRadius,
       this.centerX,
       this.centerY,
+      this.layer.width() / 2,
+      sensorCount,
+      this.sensorRadius,
     );
 
     this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
