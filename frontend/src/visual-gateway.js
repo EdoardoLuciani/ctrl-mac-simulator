@@ -1,6 +1,7 @@
 export class VisualGateway {
   constructor(x, y, maxWidth, requestSlots) {
     this.requestSlots = requestSlots;
+    this.currentRrm = -1;
 
     this.gateway = new Konva.Group({
       x: x,
@@ -17,7 +18,7 @@ export class VisualGateway {
 
     let nextRrmXPos = 0;
     while (nextRrmXPos < maxWidth) {
-      const rrm = this.getRrmShape(nextRrmXPos);
+      const rrm = this.#getRrmShape(nextRrmXPos);
       this.gateway.add(rrm);
 
       nextRrmXPos += rrm.width() + 20;
@@ -28,7 +29,12 @@ export class VisualGateway {
     return this.gateway;
   }
 
-  getRrmShape(startingX) {
+  getNextRrmIndex() {
+    this.currentRrm += 1;
+    return this.currentRrm % (this.gateway.getChildren().length - 1);
+  }
+
+  #getRrmShape(startingX) {
     let points = [startingX, 30];
 
     for (let iter = 0; iter < this.requestSlots; iter++) {
