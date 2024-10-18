@@ -1,12 +1,15 @@
 export class TweenPacer {
   constructor() {
-    this.tweenGroupQueue = [];
+    this.tweenGroupConstructors = [];
     this.currentGroupIndex = 0;
+
+    this.currentTweenGroup = [];
+
     this.isPlaying = false;
   }
 
   queueTweenGroup(...tweensBatch) {
-    this.tweenGroupQueue.push(tweensBatch);
+    this.tweenGroupConstructors.push(tweensBatch);
     return this;
   }
 
@@ -19,47 +22,38 @@ export class TweenPacer {
   }
 
   pauseQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.pause(),
-      );
+    if (this.currentTweenGroup.length) {
+      this.currentTweenGroup.forEach((tween) => tween.pause());
     }
   }
 
   resumeQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.play(),
-      );
+    if (this.currentTweenGroup.length) {
+      this.currentTweenGroup.forEach((tween) => tween.play());
     }
   }
 
   rollbackToPreviousGroup() {
-    if (this.tweenGroupQueue.length && this.currentGroupIndex > 0) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.reset(),
-      );
+    if (this.currentTweenGroup.length && this.currentGroupIndex > 0) {
+      this.currentTweenGroup.forEach((tween) => tween.reset());
     }
   }
 
   fastForwardToNextGroup() {
     if (
-      this.tweenGroupQueue.length &&
-      this.currentGroupIndex < this.tweenGroupQueue.length - 1
+      this.currentTweenGroup.length &&
+      this.currentGroupIndex < this.tweenGroupConstructors.length - 1
     ) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.finish(),
-      );
+      this.currentTweenGroup.forEach((tween) => tween.finish());
     }
   }
 
   clearQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.destroy(),
-      );
-      this.tweenGroupQueue = [];
+    if (this.currentTweenGroup.length) {
+      this.currentTweenGroup.forEach((tween) => tween.destroy());
+      this.currentTweenGroup = [];
     }
+    this.tweenGroupConstructors = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
@@ -67,49 +61,48 @@ export class TweenPacer {
   async #playNextGroup() {
     this.isPlaying = true;
 
-    while (this.currentGroupIndex < this.tweenGroupQueue.length) {
-      const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
-
-      const originalOnResetFunctions = currentGroup.map((e) => e.onReset);
-      const originalOnFinishFunctions = currentGroup.map((e) => e.onFinish);
+    while (this.currentGroupIndex < this.tweenGroupConstructors.length) {
+      const currentGroupConstructors =
+        this.tweenGroupConstructors[this.currentGroupIndex];
 
       const tweenPromise = new Promise((resolve, reject) => {
         let completedTweens = 0;
 
-        currentGroup.forEach((tween, index) => {
-          tween.reset();
+        this.currentTweenGroup = currentGroupConstructors.map(
+          (tweenConstructor, index) => {
+            const tween = new Konva.Tween(tweenConstructor);
 
-          tween.onReset = () => {
-            if (originalOnResetFunctions[index]) {
-              originalOnResetFunctions[index]();
-            }
-            completedTweens++;
-            if (completedTweens === currentGroup.length) {
-              resolve("reset");
-            }
-          };
+            tween.onReset = () => {
+              if (tweenConstructor.onReset) {
+                tweenConstructor.onReset();
+              }
+              completedTweens++;
+              if (completedTweens === currentGroupConstructors.length) {
+                resolve("reset");
+              }
+            };
 
-          tween.onFinish = () => {
-            if (originalOnFinishFunctions[index]) {
-              originalOnFinishFunctions[index]();
-            }
-            completedTweens++;
-            if (completedTweens === currentGroup.length) {
-              resolve("finished");
-            }
-          };
+            tween.onFinish = () => {
+              if (tweenConstructor.onFinish) {
+                tweenConstructor.onFinish();
+              }
+              completedTweens++;
+              if (completedTweens === currentGroupConstructors.length) {
+                resolve("finished");
+              }
+            };
 
-          tween.node.visible(true);
-          tween.play();
-        });
+            tween.play();
+
+            return tween;
+          },
+        );
       });
 
       const value = await tweenPromise;
 
-      currentGroup.forEach((tween, index) => {
-        tween.onReset = originalOnResetFunctions[index];
-        tween.onFinish = originalOnFinishFunctions[index];
-      });
+      this.currentTweenGroup.forEach((tween) => tween.destroy());
+      this.currentTweenGroup = [];
 
       if (value === "finished") {
         this.currentGroupIndex++;
