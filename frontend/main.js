@@ -22,7 +22,10 @@ document
         document.getElementById("result").textContent = data.logs.join("\n");
 
         scene.clearScene();
-        scene.setupScene(formData.get("sensor_count"));
+        scene.setupScene(
+          formData.get("sensor_count"),
+          formData.get("request_slots"),
+        );
         scene.playAnimations();
       })
       .catch((error) => {

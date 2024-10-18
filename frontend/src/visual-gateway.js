@@ -1,50 +1,55 @@
 export class VisualGateway {
-  constructor(x, y) {
+  constructor(x, y, requestSlots) {
+    this.requestSlots = requestSlots;
+    this.nextRrmXPos = 0;
+
     this.gateway = new Konva.Group({
       x: x,
       y: y,
     });
 
     this.gateway.add(
-      new Konva.Circle({
-        radius: 70,
-        stroke: "blue",
-        strokeWidth: 4,
+      new Konva.Text({
+        text: "Gateway",
+        fontSize: 18,
+        fontFamily: "Arial",
       }),
     );
-
-    const text = new Konva.Text({
-      text: "Gateway",
-      fontSize: 18,
-      fontFamily: "Arial",
-    });
-    text.x(-text.width() / 2);
-    text.y(-text.height() / 2);
-
-    this.gateway.add(text);
   }
 
   get shape() {
     return this.gateway;
   }
 
-  animateRequestReplyMessage(circleRadius) {
-    const layer = this.gateway.getLayer();
+  addRrm() {
+    const rrm = VisualGateway.getRrmShape(this.nextRrmXPos, 4);
+    this.gateway.add(rrm);
 
-    const messageCircle = new Konva.Circle({
-      x: this.gateway.x(),
-      y: this.gateway.y(),
-      radius: 80,
-      stroke: "#ebe834",
-      strokeWidth: 4,
-      visible: false,
-    });
-    layer.add(messageCircle);
+    this.nextRrmXPos += rrm.width() + 20;
+  }
 
-    return new Konva.Tween({
-      node: messageCircle,
-      duration: 1,
-      radius: circleRadius,
+  static getRrmShape(startingX, requestSlots) {
+    let points = [startingX, 30];
+
+    for (let iter = 0; iter < requestSlots; iter++) {
+      points.push(
+        startingX + 50 * iter,
+        10,
+        startingX + 50 * (iter + 1),
+        10,
+        startingX + 50 * (iter + 1),
+        30,
+      );
+    }
+
+    return new Konva.Line({
+      y: 10,
+      x: 5,
+      points: points,
+      stroke: "blue",
+      strokeWidth: 3,
+      lineCap: "round",
+      lineJoin: "round",
     });
   }
 }
