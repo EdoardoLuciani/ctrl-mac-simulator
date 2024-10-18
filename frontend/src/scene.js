@@ -43,13 +43,28 @@ export class Scene {
   }
 
   playAnimations() {
+    const requestSlotsPos = this.visualGateway.getNextRequestSlotsPos();
+
     this.tweenPacer.queueTweenGroup(
-      this.visualSensors.animateSensorToPos(0, 0, 0),
-      this.visualSensors.animateSensorToPos(1, 0, 0),
+      this.visualSensors.animateSensorToPos(
+        0,
+        requestSlotsPos[0].x,
+        requestSlotsPos[0].x,
+      ),
+      this.visualSensors.animateSensorToPos(
+        1,
+        requestSlotsPos[1].x,
+        requestSlotsPos[1].y,
+      ),
     );
     this.tweenPacer.queueTweenGroup(
-      this.visualSensors.animateSensorToPos(2, 0, 0),
+      this.visualSensors.animateSensorToPos(
+        2,
+        requestSlotsPos[2].x,
+        requestSlotsPos[2].y,
+      ),
     );
+
     this.tweenPacer.playQueue();
   }
 
