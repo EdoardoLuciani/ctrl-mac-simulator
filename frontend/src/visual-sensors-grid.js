@@ -2,7 +2,22 @@ import Konva from "konva";
 import { buildSensor } from "./visual-sensor-helper";
 
 export class VisualSensorsGrid {
-  constructor(x, y, sensorCount, sensorRadius) {
+  constructor(x, y, maxWidth, sensorCount, sensorRadius) {
+    // Create the texts
+    this.text = new Konva.Group({ x: x, y: y });
+
+    this.text.add(
+      ...["Idle", "Backoff 0", "Backoff 1"].map((str, idx, initialArray) => {
+        return new Konva.Text({
+          x: (maxWidth / initialArray.length) * idx,
+          text: str,
+          fontSize: 18,
+          fontFamily: "Arial",
+        });
+      }),
+    );
+
+    // Create the sensors
     this.sensors = new Konva.Group();
 
     let newX = x + sensorRadius;
@@ -21,7 +36,7 @@ export class VisualSensorsGrid {
   }
 
   get shape() {
-    return this.sensors;
+    return [this.sensors, this.text];
   }
 
   animateSensorToPos(sensorIndex, destX, destY) {

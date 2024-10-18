@@ -15,9 +15,6 @@ export class Scene {
     this.layer = new Konva.Layer();
     this.stage.add(this.layer);
 
-    this.centerX = this.layer.width() / 2;
-    this.centerY = this.layer.height() / 2;
-
     this.sensorRadius = 20;
 
     this.tweenPacer = new TweenPacer();
@@ -32,12 +29,13 @@ export class Scene {
     );
     this.visualSensors = new VisualSensorsGrid(
       0,
-      this.centerY,
+      this.layer.height() / 2,
+      this.layer.width(),
       sensorCount,
       this.sensorRadius,
     );
 
-    this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
+    this.layer.add(...this.visualSensors.shape, ...this.visualGateway.shape);
   }
 
   playAnimations() {
