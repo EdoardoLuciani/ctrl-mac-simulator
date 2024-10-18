@@ -1,20 +1,22 @@
 import Konva from "konva";
 
 export class VisualSensors {
-  constructor(sensorCount, radius, x, y) {
+  constructor(x, y, maxWidth, sensorCount, radius) {
     this.sensors = new Konva.Group();
     this.tweens = [];
 
-    const angle = (Math.PI * 2) / sensorCount;
+    let newX = x;
+    let newY = y;
+
     for (let i = 0; i < sensorCount; i++) {
       const group = new Konva.Group({
-        x: x + radius * Math.cos(i * angle),
-        y: y + radius * Math.sin(i * angle),
+        x: newX,
+        y: newY,
       });
 
       group.add(
         new Konva.Circle({
-          radius: 30,
+          radius: 20,
           stroke: "red",
         }),
       );
@@ -30,6 +32,13 @@ export class VisualSensors {
       group.add(text);
 
       this.sensors.add(group);
+
+      if ((i + 1) % 5 === 0) {
+        newX = x;
+        newY += 100;
+      } else {
+        newX += 50;
+      }
     }
   }
 
