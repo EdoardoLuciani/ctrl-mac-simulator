@@ -1,13 +1,5 @@
 export class VisualGateway {
-  static tickLength = 50;
-  static tickHeight = 20;
-  static tickYOffset = 10;
-  static RrmPadding = 20;
-
   constructor(x, y, maxWidth, requestSlots) {
-    this.requestSlots = requestSlots;
-    this.currentRrm = -1;
-
     this.gateway = new Konva.Group({
       x: x,
       y: y,
@@ -21,13 +13,27 @@ export class VisualGateway {
       }),
     );
 
+    this.tickYOffset = 10;
+    this.tickWidth = 50;
+    this.tickHeight = 20;
+    this.requestSlots = requestSlots;
+    this.rrmPadding = 20;
+
     let nextRrmXPos = 0;
     while (nextRrmXPos < maxWidth) {
-      const rrm = this.#getRrmShape(nextRrmXPos);
+      const rrm = this.#getRrmShape(
+        nextRrmXPos,
+        this.tickYOffset,
+        this.tickWidth,
+        this.tickHeight,
+        this.requestSlots,
+      );
       this.gateway.add(rrm);
 
-      nextRrmXPos += rrm.width() + VisualGateway.RrmPadding;
+      nextRrmXPos += rrm.width() + this.rrmPadding;
     }
+
+    this.currentRrm = -1;
   }
 
   get shape() {
@@ -50,20 +56,17 @@ export class VisualGateway {
     return res;
   }
 
-  #getRrmShape(startingX) {
-    let points = [
-      startingX,
-      VisualGateway.tickYOffset + VisualGateway.tickHeight,
-    ];
+  #getRrmShape(startingX, startingY, tickWidth, tickHeight, requestSlots) {
+    let points = [startingX, startingY + tickHeight];
 
-    for (let iter = 0; iter < this.requestSlots; iter++) {
+    for (let iter = 0; iter < requestSlots; iter++) {
       points.push(
-        startingX + VisualGateway.tickLength * iter,
-        VisualGateway.tickYOffset,
-        startingX + VisualGateway.tickLength * (iter + 1),
-        VisualGateway.tickYOffset,
-        startingX + VisualGateway.tickLength * (iter + 1),
-        VisualGateway.tickYOffset + VisualGateway.tickHeight,
+        startingX + tickWidth * iter,
+        startingY,
+        startingX + tickWidth * (iter + 1),
+        startingY,
+        startingX + tickWidth * (iter + 1),
+        startingY + tickHeight,
       );
     }
 
