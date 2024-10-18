@@ -3,6 +3,8 @@ import { buildSensor } from "./visual-sensor-helper";
 
 export class VisualSensorsGrid {
   constructor(x, y, maxWidth, sensorCount, sensorRadius) {
+    const fontSize = 18;
+
     // Create the texts
     this.text = new Konva.Group({ x: x, y: y });
 
@@ -11,7 +13,7 @@ export class VisualSensorsGrid {
         return new Konva.Text({
           x: (maxWidth / initialArray.length) * idx,
           text: str,
-          fontSize: 18,
+          fontSize: fontSize,
           fontFamily: "Arial",
         });
       }),
@@ -21,7 +23,7 @@ export class VisualSensorsGrid {
     this.sensors = new Konva.Group();
 
     let newX = x + sensorRadius;
-    let newY = y;
+    let newY = y + fontSize * 2;
 
     for (let i = 0; i < sensorCount; i++) {
       this.sensors.add(buildSensor(newX, newY, sensorRadius, i));
