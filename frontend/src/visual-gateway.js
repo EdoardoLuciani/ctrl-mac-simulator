@@ -13,13 +13,13 @@ export class VisualGateway {
       }),
     );
 
-    this.tickYOffset = 10;
+    this.tickYOffset = 20;
     this.tickWidth = 50;
     this.tickHeight = 20;
     this.requestSlots = requestSlots;
     this.rrmPadding = 20;
 
-    let nextRrmXPos = 0;
+    let nextRrmXPos = 5;
     while (nextRrmXPos < maxWidth) {
       const rrm = this.#getRrmShape(
         nextRrmXPos,
@@ -44,35 +44,33 @@ export class VisualGateway {
     this.currentRrm += 1;
     this.currentRrm = this.currentRrm % (this.gateway.getChildren().length - 1);
 
-    const currentRrm = this.gateway.getChildren()[this.currentRrm];
+    const currentRrm = this.gateway.getChildren()[this.currentRrm + 1];
 
-    let res = [];
-    for (let i = 0; i < this.requestSlots; i++) {
-      res.push({
-        x: currentRrm.x() + (currentRrm.width() / this.requestSlots) * i,
-        y: currentRrm.y(),
-      });
-    }
-    return res;
+    const slotWidth = currentRrm.width() / this.requestSlots;
+
+    return Array.from({ length: this.requestSlots }, (_, i) => ({
+      x: currentRrm.x() + slotWidth * (i + 0.5),
+      y: currentRrm.y() + currentRrm.height(),
+    }));
   }
 
   #getRrmShape(startingX, startingY, tickWidth, tickHeight, requestSlots) {
-    let points = [startingX, startingY + tickHeight];
+    let points = [0, tickHeight];
 
     for (let iter = 0; iter < requestSlots; iter++) {
       points.push(
-        startingX + tickWidth * iter,
-        startingY,
-        startingX + tickWidth * (iter + 1),
-        startingY,
-        startingX + tickWidth * (iter + 1),
-        startingY + tickHeight,
+        tickWidth * iter,
+        0,
+        tickWidth * (iter + 1),
+        0,
+        tickWidth * (iter + 1),
+        tickHeight,
       );
     }
 
     return new Konva.Line({
-      y: 10,
-      x: 5,
+      x: startingX,
+      y: startingY,
       points: points,
       stroke: "blue",
       strokeWidth: 3,

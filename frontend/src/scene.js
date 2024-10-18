@@ -49,7 +49,7 @@ export class Scene {
       this.visualSensors.animateSensorToPos(
         0,
         requestSlotsPos[0].x,
-        requestSlotsPos[0].x,
+        requestSlotsPos[0].y,
       ),
       this.visualSensors.animateSensorToPos(
         1,
