@@ -17,13 +17,13 @@ document
     }
 
     fetch(`/api/simulate?${params.toString()}`)
-      .then((response) => {
+      .then(async (response) => {
         scene.clearScene();
 
         if (!response.ok) {
-          throw new Error(
-            `HTTP error, status: ${response.status}, message: ${response.message}`,
-          );
+          return response.text().then((errorMessage) => {
+            throw new Error(errorMessage);
+          });
         }
         return response.json();
       })
@@ -41,7 +41,7 @@ document
         console.error(error);
 
         document.getElementById("errorBox").textContent =
-          `An error occurred while running the simulation: ${error.message}`;
+          `An error occurred: ${error.message}`;
       });
   });
 
