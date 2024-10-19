@@ -1,23 +1,39 @@
 import Konva from "konva";
 import { buildSensor } from "./visual-sensor-helper";
+import { GridAllocator } from "./grid-allocator";
 
 export class VisualSensorsGrid {
   constructor(x, y, maxWidth, sensorCount, sensorRadius) {
     const fontSize = 18;
 
     // Create the texts
-    this.text = new Konva.Group({ x: x, y: y });
+    this.textGroup = new Konva.Group({ x: x, y: y });
 
-    this.text.add(
-      ...["Idle", "Backoff 0", "Backoff 1"].map((str, idx, initialArray) => {
-        return new Konva.Text({
-          x: (maxWidth / initialArray.length) * idx,
-          text: str,
-          fontSize: fontSize,
-          fontFamily: "Arial",
-        });
-      }),
+    this.textGroup.add(
+      ...["Idle", "Backoff 0", "Backoff 1", "Backoff +"].map(
+        (str, idx, initialArray) => {
+          return new Konva.Text({
+            x: (maxWidth / initialArray.length) * idx,
+            text: str,
+            fontSize: fontSize,
+            fontFamily: "Arial",
+          });
+        },
+      ),
     );
+
+    // Create the grid allocators
+    this.gridAllocators = this.textGroup
+      .getChildren()
+      .map((text, _, initialArray) => {
+        return new GridAllocator(
+          this.textGroup.x() + text.x() + sensorRadius,
+          this.textGroup.y() + 50,
+          sensorRadius * 2.5,
+          Math.floor(maxWidth / initialArray.length / (sensorRadius * 2.8)),
+          sensorCount,
+        );
+      });
 
     // Create the sensors
     this.sensors = new Konva.Group();
@@ -26,19 +42,18 @@ export class VisualSensorsGrid {
     let newY = y + fontSize * 2;
 
     for (let i = 0; i < sensorCount; i++) {
-      this.sensors.add(buildSensor(newX, newY, sensorRadius, i));
+      const sensor = buildSensor(0, 0, sensorRadius, i);
+      const pos = this.gridAllocators[0].allocate(sensor);
 
-      if ((i + 1) % 5 === 0) {
-        newX = x + sensorRadius;
-        newY += 100;
-      } else {
-        newX += 50;
-      }
+      sensor.x(pos.x);
+      sensor.y(pos.y);
+
+      this.sensors.add(sensor);
     }
   }
 
   get shape() {
-    return [this.sensors, this.text];
+    return [this.sensors, this.textGroup];
   }
 
   animateSensorToPos(sensorIndex, destX, destY) {
