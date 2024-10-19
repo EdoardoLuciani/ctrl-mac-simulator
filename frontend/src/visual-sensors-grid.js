@@ -56,6 +56,20 @@ export class VisualSensorsGrid {
     return [this.sensors, this.textGroup];
   }
 
+  animateSensorToSection(sensorIndex, sectionIndex) {
+    const sensor = this.sensors.children[sensorIndex];
+
+    this.gridAllocators.forEach((allocator) => allocator.free(sensor));
+    const pos = this.gridAllocators[sectionIndex].allocate(sensor);
+
+    return {
+      node: sensor,
+      duration: 1,
+      x: pos.x,
+      y: pos.y,
+    };
+  }
+
   animateSensorToPos(sensorIndex, destX, destY) {
     const sensor = this.sensors.children[sensorIndex];
 
