@@ -2,8 +2,6 @@ export class GridAllocator {
   constructor(x, y, elemSize, maxElemsPerRow, maxElems) {
     this.allocations = new Array(Number(maxElems)).fill(null);
 
-    console.log(this.allocations);
-
     this.elemSize = elemSize;
     this.maxElemsPerRow = maxElemsPerRow;
     this.x = x;
