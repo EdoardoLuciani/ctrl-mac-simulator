@@ -47,7 +47,8 @@ export class Scene {
       { id: 1, requestSlot: 0 },
     ];
     this.tweenPacer.queueTweenGroup(
-      ...this.#getTweenGroup(sensorsWithRequestSlot),
+      this.#getTweenGroup(sensorsWithRequestSlot),
+      () => this.logHighlighter.highlightLines(3, 5),
     );
 
     sensorsWithRequestSlot = [
@@ -55,7 +56,8 @@ export class Scene {
       { id: 0, requestSlot: 0 },
     ];
     this.tweenPacer.queueTweenGroup(
-      ...this.#getTweenGroup(sensorsWithRequestSlot),
+      this.#getTweenGroup(sensorsWithRequestSlot),
+      () => this.logHighlighter.highlightLines(7, 10),
     );
 
     sensorsWithRequestSlot = [
@@ -63,7 +65,7 @@ export class Scene {
       { id: 1, requestSlot: 0 },
     ];
     this.tweenPacer.queueTweenGroup(
-      ...this.#getTweenGroup(sensorsWithRequestSlot),
+      this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
     sensorsWithRequestSlot = [
@@ -71,18 +73,15 @@ export class Scene {
       { id: 0, requestSlot: 0 },
     ];
     this.tweenPacer.queueTweenGroup(
-      ...this.#getTweenGroup(sensorsWithRequestSlot),
+      this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
-    this.tweenPacer.queueTweenGroup(
+    this.tweenPacer.queueTweenGroup([
       this.visualSensors.animateSensorToSection(0, 1),
       this.visualSensors.animateSensorToSection(1, 1),
-    );
+    ]);
 
     this.tweenPacer.playQueue();
-
-    this.logHighlighter.highlightLines(3, 5);
-    this.logHighlighter.highlightLines(7, 10);
   }
 
   #getTweenGroup(sensorsWithRequestSlot) {
