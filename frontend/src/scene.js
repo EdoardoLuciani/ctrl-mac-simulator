@@ -19,7 +19,7 @@ export class Scene {
     this.sensorRadius = 20;
 
     this.tweenPacer = new TweenPacer();
-    this.logHighlither = new LogHighligther();
+    this.logHighlighter = new LogHighligther();
   }
 
   setupScene(sensorCount, requestSlots, log) {
@@ -38,7 +38,7 @@ export class Scene {
     );
     this.layer.add(...this.visualSensors.shape, ...this.visualGateway.shape);
 
-    this.logHighlither.text = log;
+    this.logHighlighter.text = log;
   }
 
   playAnimations() {
@@ -80,6 +80,9 @@ export class Scene {
     );
 
     this.tweenPacer.playQueue();
+
+    this.logHighlighter.highlightLines(3, 5);
+    this.logHighlighter.highlightLines(7, 10);
   }
 
   #getTweenGroup(sensorsWithRequestSlot) {
@@ -99,6 +102,6 @@ export class Scene {
   clearScene() {
     this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
-    this.logHighlither.text = "";
+    this.logHighlighter.text = "";
   }
 }
