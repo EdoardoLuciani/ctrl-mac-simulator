@@ -17,21 +17,31 @@ document
     }
 
     fetch(`/api/simulate?${params.toString()}`)
-      .then((response) => response.json())
-      .then((data) => {
-        document.getElementById("result").textContent = data.logs.join("\n");
-
+      .then((response) => {
         scene.clearScene();
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP error, status: ${response.status}, message: ${response.message}`,
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        document.getElementById("errorBox").textContent = "";
+
         scene.setupScene(
           formData.get("sensor_count"),
           formData.get("request_slots"),
+          data.logs.join("\n"),
         );
         scene.playAnimations();
       })
       .catch((error) => {
-        console.error("Error:", error);
-        document.getElementById("result").textContent =
-          "An error occurred while running the simulation.";
+        console.error(error);
+
+        document.getElementById("errorBox").textContent =
+          `An error occurred while running the simulation: ${error.message}`;
       });
   });
 
