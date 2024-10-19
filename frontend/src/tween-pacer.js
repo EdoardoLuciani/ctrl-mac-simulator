@@ -1,6 +1,8 @@
 export class TweenPacer {
   constructor() {
     this.tweenGroupConstructors = [];
+    this.tweenGroupCallbacks = [];
+
     this.currentGroupIndex = 0;
 
     this.currentTweenGroup = [];
@@ -8,8 +10,14 @@ export class TweenPacer {
     this.isPlaying = false;
   }
 
-  queueTweenGroup(...tweensBatch) {
+  queueTweenGroup(tweensBatch, groupCallback = null) {
+    if (!Array.isArray(tweensBatch)) {
+      console.error("tweensBatch must be an array");
+      return this;
+    }
+
     this.tweenGroupConstructors.push(tweensBatch);
+    this.tweenGroupCallbacks.push(groupCallback);
     return this;
   }
 
@@ -103,6 +111,11 @@ export class TweenPacer {
 
       this.currentTweenGroup.forEach((tween) => tween.destroy());
       this.currentTweenGroup = [];
+
+      const callback = this.tweenGroupCallbacks[this.currentGroupIndex];
+      if (callback) {
+        callback();
+      }
 
       if (value === "finished") {
         this.currentGroupIndex++;
