@@ -10,11 +10,11 @@ describe("GridAllocator", () => {
 
   test("constructor initializes correctly", () => {
     expect(allocator.allocationsSlotsStatus).toHaveLength(20);
-    expect(
-      allocator.allocationsSlotsStatus.every((slot) => slot === null),
-    ).toBe(true);
+    expect(allocator.allocationsSlotsStatus.every((slot) => slot === 0)).toBe(
+      true,
+    );
     expect(allocator.handleToIdx.size).toBe(0);
-    expect(allocator.elemSize).toBe(30);
+    expect(allocator.elemPhysicalSize).toBe(30);
     expect(allocator.maxElemsPerRow).toBe(5);
     expect(allocator.x).toBe(10);
     expect(allocator.y).toBe(20);
@@ -50,7 +50,7 @@ describe("GridAllocator", () => {
   test("free removes allocation correctly", () => {
     allocator.allocate("handle1");
     allocator.free("handle1");
-    expect(allocator.allocationsSlotsStatus[0]).toBeNull();
+    expect(allocator.allocationsSlotsStatus[0]).toBeFalsy();
     expect(allocator.handleToIdx.has("handle1")).toBe(false);
   });
 
