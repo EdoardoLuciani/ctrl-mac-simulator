@@ -1,6 +1,7 @@
 export class GridAllocator {
   constructor(x, y, elemSize, maxElemsPerRow, maxElems) {
-    this.allocations = new Array(Number(maxElems)).fill(null);
+    this.allocationsSlotsStatus = new Array(Number(maxElems)).fill(null);
+    this.handleToIdx = new Map();
 
     this.elemSize = elemSize;
     this.maxElemsPerRow = maxElemsPerRow;
@@ -9,22 +10,27 @@ export class GridAllocator {
   }
 
   allocate(handle) {
-    const index = this.allocations.findIndex((element) => element === null);
+    const index = this.allocationsSlotsStatus.findIndex(
+      (element) => element === null,
+    );
     if (index === -1) {
       console.error("Allocator is full");
       return null;
     }
 
-    this.allocations[index] = handle;
+    this.allocationsSlotsStatus[index] = true;
+    this.handleToIdx.set(handle, index);
     return this.#getXYPosFromIndex(index);
   }
 
   free(handle) {
-    const index = this.allocations.findIndex((element) => element === handle);
-    if (index === -1) {
+    const index = this.handleToIdx.get(handle);
+    if (index === undefined) {
       return null;
     }
-    this.allocations[index] = null;
+
+    this.allocationsSlotsStatus[index] = null;
+    this.handleToIdx.delete(handle);
   }
 
   #getXYPosFromIndex(index) {
