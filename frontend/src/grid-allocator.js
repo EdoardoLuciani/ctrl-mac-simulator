@@ -22,7 +22,6 @@ export class GridAllocator {
   free(handle) {
     const index = this.allocations.findIndex((element) => element === handle);
     if (index === -1) {
-      console.warn("Could not find provided handle");
       return null;
     }
     this.allocations[index] = null;
