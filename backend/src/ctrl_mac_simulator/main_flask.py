@@ -64,7 +64,8 @@ def simulate():
     # Prepare response
     response = {
         "logs": global_logger_memory_handler.logs,
-        # "stats": StatTracker.get_stats() if args.plot else None
+        "ftr_values": stat_tracker.ftr_tracker,
+        "measurement_latencies": stat_tracker.measurement_latencies
     }
 
     return jsonify(response)
