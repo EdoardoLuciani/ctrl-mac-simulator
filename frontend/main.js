@@ -3,7 +3,7 @@ import { Scene } from "./src/scene";
 import { Plotter } from "./src/plotter";
 
 const scene = new Scene("canvasColumn");
-const plotter = new Plotter("plotly-tester");
+const plotter = new Plotter("plotly-graph");
 
 document
   .getElementById("simulationForm")
