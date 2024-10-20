@@ -25,7 +25,15 @@ export class Plotter {
     const layout = {
       grid: { rows: 2, columns: 1, pattern: "independent" },
       height: 800,
+      margin: { l: 0, r: 0, t: 150, b: 0 },
       title: "FTR and Measurement Latency Analysis",
+      legend: {
+        orientation: "h",
+        x: 0.5,
+        y: 1.1,
+        xanchor: "center",
+        yanchor: "top",
+      },
       annotations: [
         {
           text: "FTR Values Time Series",
