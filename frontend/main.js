@@ -1,7 +1,9 @@
 import "./style.css";
 import { Scene } from "./src/scene";
+import { Plotter } from "./src/plotter";
 
 const scene = new Scene("canvasColumn");
+const plotter = new Plotter("plotly-tester");
 
 document
   .getElementById("simulationForm")
@@ -29,6 +31,8 @@ document
       })
       .then((data) => {
         document.getElementById("errorBox").textContent = "";
+
+        plotter.plot(data.ftr_values, data.measurement_latencies);
 
         scene.setupScene(
           formData.get("sensor_count"),
