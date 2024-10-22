@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "*pipeline*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rye
+        uses: eifinger/setup-rye@v4
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          rye sync
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          rye test
