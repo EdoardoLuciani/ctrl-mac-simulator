@@ -56,7 +56,7 @@ describe("GridAllocator", () => {
 
   test("free does nothing for non-existent handle", () => {
     const result = allocator.free("nonExistentHandle");
-    expect(result).toBeNull();
+    expect(result).toBeUndefined();
   });
 
   test("allocate reuses freed slot", () => {
