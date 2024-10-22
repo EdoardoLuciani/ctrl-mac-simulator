@@ -94,7 +94,11 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Frontend statistics plottings
 
 ### Issues discussed and solutions agreed
--
+- Subtext for backoff delay
+- Backoff 2 column
+- User studies
+- Figma prototyping
+- Start and stop on the text for the log
 
 ### Objectives for the next week
 - Animation restart button
