@@ -41,6 +41,20 @@ select {
     width: 200px;
 }
 
+.error-box {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffeeee;
+    border: 1px solid #ffcccc;
+    color: #ff0000;
+    border-radius: 4px;
+    display: none;
+}
+
+.error-box:not(:empty) {
+    display: block;
+}
+
 #result {
     border: 1px solid #ccc;
     padding: 10px;

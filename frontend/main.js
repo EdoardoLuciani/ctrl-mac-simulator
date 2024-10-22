@@ -1,7 +1,9 @@
 import "./style.css";
 import { Scene } from "./src/scene";
+import { Plotter } from "./src/plotter";
 
 const scene = new Scene("canvasColumn");
+const plotter = new Plotter("plotly-graph");
 
 document
   .getElementById("simulationForm")
@@ -17,18 +19,33 @@ document
     }
 
     fetch(`/api/simulate?${params.toString()}`)
-      .then((response) => response.json())
-      .then((data) => {
-        document.getElementById("result").textContent = data.logs.join("\n");
-
+      .then(async (response) => {
         scene.clearScene();
-        scene.setupScene(formData.get("sensor_count"));
+
+        if (!response.ok) {
+          return response.text().then((errorMessage) => {
+            throw new Error(errorMessage);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        document.getElementById("errorBox").textContent = "";
+
+        plotter.plot(data.ftr_values, data.measurement_latencies);
+
+        scene.setupScene(
+          formData.get("sensor_count"),
+          formData.get("request_slots"),
+          data.logs.join("\n"),
+        );
         scene.playAnimations();
       })
       .catch((error) => {
-        console.error("Error:", error);
-        document.getElementById("result").textContent =
-          "An error occurred while running the simulation.";
+        console.error(error);
+
+        document.getElementById("errorBox").textContent =
+          `An error occurred: ${error.message}`;
       });
   });
 

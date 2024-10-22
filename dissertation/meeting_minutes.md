@@ -82,3 +82,25 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Animation restart button
 - Wire up simulation events to animation
 - Better UI style and icon pack
+
+
+## 22 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented the new animation mentioned in last week meeting
+- Better error handling of backend/frontend code
+- Dynamic highlighting of text during animation playing
+- Frontend statistics plottings
+
+### Issues discussed and solutions agreed
+- Subtext for backoff delay
+- Backoff 2 column
+- User studies
+- Figma prototyping
+- Start and stop on the text for the log
+
+### Objectives for the next week
+- Animation restart button
+- Wire up simulation events to animation
+- Better UI style and icon pack

@@ -13,7 +13,7 @@
                 <form id="simulationForm">
                     <label>
                         Sensor Count:
-                        <input type="number" name="sensor_count" value="6" />
+                        <input type="number" name="sensor_count" value="25" />
                     </label>
                     <label>
                         Data Channels:
@@ -60,6 +60,7 @@
                     <button type="submit">Generate Simulation</button>
                     <button type="button" id="resetButton">Reset</button>
                 </form>
+                <div id="errorBox" class="error-box"></div>
             </div>
             <div id="canvasColumn"></div>
             <div id="resultColumn">
@@ -71,6 +72,8 @@
                     <button type="button" , id="pauseButton">&#9614;</button>
                     <button type="button" , id="nextButton">&#8594;</button>
                 </div>
+
+                <div id="plotly-graph"></div>
             </div>
         </div>
 
