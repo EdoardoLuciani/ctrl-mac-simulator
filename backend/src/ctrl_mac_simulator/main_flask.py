@@ -1,5 +1,6 @@
 import simpy, random, logging, sys, pathlib, io
 from flask import Flask, request, jsonify
+from http import HTTPStatus
 
 # Fix for rye that does not load the src directory as a path
 sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
@@ -28,38 +29,43 @@ def simulate():
     global_logger_memory_handler = GlobalLoggerMemoryHandler()
     logging_level = logging.INFO  # getattr(logging, args.log_level.upper())
 
-    gateway = Gateway(
-        env,
-        args["data_channels"],
-        args["data_slots_per_channel"],
-        args["request_slots"],
-        args["rrm_period"],
-        args["max_cycles"],
-        global_logger_memory_handler,
-        logging_level,
-        stat_tracker,
-    )
-    sensors = [
-        Sensor(
+    try:
+        gateway = Gateway(
             env,
-            i,
-            args["sensors_measurement_chance"],
-            gateway.rrm_message_event,
-            gateway.transmission_request_messages,
-            gateway.sensor_data_messages,
+            args["data_channels"],
+            args["data_slots_per_channel"],
+            args["request_slots"],
+            args["rrm_period"],
+            args["max_cycles"],
             global_logger_memory_handler,
             logging_level,
             stat_tracker,
         )
-        for i in range(args["sensor_count"])
-    ]
+        sensors = [
+            Sensor(
+                env,
+                i,
+                args["sensors_measurement_chance"],
+                gateway.rrm_message_event,
+                gateway.transmission_request_messages,
+                gateway.sensor_data_messages,
+                global_logger_memory_handler,
+                logging_level,
+                stat_tracker,
+            )
+            for i in range(args["sensor_count"])
+        ]
+    except ValueError as e:
+        return str(e), HTTPStatus.BAD_REQUEST
+
 
     env.run()
 
     # Prepare response
     response = {
         "logs": global_logger_memory_handler.logs,
-        # "stats": StatTracker.get_stats() if args.plot else None
+        "ftr_values": stat_tracker.ftr_tracker,
+        "measurement_latencies": stat_tracker.measurement_latencies
     }
 
     return jsonify(response)
