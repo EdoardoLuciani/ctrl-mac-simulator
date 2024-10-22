@@ -37,6 +37,9 @@ jobs:
       - name: Install Rye
         uses: eifinger/setup-rye@v4
 
+      - name: Install pangocairo
+        run: sudo apt install libpangocairo-1.0-0
+
       - name: Install backend dependencies
         run: |
           cd backend
