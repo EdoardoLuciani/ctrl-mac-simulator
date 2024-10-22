@@ -19,19 +19,20 @@ jobs:
           node-version: "18.x"
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: |
+          cd frontend
+          npm ci
 
       - name: Run frontend tests
-        run: npm test
+        run: |
+          cd frontend
+          npm test
 
   backend-tests:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Change to backend directory
-        run: cd backend
 
       - name: Install Rye
         uses: eifinger/setup-rye@v4
@@ -40,7 +41,11 @@ jobs:
         run: sudo apt-get install libsdl-pango-dev
 
       - name: Install backend dependencies
-        run: rye sync
+        run: |
+          cd backend
+          rye sync
 
       - name: Run backend tests
-        run: rye test
+        run: |
+          cd backend
+          rye test
