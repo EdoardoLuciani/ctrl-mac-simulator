@@ -55,8 +55,6 @@ document.getElementById("resetButton").addEventListener("click", () => {
 });
 
 document.getElementById("playPauseButton").addEventListener("click", () => {
-  scene.tweenPacer.playQueue();
-
   const currentState = playPauseButton.dataset.state;
 
   if (currentState === "paused") {
@@ -76,4 +74,8 @@ document.getElementById("prevButton").addEventListener("click", () => {
 
 document.getElementById("nextButton").addEventListener("click", () => {
   scene.tweenPacer.fastForwardToNextGroup();
+});
+
+document.getElementById("restartButton").addEventListener("click", () => {
+  scene.tweenPacer.stepToGroup(1);
 });
