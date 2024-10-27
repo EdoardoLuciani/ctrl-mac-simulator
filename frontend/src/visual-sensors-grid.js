@@ -63,10 +63,12 @@ export class VisualSensorsGrid {
     const pos = this.gridAllocators[sectionIndex].allocate(sensor);
 
     return {
-      node: sensor,
-      duration: 1,
-      x: pos.x,
-      y: pos.y,
+      tweenConstructor: {
+        node: sensor,
+        duration: 1,
+        x: pos.x,
+        y: pos.y,
+      },
     };
   }
 
@@ -74,10 +76,12 @@ export class VisualSensorsGrid {
     const sensor = this.sensors.children[sensorIndex];
 
     return {
-      node: sensor,
-      duration: 1,
-      x: destX,
-      y: destY,
+      tweenConstructor: {
+        node: sensor,
+        duration: 1,
+        x: destX,
+        y: destY,
+      },
     };
   }
 }
