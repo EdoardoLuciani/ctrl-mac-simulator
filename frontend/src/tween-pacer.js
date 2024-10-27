@@ -76,8 +76,8 @@ export class TweenPacer {
 
           tweenConstructor.node.getChildren()[2].text(step.oldSubscript);
           tweenConstructor.node.position({
-            x: step["x"],
-            y: step["y"],
+            x: step.x,
+            y: step.y,
           });
 
           const tween = new Konva.Tween(tweenConstructor);
