@@ -72,10 +72,10 @@ export class TweenPacer {
         let completedTweens = 0;
 
         this.currentTweenGroup = currentGroup.map((step, index) => {
-          const tweenConstructor = step["tweenConstructor"];
+          const tweenConstructor = step.tweenConstructor;
 
-          tweenConstructor["node"].getChildren()[2].text(step["oldSubscript"]);
-          tweenConstructor["node"].position({
+          tweenConstructor.node.getChildren()[2].text(step.oldSubscript);
+          tweenConstructor.node.position({
             x: step["x"],
             y: step["y"],
           });
@@ -83,9 +83,8 @@ export class TweenPacer {
           const tween = new Konva.Tween(tweenConstructor);
 
           tween.onReset = () => {
-            if (tweenConstructor.onReset) {
-              tweenConstructor.onReset();
-            }
+            if (tweenConstructor.onReset) tweenConstructor.onReset();
+
             completedTweens++;
             if (completedTweens === currentGroup.length) {
               resolve("reset");
@@ -93,9 +92,8 @@ export class TweenPacer {
           };
 
           tween.onFinish = () => {
-            if (tweenConstructor.onFinish) {
-              tweenConstructor.onFinish();
-            }
+            if (tweenConstructor.onFinish) tweenConstructor.onFinish();
+
             completedTweens++;
             if (completedTweens === currentGroup.length) {
               resolve("finished");
@@ -118,9 +116,7 @@ export class TweenPacer {
 
       if (value === "finished") {
         currentGroup.forEach((step) => {
-          step["tweenConstructor"]["node"]
-            .getChildren()[2]
-            .text(step["newSubscript"]);
+          step.tweenConstructor.node.getChildren()[2].text(step.newSubscript);
         });
 
         this.currentGroupIndex++;
