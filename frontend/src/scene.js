@@ -92,6 +92,7 @@ export class Scene {
         elem.id,
         requestSlotsPos[elem.requestSlot].x,
         requestSlotsPos[elem.requestSlot].y,
+        requestSlotsPos[elem.requestSlot].x,
       );
       requestSlotsPos[elem.requestSlot].y += this.sensorRadius * 2.25;
       return anim;
