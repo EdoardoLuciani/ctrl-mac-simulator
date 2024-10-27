@@ -10,7 +10,7 @@ export class VisualSensorsGrid {
     this.textGroup = new Konva.Group({ x: x, y: y });
 
     this.textGroup.add(
-      ...["Idle", "Backoff 0", "Backoff 1", "Backoff +"].map(
+      ...["Idle", "Backoff 0", "Backoff 1", "Backoff 2", "Backoff +"].map(
         (str, idx, initialArray) => {
           return new Konva.Text({
             x: (maxWidth / initialArray.length) * idx,
