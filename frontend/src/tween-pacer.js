@@ -39,14 +39,17 @@ export class TweenPacer {
     this.#manageTweens("pause");
   }
 
-  rollbackToPreviousGroup() {
-    if (this.currentGroupIndex > 0) {
-      this.#manageTweens("reset");
-    }
+  gotoPreviousGroup() {
+    this.goToGroup(this.currentGroupIndex - 1);
   }
 
-  fastForwardToNextGroup() {
-    if (this.currentGroupIndex < this.stepsGroups.length - 1) {
+  goToNextGroup() {
+    this.goToGroup(this.currentGroupIndex + 1);
+  }
+
+  goToGroup(groupIndex) {
+    if (groupIndex >= 0 && groupIndex < this.stepsGroups.length) {
+      this.currentGroupIndex = groupIndex - 1;
       this.#manageTweens("finish");
     }
   }
@@ -72,21 +75,12 @@ export class TweenPacer {
 
           const tween = new Konva.Tween(tweenConstructor);
 
-          tween.onReset = () => {
-            if (tweenConstructor.onReset) tweenConstructor.onReset();
-
-            completedTweens++;
-            if (completedTweens === currentGroup.length) {
-              resolve("reset");
-            }
-          };
-
           tween.onFinish = () => {
             if (tweenConstructor.onFinish) tweenConstructor.onFinish();
 
             completedTweens++;
             if (completedTweens === currentGroup.length) {
-              resolve("finished");
+              resolve();
             }
           };
 
@@ -96,7 +90,7 @@ export class TweenPacer {
         });
       });
 
-      const value = await tweenPromise;
+      await tweenPromise;
 
       this.#manageTweens("destroy");
       this.currentTweenGroup = [];
@@ -104,11 +98,7 @@ export class TweenPacer {
       const callback = this.groupCallbacks[this.currentGroupIndex];
       if (callback) callback();
 
-      if (value === "finished") {
-        this.currentGroupIndex++;
-      } else {
-        this.currentGroupIndex--;
-      }
+      this.currentGroupIndex++;
     }
 
     this.isPlaying = false;
