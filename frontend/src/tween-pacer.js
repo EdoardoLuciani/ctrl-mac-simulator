@@ -32,7 +32,7 @@ export class TweenPacer {
       this.#manageTweens("play");
       return;
     }
-    this.#playNextGroup();
+    this.#playGroups();
   }
 
   pauseQueue() {
@@ -61,8 +61,9 @@ export class TweenPacer {
     this.isPlaying = false;
   }
 
-  async #playNextGroup() {
+  async #playGroups() {
     this.isPlaying = true;
+    this.currentGroupIndex = 0;
 
     while (this.currentGroupIndex < this.stepsGroups.length) {
       const currentGroup = this.stepsGroups[this.currentGroupIndex];
@@ -102,6 +103,5 @@ export class TweenPacer {
     }
 
     this.isPlaying = false;
-    this.currentGroupIndex = 0;
   }
 }
