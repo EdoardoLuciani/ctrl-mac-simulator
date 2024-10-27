@@ -11,15 +11,23 @@ export function buildSensor(x, y, sensorRadius, sensorId) {
     }),
   );
 
-  const text = new Konva.Text({
+  const sensorIdText = new Konva.Text({
     text: `S${sensorId}`,
     fontSize: 18,
     fontFamily: "Arial",
   });
-  text.x(-text.width() / 2);
-  text.y(-text.height() / 2);
+  sensorIdText.x(-sensorIdText.width() / 2);
+  sensorIdText.y(-sensorIdText.height() / 2);
+  group.add(sensorIdText);
 
-  group.add(text);
+  const sensorSubscript = new Konva.Text({
+    text: `x`,
+    fontSize: 14,
+    fontFamily: "Arial",
+  });
+  sensorSubscript.x(-sensorSubscript.width() / 2);
+  sensorSubscript.y(sensorSubscript.height() / 2.5);
+  group.add(sensorSubscript);
 
   return group;
 }
