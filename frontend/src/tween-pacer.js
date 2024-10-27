@@ -29,38 +29,34 @@ export class TweenPacer {
     this.#playNextGroup();
   }
 
-  pauseQueue() {
+  #manageTweens(action) {
     if (this.currentTweenGroup.length) {
-      this.currentTweenGroup.forEach((tween) => tween.pause());
+      this.currentTweenGroup.forEach((tween) => tween[action]());
     }
+  }
+
+  pauseQueue() {
+    this.#manageTweens("pause");
   }
 
   resumeQueue() {
-    if (this.currentTweenGroup.length) {
-      this.currentTweenGroup.forEach((tween) => tween.play());
-    }
+    this.#manageTweens("play");
   }
 
   rollbackToPreviousGroup() {
-    if (this.currentTweenGroup.length && this.currentGroupIndex > 0) {
-      this.currentTweenGroup.forEach((tween) => tween.reset());
+    if (this.currentGroupIndex > 0) {
+      this.#manageTweens("reset");
     }
   }
 
   fastForwardToNextGroup() {
-    if (
-      this.currentTweenGroup.length &&
-      this.currentGroupIndex < this.stepsGroups.length - 1
-    ) {
-      this.currentTweenGroup.forEach((tween) => tween.finish());
+    if (this.currentGroupIndex < this.stepsGroups.length - 1) {
+      this.#manageTweens("finish");
     }
   }
 
   clearQueue() {
-    if (this.currentTweenGroup.length) {
-      this.currentTweenGroup.forEach((tween) => tween.destroy());
-      this.currentTweenGroup = [];
-    }
+    this.#manageTweens("destroy");
     this.stepsGroups = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
@@ -114,13 +110,11 @@ export class TweenPacer {
 
       const value = await tweenPromise;
 
-      this.currentTweenGroup.forEach((tween) => tween.destroy());
+      this.#manageTweens("destroy");
       this.currentTweenGroup = [];
 
       const callback = this.groupCallbacks[this.currentGroupIndex];
-      if (callback) {
-        callback();
-      }
+      if (callback) callback();
 
       if (value === "finished") {
         currentGroup.forEach((step) => {
