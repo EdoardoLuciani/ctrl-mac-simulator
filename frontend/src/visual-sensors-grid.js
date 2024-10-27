@@ -38,6 +38,7 @@ export class VisualSensorsGrid {
     // Create the sensors
     this.sensors = new Konva.Group();
     this.sensorsPositions = [];
+    this.sensorsSubscripts = [];
 
     let newX = x + sensorRadius;
     let newY = y + fontSize * 2;
@@ -45,13 +46,12 @@ export class VisualSensorsGrid {
     for (let i = 0; i < sensorCount; i++) {
       const sensor = buildSensor(0, 0, sensorRadius, i);
       const pos = this.gridAllocators[0].allocate(sensor);
-
       sensor.x(pos.x);
       sensor.y(pos.y);
+      this.sensors.add(sensor);
 
       this.sensorsPositions.push({ x: pos.x, y: pos.y });
-
-      this.sensors.add(sensor);
+      this.sensorsSubscripts.push(null);
     }
   }
 
@@ -59,24 +59,28 @@ export class VisualSensorsGrid {
     return [this.sensors, this.textGroup];
   }
 
-  animateSensorToSection(sensorIndex, sectionIndex) {
+  animateSensorToSection(sensorIndex, sectionIndex, newSubscript = null) {
     const sensor = this.sensors.children[sensorIndex];
 
     this.gridAllocators.forEach((allocator) => allocator.free(sensor));
     const pos = this.gridAllocators[sectionIndex].allocate(sensor);
 
-    return this.animateSensorToPos(sensorIndex, pos.x, pos.y);
+    return this.animateSensorToPos(sensorIndex, pos.x, pos.y, newSubscript);
   }
 
-  animateSensorToPos(sensorIndex, destX, destY) {
+  animateSensorToPos(sensorIndex, destX, destY, newSubscript = null) {
     const sensor = this.sensors.children[sensorIndex];
     const oldPos = this.sensorsPositions[sensorIndex];
+    const oldSubscript = this.sensorsSubscripts[sensorIndex];
 
     this.sensorsPositions[sensorIndex] = { x: destX, y: destY };
+    this.sensorsSubscripts[sensorIndex] = newSubscript ?? oldSubscript;
 
     return {
       x: oldPos.x,
       y: oldPos.y,
+      oldSubscript,
+      newSubscript: this.sensorsSubscripts[sensorIndex],
       tweenConstructor: {
         node: sensor,
         duration: 1,
