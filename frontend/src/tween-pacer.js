@@ -78,6 +78,7 @@ export class TweenPacer {
         this.currentTweenGroup = currentGroup.map((step, index) => {
           const tweenConstructor = step["tweenConstructor"];
 
+          tweenConstructor["node"].getChildren()[2].text(step["oldSubscript"]);
           tweenConstructor["node"].position({
             x: step["x"],
             y: step["y"],
@@ -122,6 +123,12 @@ export class TweenPacer {
       }
 
       if (value === "finished") {
+        currentGroup.forEach((step) => {
+          step["tweenConstructor"]["node"]
+            .getChildren()[2]
+            .text(step["newSubscript"]);
+        });
+
         this.currentGroupIndex++;
       } else {
         this.currentGroupIndex--;
