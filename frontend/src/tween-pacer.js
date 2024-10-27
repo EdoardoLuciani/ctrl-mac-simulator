@@ -21,26 +21,22 @@ export class TweenPacer {
     return this;
   }
 
-  playQueue() {
-    if (this.isPlaying) {
-      console.warn("Queue is already playing! Skipping play request");
-      return;
-    }
-    this.#playNextGroup();
-  }
-
   #manageTweens(action) {
     if (this.currentTweenGroup.length) {
       this.currentTweenGroup.forEach((tween) => tween[action]());
     }
   }
 
-  pauseQueue() {
-    this.#manageTweens("pause");
+  playQueue() {
+    if (this.isPlaying) {
+      this.#manageTweens("play");
+      return;
+    }
+    this.#playNextGroup();
   }
 
-  resumeQueue() {
-    this.#manageTweens("play");
+  pauseQueue() {
+    this.#manageTweens("pause");
   }
 
   rollbackToPreviousGroup() {
