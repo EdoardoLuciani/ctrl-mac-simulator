@@ -37,6 +37,7 @@ export class VisualSensorsGrid {
 
     // Create the sensors
     this.sensors = new Konva.Group();
+    this.sensorsPositions = [];
 
     let newX = x + sensorRadius;
     let newY = y + fontSize * 2;
@@ -47,6 +48,8 @@ export class VisualSensorsGrid {
 
       sensor.x(pos.x);
       sensor.y(pos.y);
+
+      this.sensorsPositions.push({ x: pos.x, y: pos.y });
 
       this.sensors.add(sensor);
     }
@@ -62,20 +65,18 @@ export class VisualSensorsGrid {
     this.gridAllocators.forEach((allocator) => allocator.free(sensor));
     const pos = this.gridAllocators[sectionIndex].allocate(sensor);
 
-    return {
-      tweenConstructor: {
-        node: sensor,
-        duration: 1,
-        x: pos.x,
-        y: pos.y,
-      },
-    };
+    return this.animateSensorToPos(sensorIndex, pos.x, pos.y);
   }
 
   animateSensorToPos(sensorIndex, destX, destY) {
     const sensor = this.sensors.children[sensorIndex];
+    const oldPos = this.sensorsPositions[sensorIndex];
+
+    this.sensorsPositions[sensorIndex] = { x: destX, y: destY };
 
     return {
+      x: oldPos.x,
+      y: oldPos.y,
       tweenConstructor: {
         node: sensor,
         duration: 1,
