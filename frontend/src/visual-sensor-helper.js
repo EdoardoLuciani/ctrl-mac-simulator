@@ -21,7 +21,7 @@ export function buildSensor(x, y, sensorRadius, sensorId) {
   group.add(sensorIdText);
 
   const sensorSubscript = new Konva.Text({
-    text: `x`,
+    text: null,
     fontSize: 14,
     fontFamily: "Arial",
   });
