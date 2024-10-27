@@ -78,6 +78,11 @@ export class TweenPacer {
         this.currentTweenGroup = currentGroup.map((step, index) => {
           const tweenConstructor = step["tweenConstructor"];
 
+          tweenConstructor["node"].position({
+            x: step["x"],
+            y: step["y"],
+          });
+
           const tween = new Konva.Tween(tweenConstructor);
 
           tween.onReset = () => {
