@@ -69,13 +69,13 @@ document.getElementById("playPauseButton").addEventListener("click", () => {
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
-  scene.tweenPacer.rollbackToPreviousGroup();
+  scene.tweenPacer.gotoPreviousGroup();
 });
 
 document.getElementById("nextButton").addEventListener("click", () => {
-  scene.tweenPacer.fastForwardToNextGroup();
+  scene.tweenPacer.goToNextGroup();
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {
-  scene.tweenPacer.stepToGroup(1);
+  scene.tweenPacer.goToGroup(1);
 });
