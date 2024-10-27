@@ -77,5 +77,6 @@ document.getElementById("nextButton").addEventListener("click", () => {
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {
-  scene.tweenPacer.goToGroup(1);
+  scene.tweenPacer.goToGroup(0);
+  scene.tweenPacer.playQueue();
 });
