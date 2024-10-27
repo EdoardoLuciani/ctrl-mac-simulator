@@ -70,6 +70,7 @@ export class VisualSensorsGrid {
 
   animateSensorToPos(sensorIndex, destX, destY, newSubscript = null) {
     const sensor = this.sensors.children[sensorIndex];
+
     const oldPos = this.sensorsPositions[sensorIndex];
     const oldSubscript = this.sensorsSubscripts[sensorIndex];
 
@@ -77,15 +78,19 @@ export class VisualSensorsGrid {
     this.sensorsSubscripts[sensorIndex] = newSubscript ?? oldSubscript;
 
     return {
-      x: oldPos.x,
-      y: oldPos.y,
-      oldSubscript,
-      newSubscript: this.sensorsSubscripts[sensorIndex],
-      tweenConstructor: {
-        node: sensor,
-        duration: 1,
-        x: destX,
-        y: destY,
+      node: sensor,
+      duration: 1,
+      x: destX,
+      y: destY,
+      onStart: () => {
+        sensor.position({
+          x: oldPos.x,
+          y: oldPos.y,
+        });
+        sensor.getChildren()[2].text(oldSubscript);
+      },
+      onFinish: () => {
+        sensor.getChildren()[2].text(this.sensorsSubscripts[sensorIndex]);
       },
     };
   }
