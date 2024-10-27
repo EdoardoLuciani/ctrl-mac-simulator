@@ -67,6 +67,6 @@ select {
 #simulationControl {
     padding-top: 10px;
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     gap: 10px;
 }

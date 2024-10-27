@@ -80,8 +80,6 @@ export class Scene {
       this.visualSensors.animateSensorToSection(0, 1),
       this.visualSensors.animateSensorToSection(1, 1),
     ]);
-
-    this.tweenPacer.playQueue();
   }
 
   #getTweenGroup(sensorsWithRequestSlot) {

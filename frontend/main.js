@@ -54,12 +54,20 @@ document.getElementById("resetButton").addEventListener("click", () => {
   document.getElementById("result").textContent = "";
 });
 
-document.getElementById("playButton").addEventListener("click", () => {
+document.getElementById("playPauseButton").addEventListener("click", () => {
   scene.tweenPacer.playQueue();
-});
 
-document.getElementById("pauseButton").addEventListener("click", () => {
-  scene.tweenPacer.pauseQueue();
+  const currentState = playPauseButton.dataset.state;
+
+  if (currentState === "paused") {
+    scene.tweenPacer.playQueue();
+    playPauseButton.innerHTML = "&#9614;"; // pause symbol
+    playPauseButton.dataset.state = "playing";
+  } else {
+    scene.tweenPacer.pauseQueue();
+    playPauseButton.innerHTML = "&#9658;"; // play symbol
+    playPauseButton.dataset.state = "paused";
+  }
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
