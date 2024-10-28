@@ -64,6 +64,16 @@ select {
     white-space: pre-wrap;
 }
 
+.line-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 #simulationControl {
     padding-top: 10px;
     display: grid;
