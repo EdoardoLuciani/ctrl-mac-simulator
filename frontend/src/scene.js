@@ -48,7 +48,7 @@ export class Scene {
     ];
     this.tweenPacer.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLines(3, 5),
+      () => this.logHighlighter.highlightLogGroup(0),
     );
 
     sensorsWithRequestSlot = [
@@ -57,7 +57,7 @@ export class Scene {
     ];
     this.tweenPacer.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLines(7, 10),
+      () => this.logHighlighter.highlightLogGroup(1),
     );
 
     sensorsWithRequestSlot = [

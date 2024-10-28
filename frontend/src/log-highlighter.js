@@ -3,6 +3,7 @@ import { matches_started_request_reply_message } from "./helpers/log-matcher-hel
 export class LogHighligther {
   constructor(tweenPacer) {
     this.tweenPacer = tweenPacer;
+    this.prevHighlightIdx = null;
   }
 
   setLog(inputTextLines) {
@@ -27,6 +28,7 @@ export class LogHighligther {
       button.textContent = "→";
       button.onclick = () => {
         this.tweenPacer.goToGroup(index);
+        this.tweenPacer.playQueue();
       };
       lineContainer.appendChild(button);
 
@@ -38,18 +40,27 @@ export class LogHighligther {
     });
   }
 
-  highlightLines(startLine, endLine) {
-    const lines = this.text.split("\n");
+  highlightLogGroup(groupIdx) {
+    const lineContainers = document.querySelectorAll(".line-container");
 
-    // Highlight the specified lines
-    for (
-      let i = Math.max(startLine - 1, 0);
-      i < Math.min(endLine, lines.length);
-      i++
-    ) {
-      lines[i] = `<mark>${lines[i]}</mark>`;
+    if (this.prevHighlightIdx != null) {
+      const textDiv =
+        lineContainers[this.prevHighlightIdx].querySelector("div");
+      textDiv.innerHTML = textDiv.innerText;
     }
 
-    document.getElementById("result").innerHTML = lines.join("\n");
+    if (groupIdx >= 0 && groupIdx < lineContainers.length) {
+      const targetContainer = lineContainers[groupIdx];
+      const textDiv = targetContainer.querySelector("div");
+      textDiv.innerHTML = `<mark>${textDiv.innerText}</mark>`;
+
+      document.getElementById("result").scroll({
+        left: 0,
+        top: targetContainer.offsetTop,
+        behavior: "smooth",
+      });
+    }
+
+    this.prevHighlightIdx = groupIdx;
   }
 }
