@@ -1,25 +1,40 @@
+import { matches_started_request_reply_message } from "./helpers/log-matcher-helper";
+
 export class LogHighligther {
   constructor(tweenPacer) {
     this.tweenPacer = tweenPacer;
   }
 
-  get text() {
-    return document.getElementById("result").textContent;
-  }
+  setLog(inputTextLines) {
+    const result = inputTextLines.reduce((acc, line) => {
+      if (matches_started_request_reply_message(line)) {
+        acc.push([line]);
+      } else if (acc.length > 0) {
+        acc[acc.length - 1].push(line);
+      }
+      return acc;
+    }, []);
 
-  set text(x) {
-    document.getElementById("result").textContent = x;
+    const resultContainer = document.getElementById("result");
+    resultContainer.innerHTML = "";
 
-    const buttonContainer = document.getElementById("sectionButtons");
-    buttonContainer.innerHTML = ""; // Clear existing buttons
+    result.forEach((section, index) => {
+      const lineContainer = document.createElement("div");
+      lineContainer.className = "line-container";
 
-    this.text.split("\n").forEach((section, index) => {
       const button = document.createElement("button");
-      button.textContent = index;
-      button.addEventListener("click", () => {
+      button.className = "line-button";
+      button.textContent = "→";
+      button.onclick = () => {
         this.tweenPacer.goToGroup(index);
-      });
-      buttonContainer.appendChild(button);
+      };
+      lineContainer.appendChild(button);
+
+      const textDiv = document.createElement("div");
+      textDiv.innerText = section.join("\n");
+      lineContainer.appendChild(textDiv);
+
+      resultContainer.appendChild(lineContainer);
     });
   }
 
