@@ -38,7 +38,7 @@ export class Scene {
     );
     this.layer.add(...this.visualSensors.shape, ...this.visualGateway.shape);
 
-    this.logHighlighter.text = log;
+    this.logHighlighter.setLog(log);
   }
 
   playAnimations() {
@@ -100,6 +100,6 @@ export class Scene {
   clearScene() {
     this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
-    this.logHighlighter.text = null;
+    this.logHighlighter.setLog([]);
   }
 }
