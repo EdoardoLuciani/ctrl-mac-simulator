@@ -100,6 +100,6 @@ export class Scene {
   clearScene() {
     this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
-    this.logHighlighter.text = "";
+    this.logHighlighter.text = null;
   }
 }
