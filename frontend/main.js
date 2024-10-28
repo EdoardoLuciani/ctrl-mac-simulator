@@ -49,6 +49,7 @@ document
       });
   });
 
+// Button event listeners
 document.getElementById("resetButton").addEventListener("click", () => {
   scene.clearScene();
   document.getElementById("result").textContent = "";
@@ -79,4 +80,25 @@ document.getElementById("nextButton").addEventListener("click", () => {
 document.getElementById("restartButton").addEventListener("click", () => {
   scene.tweenPacer.goToGroup(0);
   scene.tweenPacer.playQueue();
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (event) => {
+  if (event.target.tagName === "INPUT") return;
+
+  switch (event.code) {
+    case "Space":
+      // Prevent the default spacebar action (like scrolling)
+      event.preventDefault();
+      document.getElementById("playPauseButton").click();
+      break;
+    case "ArrowLeft":
+      event.preventDefault();
+      document.getElementById("prevButton").click();
+      break;
+    case "ArrowRight":
+      event.preventDefault();
+      document.getElementById("nextButton").click();
+      break;
+  }
 });
