@@ -19,7 +19,7 @@ export class Scene {
     this.sensorRadius = 20;
 
     this.tweenPacer = new TweenPacer();
-    this.logHighlighter = new LogHighligther();
+    this.logHighlighter = new LogHighligther(this.tweenPacer);
   }
 
   setupScene(sensorCount, requestSlots, log) {

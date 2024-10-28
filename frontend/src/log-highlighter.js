@@ -1,5 +1,7 @@
 export class LogHighligther {
-  constructor() {}
+  constructor(tweenPacer) {
+    this.tweenPacer = tweenPacer;
+  }
 
   get text() {
     return document.getElementById("result").textContent;
@@ -7,6 +9,18 @@ export class LogHighligther {
 
   set text(x) {
     document.getElementById("result").textContent = x;
+
+    const buttonContainer = document.getElementById("sectionButtons");
+    buttonContainer.innerHTML = ""; // Clear existing buttons
+
+    this.text.split("\n").forEach((section, index) => {
+      const button = document.createElement("button");
+      button.textContent = index;
+      button.addEventListener("click", () => {
+        this.tweenPacer.goToGroup(index);
+      });
+      buttonContainer.appendChild(button);
+    });
   }
 
   highlightLines(startLine, endLine) {
