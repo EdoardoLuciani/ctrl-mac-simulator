@@ -55,15 +55,18 @@ document.getElementById("resetButton").addEventListener("click", () => {
 });
 
 document.getElementById("playPauseButton").addEventListener("click", () => {
+  const playPauseButton = document.getElementById("playPauseButton");
   const currentState = playPauseButton.dataset.state;
 
   if (currentState === "paused") {
     scene.tweenPacer.playQueue();
-    playPauseButton.innerHTML = "&#9614;"; // pause symbol
+    playPauseButton.querySelector("i").classList.remove("fa-play");
+    playPauseButton.querySelector("i").classList.add("fa-pause");
     playPauseButton.dataset.state = "playing";
   } else {
     scene.tweenPacer.pauseQueue();
-    playPauseButton.innerHTML = "&#9658;"; // play symbol
+    playPauseButton.querySelector("i").classList.remove("fa-pause");
+    playPauseButton.querySelector("i").classList.add("fa-play");
     playPauseButton.dataset.state = "paused";
   }
 });
