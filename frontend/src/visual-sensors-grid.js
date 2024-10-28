@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { buildSensor } from "./visual-sensor-helper";
+import { buildSensor } from "./helpers/visual-sensor-helper";
 import { GridAllocator } from "./grid-allocator";
 
 export class VisualSensorsGrid {
