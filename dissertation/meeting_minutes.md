@@ -104,3 +104,22 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Animation restart button
 - Wire up simulation events to animation
 - Better UI style and icon pack
+
+
+## 29 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented CI pipeline via github actions
+- Using github issues to track things to do
+- Storing prev state and next state for each element in the time traveler
+- Adding subtext on sensors plus ability to update it
+- Added keyboard shortcuts for start/stop/fast-forward/rollback
+- Icon pack for fancy icons
+- Grouped logs along with buttons on each section to go to that step
+
+### Issues discussed and solutions agreed
+-
+
+### Objectives for the next week
+- Wire up simulation events to animation
