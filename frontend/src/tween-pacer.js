@@ -66,6 +66,9 @@ export class TweenPacer {
     this.currentGroupIndex = 0;
 
     while (this.currentGroupIndex < this.stepsGroups.length) {
+      const callback = this.groupCallbacks[this.currentGroupIndex];
+      if (callback) callback();
+
       const currentGroup = this.stepsGroups[this.currentGroupIndex];
 
       const tweenPromise = new Promise((resolve, reject) => {
@@ -95,9 +98,6 @@ export class TweenPacer {
 
       this.#manageTweens("destroy");
       this.currentTweenGroup = [];
-
-      const callback = this.groupCallbacks[this.currentGroupIndex];
-      if (callback) callback();
 
       this.currentGroupIndex++;
     }
