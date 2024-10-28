@@ -1,8 +1,8 @@
 import { matches_started_request_reply_message } from "./helpers/log-matcher-helper";
 
 export class LogHighligther {
-  constructor(tweenPacer) {
-    this.tweenPacer = tweenPacer;
+  constructor(tweenTimeTraveler) {
+    this.tweenTimeTraveler = tweenTimeTraveler;
     this.prevHighlightIdx = null;
   }
 
@@ -27,8 +27,8 @@ export class LogHighligther {
       button.className = "line-button";
       button.textContent = "→";
       button.onclick = () => {
-        this.tweenPacer.goToGroup(index);
-        this.tweenPacer.playQueue();
+        this.tweenTimeTraveler.goToGroup(index);
+        this.tweenTimeTraveler.playQueue();
       };
       lineContainer.appendChild(button);
 
