@@ -30,14 +30,14 @@ document
         return response.json();
       })
       .then((data) => {
-        document.getElementById("errorBox").textContent = "";
+        document.getElementById("errorBox").textContent = null;
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
         scene.setupScene(
           formData.get("sensor_count"),
           formData.get("request_slots"),
-          data.logs.join("\n"),
+          data.logs,
         );
         scene.playAnimations();
       })
@@ -52,7 +52,6 @@ document
 // Button event listeners
 document.getElementById("resetButton").addEventListener("click", () => {
   scene.clearScene();
-  document.getElementById("result").textContent = "";
 });
 
 document.getElementById("playPauseButton").addEventListener("click", () => {
