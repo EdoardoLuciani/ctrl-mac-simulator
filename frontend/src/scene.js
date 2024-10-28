@@ -1,7 +1,7 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { VisualSensorsGrid } from "./visual-sensors-grid";
-import { TweenPacer } from "./tween-pacer";
+import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
 
 export class Scene {
@@ -18,8 +18,8 @@ export class Scene {
 
     this.sensorRadius = 20;
 
-    this.tweenPacer = new TweenPacer();
-    this.logHighlighter = new LogHighligther(this.tweenPacer);
+    this.tweenTimeTraveler = new TweenTimeTraveler();
+    this.logHighlighter = new LogHighligther(this.tweenTimeTraveler);
   }
 
   setupScene(sensorCount, requestSlots, log) {
@@ -46,7 +46,7 @@ export class Scene {
       { id: 0, requestSlot: 0 },
       { id: 1, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
       () => this.logHighlighter.highlightLogGroup(0),
     );
@@ -55,7 +55,7 @@ export class Scene {
       { id: 1, requestSlot: 0 },
       { id: 0, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
       () => this.logHighlighter.highlightLogGroup(1),
     );
@@ -64,7 +64,7 @@ export class Scene {
       { id: 0, requestSlot: 0 },
       { id: 1, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
@@ -72,11 +72,11 @@ export class Scene {
       { id: 1, requestSlot: 0 },
       { id: 0, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
-    this.tweenPacer.queueTweenGroup([
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualSensors.animateSensorToSection(0, 1),
       this.visualSensors.animateSensorToSection(1, 1),
     ]);
@@ -98,7 +98,7 @@ export class Scene {
   }
 
   clearScene() {
-    this.tweenPacer.clearQueue();
+    this.tweenTimeTraveler.clearQueue();
     this.layer.destroyChildren();
     this.logHighlighter.setLog([]);
   }

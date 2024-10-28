@@ -59,12 +59,12 @@ document.getElementById("playPauseButton").addEventListener("click", () => {
   const currentState = playPauseButton.dataset.state;
 
   if (currentState === "paused") {
-    scene.tweenPacer.playQueue();
+    scene.tweenTimeTraveler.playQueue();
     playPauseButton.querySelector("i").classList.remove("fa-play");
     playPauseButton.querySelector("i").classList.add("fa-pause");
     playPauseButton.dataset.state = "playing";
   } else {
-    scene.tweenPacer.pauseQueue();
+    scene.tweenTimeTraveler.pauseQueue();
     playPauseButton.querySelector("i").classList.remove("fa-pause");
     playPauseButton.querySelector("i").classList.add("fa-play");
     playPauseButton.dataset.state = "paused";
@@ -72,16 +72,16 @@ document.getElementById("playPauseButton").addEventListener("click", () => {
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
-  scene.tweenPacer.gotoPreviousGroup();
+  scene.tweenTimeTraveler.gotoPreviousGroup();
 });
 
 document.getElementById("nextButton").addEventListener("click", () => {
-  scene.tweenPacer.goToNextGroup();
+  scene.tweenTimeTraveler.goToNextGroup();
 });
 
 document.getElementById("restartButton").addEventListener("click", () => {
-  scene.tweenPacer.goToGroup(0);
-  scene.tweenPacer.playQueue();
+  scene.tweenTimeTraveler.goToGroup(0);
+  scene.tweenTimeTraveler.playQueue();
 });
 
 // Keyboard shortcuts
