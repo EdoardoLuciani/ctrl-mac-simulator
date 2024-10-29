@@ -119,7 +119,8 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Grouped logs along with buttons on each section to go to that step
 
 ### Issues discussed and solutions agreed
--
+- Maybe keep the logs collapsed by default, showing the ftr values, current time, how many sensors are backed off
+- Need to do user interviews https://moodle.gla.ac.uk/pluginfile.php/8432591/mod_resource/content/6/L4%20Projects_%20Marking%20Scheme.pdf
 
 ### Objectives for the next week
 - Wire up simulation events to animation
