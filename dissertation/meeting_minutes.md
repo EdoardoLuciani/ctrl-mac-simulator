@@ -104,3 +104,23 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Animation restart button
 - Wire up simulation events to animation
 - Better UI style and icon pack
+
+
+## 29 Oct 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Implemented CI pipeline via github actions
+- Using github issues to track things to do
+- Storing prev state and next state for each element in the time traveler
+- Adding subtext on sensors plus ability to update it
+- Added keyboard shortcuts for start/stop/fast-forward/rollback
+- Icon pack for fancy icons
+- Grouped logs along with buttons on each section to go to that step
+
+### Issues discussed and solutions agreed
+- Maybe keep the logs collapsed by default, showing the ftr values, current time, how many sensors are backed off
+- Need to do user interviews https://moodle.gla.ac.uk/pluginfile.php/8432591/mod_resource/content/6/L4%20Projects_%20Marking%20Scheme.pdf
+
+### Objectives for the next week
+- Wire up simulation events to animation
