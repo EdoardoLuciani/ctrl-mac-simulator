@@ -41,10 +41,12 @@ jobs:
         run: sudo apt-get install libsdl-pango-dev
 
       - name: Set up Python
-        run: uv python install
+        run: |
+          cd frontend
+          uv python install
+          uv sync --all-extras --dev
 
-      - name: Install the project
-        run: uv sync --all-extras --dev
-
-      - name: Run tests
-        run: uv run pytest tests
+      - name: Run backend tests
+        run: |
+          cd frontend
+          uv run pytest tests
