@@ -5,6 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Ctrl-Mac Simulator</title>
         <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        />
         <link rel="icon" href="/logo.ico" type="image/x-icon" />
     </head>
     <body>
@@ -67,10 +71,22 @@
                 <div id="result"></div>
 
                 <div id="simulationControl">
-                    <button type="button" , id="prevButton">&#8592;</button>
-                    <button type="button" , id="resumeButton">&#9658;</button>
-                    <button type="button" , id="pauseButton">&#9614;</button>
-                    <button type="button" , id="nextButton">&#8594;</button>
+                    <button type="button" , id="prevButton">
+                        <i class="fas fa-backward"></i>
+                    </button>
+                    <button
+                        type="button"
+                        id="playPauseButton"
+                        data-state="playing"
+                    >
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button type="button" , id="nextButton">
+                        <i class="fas fa-forward"></i>
+                    </button>
+                    <button type="button" , id="restartButton">
+                        <i class="fas fa-redo"></i>
+                    </button>
                 </div>
 
                 <div id="plotly-graph"></div>

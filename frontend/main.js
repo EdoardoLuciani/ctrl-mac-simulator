@@ -30,14 +30,14 @@ document
         return response.json();
       })
       .then((data) => {
-        document.getElementById("errorBox").textContent = "";
+        document.getElementById("errorBox").textContent = null;
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
         scene.setupScene(
           formData.get("sensor_count"),
           formData.get("request_slots"),
-          data.logs.join("\n"),
+          data.logs,
         );
         scene.playAnimations();
       })
@@ -49,23 +49,58 @@ document
       });
   });
 
+// Button event listeners
 document.getElementById("resetButton").addEventListener("click", () => {
   scene.clearScene();
-  document.getElementById("result").textContent = "";
 });
 
-document.getElementById("resumeButton").addEventListener("click", () => {
-  scene.tweenPacer.resumeQueue();
-});
+document.getElementById("playPauseButton").addEventListener("click", () => {
+  const playPauseButton = document.getElementById("playPauseButton");
+  const currentState = playPauseButton.dataset.state;
 
-document.getElementById("pauseButton").addEventListener("click", () => {
-  scene.tweenPacer.pauseQueue();
+  if (currentState === "paused") {
+    scene.tweenTimeTraveler.playQueue();
+    playPauseButton.querySelector("i").classList.remove("fa-play");
+    playPauseButton.querySelector("i").classList.add("fa-pause");
+    playPauseButton.dataset.state = "playing";
+  } else {
+    scene.tweenTimeTraveler.pauseQueue();
+    playPauseButton.querySelector("i").classList.remove("fa-pause");
+    playPauseButton.querySelector("i").classList.add("fa-play");
+    playPauseButton.dataset.state = "paused";
+  }
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
-  scene.tweenPacer.rollbackToPreviousGroup();
+  scene.tweenTimeTraveler.gotoPreviousGroup();
 });
 
 document.getElementById("nextButton").addEventListener("click", () => {
-  scene.tweenPacer.fastForwardToNextGroup();
+  scene.tweenTimeTraveler.goToNextGroup();
+});
+
+document.getElementById("restartButton").addEventListener("click", () => {
+  scene.tweenTimeTraveler.goToGroup(0);
+  scene.tweenTimeTraveler.playQueue();
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (event) => {
+  if (event.target.tagName === "INPUT") return;
+
+  switch (event.code) {
+    case "Space":
+      // Prevent the default spacebar action (like scrolling)
+      event.preventDefault();
+      document.getElementById("playPauseButton").click();
+      break;
+    case "ArrowLeft":
+      event.preventDefault();
+      document.getElementById("prevButton").click();
+      break;
+    case "ArrowRight":
+      event.preventDefault();
+      document.getElementById("nextButton").click();
+      break;
+  }
 });

@@ -1,7 +1,7 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { VisualSensorsGrid } from "./visual-sensors-grid";
-import { TweenPacer } from "./tween-pacer";
+import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
 
 export class Scene {
@@ -18,8 +18,8 @@ export class Scene {
 
     this.sensorRadius = 20;
 
-    this.tweenPacer = new TweenPacer();
-    this.logHighlighter = new LogHighligther();
+    this.tweenTimeTraveler = new TweenTimeTraveler();
+    this.logHighlighter = new LogHighligther(this.tweenTimeTraveler);
   }
 
   setupScene(sensorCount, requestSlots, log) {
@@ -38,7 +38,7 @@ export class Scene {
     );
     this.layer.add(...this.visualSensors.shape, ...this.visualGateway.shape);
 
-    this.logHighlighter.text = log;
+    this.logHighlighter.setLog(log);
   }
 
   playAnimations() {
@@ -46,25 +46,25 @@ export class Scene {
       { id: 0, requestSlot: 0 },
       { id: 1, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLines(3, 5),
+      () => this.logHighlighter.highlightLogGroup(0),
     );
 
     sensorsWithRequestSlot = [
       { id: 1, requestSlot: 0 },
       { id: 0, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLines(7, 10),
+      () => this.logHighlighter.highlightLogGroup(1),
     );
 
     sensorsWithRequestSlot = [
       { id: 0, requestSlot: 0 },
       { id: 1, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
@@ -72,16 +72,14 @@ export class Scene {
       { id: 1, requestSlot: 0 },
       { id: 0, requestSlot: 0 },
     ];
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
     );
 
-    this.tweenPacer.queueTweenGroup([
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualSensors.animateSensorToSection(0, 1),
       this.visualSensors.animateSensorToSection(1, 1),
     ]);
-
-    this.tweenPacer.playQueue();
   }
 
   #getTweenGroup(sensorsWithRequestSlot) {
@@ -92,6 +90,7 @@ export class Scene {
         elem.id,
         requestSlotsPos[elem.requestSlot].x,
         requestSlotsPos[elem.requestSlot].y,
+        requestSlotsPos[elem.requestSlot].x,
       );
       requestSlotsPos[elem.requestSlot].y += this.sensorRadius * 2.25;
       return anim;
@@ -99,8 +98,8 @@ export class Scene {
   }
 
   clearScene() {
-    this.tweenPacer.clearQueue();
+    this.tweenTimeTraveler.clearQueue();
     this.layer.destroyChildren();
-    this.logHighlighter.text = "";
+    this.logHighlighter.setLog([]);
   }
 }
