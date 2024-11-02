@@ -34,18 +34,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rye
-        uses: eifinger/setup-rye@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
 
       - name: Install pangocairo
         run: sudo apt-get install libsdl-pango-dev
 
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          rye sync
+      - name: Set up Python
+        run: uv python install
 
-      - name: Run backend tests
-        run: |
-          cd backend
-          rye test
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest tests
