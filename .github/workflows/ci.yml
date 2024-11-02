@@ -42,11 +42,11 @@ jobs:
 
       - name: Set up Python
         run: |
-          cd frontend
+          cd backend
           uv python install
           uv sync --all-extras --dev
 
       - name: Run backend tests
         run: |
-          cd frontend
+          cd backend
           uv run pytest tests
