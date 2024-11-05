@@ -10,9 +10,9 @@
 ### Interview
 #### General section:
 - How old are you?
-- Where are you from?
 - Have you completed our degree?
 - What is your degree in?
+- What uni year are you currently enrolled in?
 
 #### Explanation of the protocol
 In the next stage you will see different designs about a network protocol simulator. The network protocol in question is named ctrl-mac and is concerned with solving collisions during radio communications in a network. The network is made up of a gateway and a variable number of sensors, and there is a limited number of channels that the sensors can use to transmit their messages, which is typically much lower than the number of sensors. As an example think of 25 sensors and 6 request slots, meaning that only 6 radio communications can happen at the same time.
@@ -20,12 +20,18 @@ Here's how it works:
 - The gateway sends a message, called rrm, to all sensors, which contains the status of the 6 slots, indicating if each slot was free (no sensor picked it), had no contention (only 1 sensor picked it) and had a contention (more than 1 sensor picked it)
 - The sensors then receive this rrm message and randomly pick a slot, by sending a transmission request message to the gateway, indicating the slot they chose. This is basically booking that slot, similar to a restaurant reservation (we assume that due to the small size and quick transmission time, this message does not collide).
 - Once a certain time has passed, the gateway analyses all the transmission request messages received and sends another rrm containing the status of the slots: free, no contention or contention.
-- The sensors read the rrm message received and if their picked slot had no collision then they actually send their data on the requested separate channel. If instead their slot had a collision, they backoff for a certain number of periods based on some computation of the number of the other collisions before trying asking for a slot again. This is basically to avoid network congestion.
-- The cycle then repeat
+- The sensors read the rrm message received and if their picked slot had no collision then they actually send their data on the requested separate channel, continuing with the restaurant analogy, basically they show up to their booked table. If instead their slot had a collision, they backoff for a certain number of periods based on some computation of the number of the total collisions before trying asking for a slot again. This is basically to avoid network congestion. Similarly to a restaurant reservation, if they say that they are fully booked, you wait some more days before asking again for a table.
+- The cycle then repeats
 
 #### Start of the demo
 - Was the protocol clear to you? Any questions? (Answer whichever questions come up)
-- I'm going to show you one of the visualization for this protocol. Feel free to play around with the animation. Also feel free to ask any questions if you have any doubts. Let me know once you are done.
+- You are going to interact with one of the visualization for this protocol. I'm initially giving you 3 minutes to get accustomed to the animation controls.
+- Wait 3 minutes
+- Now, I'm giving you the following task to complete (mention one at a time and wait for the participants to complete it):
+
+- Start the animation and let it play until the end
+- Rewind the animation up to the start
+- Fast forward the animation and stop it just after all the collisions have been resolved
 
 #### Interview on demo
 - Did the animation help you to understand the protocol better?
@@ -33,21 +39,19 @@ Here's how it works:
 - How easy is it to follow the sequence of events?
 - Which aspects of the protocol were easier to understand through the visualization?
 - What additional information would you like to see displayed?
-- Were there any moments where you felt lost or confused?
-- How could it be improved?
+- Any other improvements you would like to suggest?
 
 #### Showing wireframes for the respective demo
 Now I'm going to show you different design variations for the animation you just saw.
 
 - Which one do you think is more visually appealing?
-- What do you think about the layout of information?
-- What would you change about the user interface?
+- Which layout of information makes the most sense to you?
 
 #### Repeat the demo section for the 2nd animation to be shown.
 
 #### After both demos have been shown
-- What was your overall experience with both versions of the simulator?
-- Which version would you prefer to use for learning purposes?
+- Which version would you prefer to use for learning purposes to interact with?
+- Which version would you prefer to be shown during a lecture?
 - Do you have any other suggestions for improving the simulator?
 
 
