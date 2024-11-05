@@ -133,7 +133,7 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Script for requirements interviews
 
 ### Issues discussed and solutions agreed
--
+- Reviewed the exploratory interview script together and dome some variations
 
 ### Objectives for the next week
 - Wireframes for the variations
