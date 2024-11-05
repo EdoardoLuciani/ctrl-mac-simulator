@@ -124,3 +124,18 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 
 ### Objectives for the next week
 - Wire up simulation events to animation
+
+
+## 5 Nov 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Script for requirements interviews
+
+### Issues discussed and solutions agreed
+-
+
+### Objectives for the next week
+- Wireframes for the variations
+- Setup simple hardcoded animation for the demo prototypes
+- Recruit participants for next week
