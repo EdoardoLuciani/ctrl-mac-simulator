@@ -1,3 +1,4 @@
+from ctrl_mac_simulator.main_flask import setup_simulation
 from ctrl_mac_simulator.simulation.devices import Gateway, Sensor
 from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
@@ -6,23 +7,7 @@ import random, simpy
 
 
 def test_scenario_1():
-    random.seed(834)
-    stat_tracker = StatTracker()
-
-    env = simpy.Environment()
-    gateway = Gateway(env, 3, 2, 6, 0.5, 6, stat_tracker=stat_tracker,)
-    sensors = [
-        Sensor(
-            env,
-            i,
-            1,
-            gateway.rrm_message_event,
-            gateway.transmission_request_messages,
-            gateway.sensor_data_messages,
-            stat_tracker=stat_tracker,
-        )
-        for i in range(6)
-    ]
+    env, stat_tracker, global_logger_memory_handler, gateway, sensors = setup_simulation(3, 2, 6, 0.5, 6, 6, seed=834)
 
     env.run(0.50)
     # RRM message in first cycle must have all slots free and sensors are ready to send the transmission request on the next cycle
