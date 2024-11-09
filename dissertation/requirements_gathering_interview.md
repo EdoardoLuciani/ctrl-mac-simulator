@@ -41,12 +41,6 @@ Here's how it works:
 - What additional information would you like to see displayed?
 - Any other improvements you would like to suggest?
 
-#### Showing wireframes for the respective demo
-Now I'm going to show you different design variations for the animation you just saw.
-
-- Which one do you think is more visually appealing?
-- Which layout of information makes the most sense to you?
-
 #### Repeat the demo section for the 2nd animation to be shown.
 
 #### After both demos have been shown
@@ -54,6 +48,11 @@ Now I'm going to show you different design variations for the animation you just
 - Which version would you prefer to be shown during a lecture?
 - Do you have any other suggestions for improving the simulator?
 
+#### Showing wireframes for possible design variations
+Now I'm going to show you different design variations. Imagine that your preferred animation is at the big square.
+
+- Which one do you think is more visually appealing?
+- Which layout of information makes the most sense to you?
 
 #### After Interview
 - Debriefing: Interviewer says that the interview is finished, asks if they have any questions, thanks the participant, and provides contact information for future questions.
