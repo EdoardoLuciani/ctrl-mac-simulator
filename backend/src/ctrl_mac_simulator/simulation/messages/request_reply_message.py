@@ -40,6 +40,9 @@ class RequestReplyMessage(AbstractMessage):
         self._start_time = start_time
         self._arrive_time = start_time + self.get_airtime()
 
+    def __str__(self) -> str:
+        return self.__class__.__name__
+
     def get_message_len(self) -> int:
         # 2 bits for the state, 4 bits for the data_slot, 2 bits for the data_channel
         # 4 bits for the ftr
