@@ -63,7 +63,7 @@ def simulate():
 
     # Prepare response
     response = {
-        "logs": global_logger_memory_handler.logs,
+        "log": global_logger_memory_handler.log,
         "ftr_values": stat_tracker.ftr_tracker,
         "measurement_latencies": stat_tracker.measurement_latencies
     }

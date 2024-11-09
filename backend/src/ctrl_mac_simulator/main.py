@@ -164,7 +164,7 @@ if __name__ == "__main__":
                     visual_sensors.queue_data_transmission(message.sensor_id)
                     visual_sensors.queue_sensor_color_change(message.sensor_id, 0)
 
-                log_idx = len(global_logger_memory_handler.logs)
+                log_idx = len(global_logger_memory_handler.log)
 
         scene.set_params(args.sensor_count, args.request_slots, event_loop)
         scene.render(preview=args.video == "show")

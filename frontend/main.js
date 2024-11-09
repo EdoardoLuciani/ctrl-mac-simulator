@@ -37,7 +37,7 @@ document
         scene.setupScene(
           formData.get("sensor_count"),
           formData.get("request_slots"),
-          data.logs,
+          data.log,
         );
         scene.playAnimations();
       })
