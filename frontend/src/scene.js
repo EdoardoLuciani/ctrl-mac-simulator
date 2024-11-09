@@ -73,7 +73,17 @@ export class Scene {
     );
 
     /////////////
-    this.visualGateway.getNextRequestSlotsPos();
+    this.tweenTimeTraveler.queueTweenGroup(
+      [
+        this.visualSensors.animateSensorToSection(0, 0),
+        this.visualSensors.animateSensorToSection(1, 0),
+        this.visualSensors.animateSensorToSection(2, 0),
+        this.visualSensors.animateSensorToSection(3, 0),
+        this.visualSensors.animateSensorToSection(4, 0),
+        this.visualSensors.animateSensorToSection(5, 0),
+      ],
+      () => this.logHighlighter.highlightLogGroup(3),
+    );
 
     /////////////
     sensorsWithRequestSlot = [
@@ -86,7 +96,7 @@ export class Scene {
     ];
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLogGroup(3),
+      () => this.logHighlighter.highlightLogGroup(4),
     );
 
     /////////////
@@ -98,10 +108,25 @@ export class Scene {
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot).concat([
         this.visualSensors.animateSensorToSection(1, 2, "1"),
-        this.visualSensors.animateSensorToSection(2, 2, "2"),
+        this.visualSensors.animateSensorToSection(2, 2, "1"),
         this.visualSensors.animateSensorToSection(3, 1),
       ]),
-      () => this.logHighlighter.highlightLogGroup(4),
+      () => this.logHighlighter.highlightLogGroup(5),
+    );
+
+    /////////////
+    sensorsWithRequestSlot = [
+      { id: 1, requestSlot: 0 },
+      { id: 2, requestSlot: 2 },
+    ];
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTweenGroup(sensorsWithRequestSlot).concat([
+        this.visualSensors.animateSensorToSection(5, 2, "1"),
+        this.visualSensors.animateSensorToSection(4, 2, "1"),
+        this.visualSensors.animateSensorToSection(3, 0),
+        this.visualSensors.animateSensorToSection(0, 1),
+      ]),
+      () => this.logHighlighter.highlightLogGroup(6),
     );
   }
 
