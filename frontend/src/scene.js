@@ -42,44 +42,67 @@ export class Scene {
   }
 
   playAnimations() {
-    let sensorsWithRequestSlot = [
-      { id: 0, requestSlot: 0 },
-      { id: 1, requestSlot: 0 },
-    ];
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTweenGroup(sensorsWithRequestSlot),
-      () => this.logHighlighter.highlightLogGroup(0),
-    );
+    /////////////
+    this.visualGateway.getNextRequestSlotsPos();
 
-    sensorsWithRequestSlot = [
-      { id: 1, requestSlot: 0 },
-      { id: 0, requestSlot: 0 },
+    /////////////
+    let sensorsWithRequestSlot = [
+      { id: 0, requestSlot: 4 },
+      { id: 1, requestSlot: 1 },
+      { id: 2, requestSlot: 2 },
+      { id: 3, requestSlot: 5 },
+      { id: 4, requestSlot: 3 },
+      { id: 5, requestSlot: 0 },
     ];
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
       () => this.logHighlighter.highlightLogGroup(1),
     );
 
+    /////////////
+    this.tweenTimeTraveler.queueTweenGroup(
+      [
+        this.visualSensors.animateSensorToSection(0, 1),
+        this.visualSensors.animateSensorToSection(1, 1),
+        this.visualSensors.animateSensorToSection(2, 1),
+        this.visualSensors.animateSensorToSection(3, 1),
+        this.visualSensors.animateSensorToSection(4, 1),
+        this.visualSensors.animateSensorToSection(5, 1),
+      ],
+      () => this.logHighlighter.highlightLogGroup(2),
+    );
+
+    /////////////
+    this.visualGateway.getNextRequestSlotsPos();
+
+    /////////////
     sensorsWithRequestSlot = [
-      { id: 0, requestSlot: 0 },
-      { id: 1, requestSlot: 0 },
+      { id: 0, requestSlot: 5 },
+      { id: 1, requestSlot: 4 },
+      { id: 2, requestSlot: 4 },
+      { id: 3, requestSlot: 3 },
+      { id: 4, requestSlot: 5 },
+      { id: 5, requestSlot: 5 },
     ];
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTweenGroup(sensorsWithRequestSlot),
+      () => this.logHighlighter.highlightLogGroup(3),
     );
 
+    /////////////
     sensorsWithRequestSlot = [
-      { id: 1, requestSlot: 0 },
-      { id: 0, requestSlot: 0 },
+      { id: 5, requestSlot: 3 },
+      { id: 4, requestSlot: 3 },
+      { id: 0, requestSlot: 1 },
     ];
     this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTweenGroup(sensorsWithRequestSlot),
+      this.#getTweenGroup(sensorsWithRequestSlot).concat([
+        this.visualSensors.animateSensorToSection(1, 2, "1"),
+        this.visualSensors.animateSensorToSection(2, 2, "2"),
+        this.visualSensors.animateSensorToSection(3, 1),
+      ]),
+      () => this.logHighlighter.highlightLogGroup(4),
     );
-
-    this.tweenTimeTraveler.queueTweenGroup([
-      this.visualSensors.animateSensorToSection(0, 1),
-      this.visualSensors.animateSensorToSection(1, 1),
-    ]);
   }
 
   #getTweenGroup(sensorsWithRequestSlot) {
@@ -90,7 +113,7 @@ export class Scene {
         elem.id,
         requestSlotsPos[elem.requestSlot].x,
         requestSlotsPos[elem.requestSlot].y,
-        requestSlotsPos[elem.requestSlot].x,
+        elem.text ?? "",
       );
       requestSlotsPos[elem.requestSlot].y += this.sensorRadius * 2.25;
       return anim;

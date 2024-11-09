@@ -13,8 +13,8 @@ export class VisualSensorsGrid {
       ...[
         "Idle",
         "Transmitting Data",
-        "Backoff 0",
         "Backoff 1",
+        "Backoff 2",
         "Backoff +",
       ].map((str, idx, initialArray) => {
         return new Konva.Text({
