@@ -20,14 +20,14 @@ def simulate():
 
     # Set seed for deterministic runs
     if args["seed"] is not None:
-        random.seed(args.seed)
+        random.seed(args["seed"])
 
     # Set up and run the simulation
     env = simpy.Environment()
 
     stat_tracker = StatTracker()
     global_logger_memory_handler = GlobalLoggerMemoryHandler()
-    logging_level = logging.INFO  # getattr(logging, args.log_level.upper())
+    logging_level = logging.INFO
 
     try:
         gateway = Gateway(
