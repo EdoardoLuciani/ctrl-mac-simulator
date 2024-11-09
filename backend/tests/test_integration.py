@@ -42,3 +42,12 @@ def test_scenario_1():
 
     assert len(stat_tracker.ftr_values) != 0
     assert len(stat_tracker.measurement_latencies) != 0
+
+
+def test_scenario_2():
+    env, stat_tracker, global_logger_memory_handler, gateway, sensors = setup_simulation(3, 2, 6, 0.5, 2, 6, seed = "226")
+
+    env.run()
+
+    chosen_request_slots = [sensor._state._free_request_slot_idx for sensor in sensors]
+    assert len(chosen_request_slots) == len(set(chosen_request_slots))
