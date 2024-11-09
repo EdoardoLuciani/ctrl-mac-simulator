@@ -29,7 +29,7 @@ def simulate():
     })
 
 
-def setup_simulation(data_channels: int, data_slots_per_channel: int, sensor_count: int, request_slots: int, rrm_period: float, max_cycles: int, sensors_measurement_chance: float = "1.0", seed: str = None):
+def setup_simulation(data_channels: int, data_slots_per_channel: int, request_slots: int, rrm_period: float, max_cycles: int, sensor_count: int, sensors_measurement_chance: float = "1.0", seed = None):
     # Convert string parameters to appropriate numeric types
     data_channels = int(data_channels)
     data_slots_per_channel = int(data_slots_per_channel)
@@ -41,7 +41,7 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, sensor_cou
 
     # Set seed for deterministic runs
     if seed is not None:
-        random.seed(str(seed))
+        random.seed(seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
