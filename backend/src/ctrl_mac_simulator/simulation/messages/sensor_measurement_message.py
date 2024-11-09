@@ -13,3 +13,6 @@ class SensorMeasurementMessage(AbstractMessage):
 
     def get_message_len(self) -> int:
         return len(self.data)
+
+    def __str__(self) -> str:
+        return self.__class__.__name__
