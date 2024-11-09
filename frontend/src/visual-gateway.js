@@ -20,7 +20,9 @@ export class VisualGateway {
     this.rrmPadding = 20;
 
     let nextRrmXPos = 5;
-    while (nextRrmXPos < maxWidth) {
+    const rrmWidth = this.tickWidth * this.requestSlots;
+
+    while (nextRrmXPos + rrmWidth < maxWidth) {
       const rrm = this.#getRrmShape(
         nextRrmXPos,
         this.tickYOffset,
