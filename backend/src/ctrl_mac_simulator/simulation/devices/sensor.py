@@ -44,15 +44,12 @@ class Sensor:
         while True:
             # Get the RRM message
             rrm_message = yield self._get_rrm_message_event_fn()
-            self._logger.info(f"Time {self._env.now:.2f}: Received RRM message")
+            self._logger.info(f"Time {self._env.now:.2f}: Received RequestReplayMessage")
 
             # Proceed with the state action
             yield from self._state.handle(rrm_message)
 
     def transition_to(self, state):
-        """
-        The Context allows changing the State object at runtime.
-        """
         self._state = state
         self._state.sensor = self
 
