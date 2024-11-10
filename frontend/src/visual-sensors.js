@@ -27,7 +27,15 @@ export class VisualSensors {
       text.x(-text.width() / 2);
       text.y(-text.height() / 2);
 
-      group.add(text);
+      const subscript = new Konva.Text({
+        text: null,
+        fontSize: 14,
+        fontFamily: "Arial",
+      });
+      subscript.x(-subscript.width() / 2);
+      subscript.y(subscript.height() / 2.5);
+
+      group.add(text, subscript);
 
       this.sensors.add(group);
     }
@@ -35,6 +43,16 @@ export class VisualSensors {
 
   get shape() {
     return this.sensors;
+  }
+
+  setSensorSubscript(sensorIndex, text) {
+    this.sensors.getChildren()[sensorIndex].getChildren()[2].text(text);
+  }
+
+  clearAllSensorSubscripts() {
+    this.sensors.getChildren().forEach((sensor) => {
+      sensor.getChildren()[2].text(null);
+    });
   }
 
   animateTransmissionRequest(sensorIndex, destX, destY, text) {

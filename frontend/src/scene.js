@@ -42,12 +42,18 @@ export class Scene {
   playAnimations() {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(0),
+      () => {
+        this.logHighlighter.highlightLogGroup(0);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(1),
+      () => {
+        this.logHighlighter.highlightLogGroup(1);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
@@ -58,12 +64,18 @@ export class Scene {
         4: 3,
         5: 0,
       }),
-      () => this.logHighlighter.highlightLogGroup(1),
+      () => {
+        this.logHighlighter.highlightLogGroup(1);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(2),
+      () => {
+        this.logHighlighter.highlightLogGroup(2);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
@@ -74,17 +86,26 @@ export class Scene {
         4: null,
         5: null,
       }),
-      () => this.logHighlighter.highlightLogGroup(2),
+      () => {
+        this.logHighlighter.highlightLogGroup(2);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(3),
+      () => {
+        this.logHighlighter.highlightLogGroup(3);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(4),
+      () => {
+        this.logHighlighter.highlightLogGroup(4);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
@@ -95,28 +116,42 @@ export class Scene {
         4: 5,
         5: 5,
       }),
-      () => this.logHighlighter.highlightLogGroup(4),
+      () => {
+        this.logHighlighter.highlightLogGroup(4);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(5),
+      () => {
+        this.logHighlighter.highlightLogGroup(5);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
         0: 1,
-        //1: 4,
-        //2: 4,
         3: null,
         4: 3,
         5: 3,
       }),
-      () => this.logHighlighter.highlightLogGroup(5),
+      () => {
+        this.logHighlighter.highlightLogGroup(5);
+        this.visualSensors.clearAllSensorSubscripts();
+        this.visualSensors.setSensorSubscript(1, 1);
+        this.visualSensors.setSensorSubscript(2, 1);
+      },
     );
 
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => this.logHighlighter.highlightLogGroup(5),
+      () => {
+        this.logHighlighter.highlightLogGroup(5);
+        this.visualSensors.clearAllSensorSubscripts();
+        this.visualSensors.setSensorSubscript(1, 1);
+        this.visualSensors.setSensorSubscript(2, 1);
+      },
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
@@ -124,7 +159,12 @@ export class Scene {
         1: 0,
         2: 2,
       }),
-      () => this.logHighlighter.highlightLogGroup(6),
+      () => {
+        this.logHighlighter.highlightLogGroup(6);
+        this.visualSensors.clearAllSensorSubscripts();
+        this.visualSensors.setSensorSubscript(5, 1);
+        this.visualSensors.setSensorSubscript(4, 1);
+      },
     );
 
     this.tweenTimeTraveler.playQueue();
