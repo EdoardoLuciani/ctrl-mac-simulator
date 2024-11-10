@@ -37,18 +37,32 @@ export class VisualSensors {
     return this.sensors;
   }
 
-  animateTransmissionRequest(sensorIndex, destX, destY) {
+  animateTransmissionRequest(sensorIndex, destX, destY, text) {
     const sensor = this.sensors.children[sensorIndex];
 
-    const dot = new Konva.Circle({
+    const group = new Konva.Group({
       x: sensor.x(),
       y: sensor.y(),
-      radius: 6,
-      fill: "black",
       visible: false,
     });
 
-    return this.#tweenObject(dot, destX, destY);
+    const dot = new Konva.Circle({
+      x: 0,
+      y: 0,
+      radius: 6,
+      fill: "black",
+    });
+
+    const textObj = new Konva.Text({
+      x: 10,
+      y: 10,
+      text: String(text),
+      fontSize: 18,
+      fontFamily: "Arial",
+    });
+    group.add(dot, textObj);
+
+    return this.#tweenObject(group, destX, destY);
   }
 
   animateDataTransmission(sensorIndex, destX, destY) {

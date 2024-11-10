@@ -42,11 +42,13 @@ export class Scene {
         0,
         this.centerX,
         this.centerY,
+        "1",
       ),
       this.visualSensors.animateTransmissionRequest(
         1,
         this.centerX,
         this.centerY,
+        "2",
       ),
     );
 
@@ -55,6 +57,7 @@ export class Scene {
         2,
         this.centerX,
         this.centerY,
+        "3",
       ),
     );
 
