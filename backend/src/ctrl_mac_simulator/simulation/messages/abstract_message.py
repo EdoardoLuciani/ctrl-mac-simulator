@@ -8,12 +8,12 @@ class AbstractMessage(ABC):
         pass
 
     def send_message(self, env, logger):
-        logger.info(f"Time {self.start_time:.2f}: Started {self.__class__.__name__} transmission")
+        logger.info(f"Time {self.start_time:.2f}: Started {self} transmission")
 
         yield simpy.Timeout(env, self.get_airtime())
 
         logger.debug(self.to_json())
-        logger.info(f"Time {env.now:.2f}: Finished {self.__class__.__name__} transmission")
+        logger.info(f"Time {env.now:.2f}: Finished {self} transmission")
 
     def get_airtime(
         self,

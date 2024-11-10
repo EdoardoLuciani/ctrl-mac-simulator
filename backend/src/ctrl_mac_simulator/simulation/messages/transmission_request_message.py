@@ -10,3 +10,6 @@ class TransmissionRequestMessage(AbstractMessage):
 
     def get_message_len(self) -> int:
         return 12
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__} for request slot {self.chosen_request_slot}"
