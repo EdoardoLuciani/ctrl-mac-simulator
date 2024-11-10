@@ -71,6 +71,9 @@ export class TweenTimeTraveler {
     this.isPlaying = true;
 
     while (this.currentGroupIndex < this.tweenGroupQueue.length) {
+      const callback = this.groupCallbacks[this.currentGroupIndex];
+      if (callback) callback();
+
       const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
 
       const originalOnResetFunctions = currentGroup.map((e) => e.onReset);
