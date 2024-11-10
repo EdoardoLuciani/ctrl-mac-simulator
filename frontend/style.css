@@ -7,6 +7,7 @@ body {
 #container {
     display: flex;
     width: 100%;
+    align-items: flex-start;
 }
 
 #formColumn {
@@ -41,12 +42,36 @@ select {
     width: 200px;
 }
 
+.error-box {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffeeee;
+    border: 1px solid #ffcccc;
+    color: #ff0000;
+    border-radius: 4px;
+    display: none;
+}
+
+.error-box:not(:empty) {
+    display: block;
+}
+
 #result {
     border: 1px solid #ccc;
     padding: 10px;
     height: 500px;
     overflow-y: auto;
     white-space: pre-wrap;
+}
+
+.line-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #simulationControl {
