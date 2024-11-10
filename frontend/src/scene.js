@@ -2,6 +2,7 @@ import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { VisualSensors } from "./visual-sensors";
 import { TweenPacer } from "./tween-pacer";
+import { LogHighligther } from "./log-highlighter";
 
 export class Scene {
   constructor(containerId) {
@@ -22,9 +23,10 @@ export class Scene {
     this.sensorRadius = this.layer.width() / 2.5;
 
     this.tweenPacer = new TweenPacer();
+    this.logHighlighter = new LogHighligther(this.tweenTimeTraveler);
   }
 
-  setupScene(sensorCount) {
+  setupScene(sensorCount, log) {
     this.visualGateway = new VisualGateway(this.centerX, this.centerY);
     this.visualSensors = new VisualSensors(
       sensorCount,
@@ -34,6 +36,7 @@ export class Scene {
     );
 
     this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
+    this.logHighlighter.setLog(log);
   }
 
   playAnimations() {
@@ -75,5 +78,6 @@ export class Scene {
   clearScene() {
     this.tweenPacer.clearQueue();
     this.layer.destroyChildren();
+    this.logHighlighter.setLog([]);
   }
 }
