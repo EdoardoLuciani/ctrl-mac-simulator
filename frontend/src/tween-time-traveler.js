@@ -1,29 +1,40 @@
 export class TweenTimeTraveler {
   constructor() {
     this.tweenGroupQueue = [];
+    this.groupCallbacks = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
 
-  queueTweenGroup(...tweensBatch) {
+  queueTweenGroup(tweensBatch, groupCallback = null) {
+    if (!Array.isArray(tweensBatch)) {
+      console.error("tweensBatch must be an array");
+      return this;
+    }
+
     this.tweenGroupQueue.push(tweensBatch);
+    this.groupCallbacks.push(groupCallback);
     return this;
+  }
+
+  #manageTweens(action) {
+    if (this.tweenGroupQueue.length) {
+      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
+        tween[action](),
+      );
+    }
   }
 
   playQueue() {
     if (this.isPlaying) {
-      console.warn("Queue is already playing! Skipping play request");
+      this.#manageTweens("play");
       return;
     }
-    this.#playNextGroup();
+    this.#playGroups();
   }
 
   pauseQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.pause(),
-      );
-    }
+    this.#manageTweens("pause");
   }
 
   resumeQueue() {
@@ -64,7 +75,7 @@ export class TweenTimeTraveler {
     this.isPlaying = false;
   }
 
-  async #playNextGroup() {
+  async #playGroups() {
     this.isPlaying = true;
 
     while (this.currentGroupIndex < this.tweenGroupQueue.length) {

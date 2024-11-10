@@ -40,7 +40,7 @@ export class Scene {
   }
 
   playAnimations() {
-    this.tweenTimeTraveler.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualSensors.animateTransmissionRequest(
         0,
         this.centerX,
@@ -53,24 +53,24 @@ export class Scene {
         this.centerY,
         "2",
       ),
-    );
+    ]);
 
-    this.tweenTimeTraveler.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualSensors.animateTransmissionRequest(
         2,
         this.centerX,
         this.centerY,
         "3",
       ),
-    );
+    ]);
 
-    this.tweenTimeTraveler.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY),
-    );
+    ]);
 
-    this.tweenTimeTraveler.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup([
       this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
-    );
+    ]);
 
     this.tweenTimeTraveler.playQueue();
   }
