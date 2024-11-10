@@ -67,11 +67,11 @@ document.getElementById("playPauseButton").addEventListener("click", () => {
 });
 
 document.getElementById("prevButton").addEventListener("click", () => {
-  scene.tweenTimeTraveler.rollbackToPreviousGroup();
+  scene.tweenTimeTraveler.goToPreviousGroup();
 });
 
 document.getElementById("nextButton").addEventListener("click", () => {
-  scene.tweenTimeTraveler.fastForwardToNextGroup();
+  scene.tweenTimeTraveler.goToNextGroup();
 });
 
 // Keyboard shortcuts

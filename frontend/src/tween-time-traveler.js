@@ -37,15 +37,7 @@ export class TweenTimeTraveler {
     this.#manageTweens("pause");
   }
 
-  resumeQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.play(),
-      );
-    }
-  }
-
-  rollbackToPreviousGroup() {
+  goToPreviousGroup() {
     if (this.tweenGroupQueue.length && this.currentGroupIndex > 0) {
       this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
         tween.reset(),
@@ -53,7 +45,7 @@ export class TweenTimeTraveler {
     }
   }
 
-  fastForwardToNextGroup() {
+  goToNextGroup() {
     if (
       this.tweenGroupQueue.length &&
       this.currentGroupIndex < this.tweenGroupQueue.length - 1
