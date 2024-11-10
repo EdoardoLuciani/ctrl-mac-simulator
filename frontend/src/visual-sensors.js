@@ -56,7 +56,7 @@ export class VisualSensors {
     const textObj = new Konva.Text({
       x: 10,
       y: 10,
-      text: String(text),
+      text: "Slot: " + text,
       fontSize: 18,
       fontFamily: "Arial",
     });
