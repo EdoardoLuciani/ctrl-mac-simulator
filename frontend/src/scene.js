@@ -1,7 +1,7 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { VisualSensors } from "./visual-sensors";
-import { TweenPacer } from "./tween-pacer";
+import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
 
 export class Scene {
@@ -22,7 +22,7 @@ export class Scene {
 
     this.sensorRadius = this.layer.width() / 2.5;
 
-    this.tweenPacer = new TweenPacer();
+    this.tweenTimeTraveler = new TweenTimeTraveler();
     this.logHighlighter = new LogHighligther(this.tweenTimeTraveler);
   }
 
@@ -40,7 +40,7 @@ export class Scene {
   }
 
   playAnimations() {
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.visualSensors.animateTransmissionRequest(
         0,
         this.centerX,
@@ -55,7 +55,7 @@ export class Scene {
       ),
     );
 
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.visualSensors.animateTransmissionRequest(
         2,
         this.centerX,
@@ -64,19 +64,19 @@ export class Scene {
       ),
     );
 
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY),
     );
 
-    this.tweenPacer.queueTweenGroup(
+    this.tweenTimeTraveler.queueTweenGroup(
       this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
     );
 
-    this.tweenPacer.playQueue();
+    this.tweenTimeTraveler.playQueue();
   }
 
   clearScene() {
-    this.tweenPacer.clearQueue();
+    this.tweenTimeTraveler.clearQueue();
     this.layer.destroyChildren();
     this.logHighlighter.setLog([]);
   }
