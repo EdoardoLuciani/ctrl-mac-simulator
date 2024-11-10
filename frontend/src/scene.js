@@ -40,39 +40,113 @@ export class Scene {
   }
 
   playAnimations() {
-    this.tweenTimeTraveler.queueTweenGroup([
-      this.visualSensors.animateTransmissionRequest(
-        0,
-        this.centerX,
-        this.centerY,
-        "1",
-      ),
-      this.visualSensors.animateTransmissionRequest(
-        1,
-        this.centerX,
-        this.centerY,
-        "2",
-      ),
-    ]);
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(0),
+    );
 
-    this.tweenTimeTraveler.queueTweenGroup([
-      this.visualSensors.animateTransmissionRequest(
-        2,
-        this.centerX,
-        this.centerY,
-        "3",
-      ),
-    ]);
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(1),
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
+        0: 4,
+        1: 1,
+        2: 2,
+        3: 5,
+        4: 3,
+        5: 0,
+      }),
+      () => this.logHighlighter.highlightLogGroup(1),
+    );
 
-    this.tweenTimeTraveler.queueTweenGroup([
-      this.visualSensors.animateDataTransmission(1, this.centerX, this.centerY),
-    ]);
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(2),
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
+        0: null,
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null,
+      }),
+      () => this.logHighlighter.highlightLogGroup(2),
+    );
 
-    this.tweenTimeTraveler.queueTweenGroup([
-      this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
-    ]);
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(3),
+    );
+
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(4),
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
+        0: 5,
+        1: 4,
+        2: 4,
+        3: 3,
+        4: 5,
+        5: 5,
+      }),
+      () => this.logHighlighter.highlightLogGroup(4),
+    );
+
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(5),
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
+        0: 1,
+        //1: 4,
+        //2: 4,
+        3: null,
+        4: 3,
+        5: 3,
+      }),
+      () => this.logHighlighter.highlightLogGroup(5),
+    );
+
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => this.logHighlighter.highlightLogGroup(5),
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
+        0: null,
+        1: 0,
+        2: 2,
+      }),
+      () => this.logHighlighter.highlightLogGroup(6),
+    );
 
     this.tweenTimeTraveler.playQueue();
+  }
+
+  #getTransmissionRequestAnimations(sensorToSlot) {
+    return Object.entries(sensorToSlot).map(([key, value]) => {
+      if (typeof value == "number") {
+        return this.visualSensors.animateTransmissionRequest(
+          key,
+          this.centerX,
+          this.centerY,
+          value,
+        );
+      } else {
+        return this.visualSensors.animateDataTransmission(
+          key,
+          this.centerX,
+          this.centerY,
+        );
+      }
+    });
   }
 
   clearScene() {
