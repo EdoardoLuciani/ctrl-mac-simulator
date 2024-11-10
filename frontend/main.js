@@ -19,7 +19,7 @@ document
     fetch(`/api/simulate?${params.toString()}`)
       .then((response) => response.json())
       .then((data) => {
-        document.getElementById("result").textContent = data.logs.join("\n");
+        document.getElementById("result").textContent = data.log.join("\n");
 
         scene.clearScene();
         scene.setupScene(formData.get("sensor_count"));
