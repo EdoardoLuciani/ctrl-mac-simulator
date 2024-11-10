@@ -1,4 +1,4 @@
-export class TweenPacer {
+export class TweenTimeTraveler {
   constructor() {
     this.tweenGroupQueue = [];
     this.currentGroupIndex = 0;
