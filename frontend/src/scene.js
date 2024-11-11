@@ -166,8 +166,6 @@ export class Scene {
         this.visualSensors.setSensorSubscript(4, 1);
       },
     );
-
-    this.tweenTimeTraveler.playQueue();
   }
 
   #getTransmissionRequestAnimations(sensorToSlot) {
