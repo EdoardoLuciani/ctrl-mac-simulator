@@ -25,13 +25,14 @@ Here's how it works:
 
 #### Start of the demo
 - Was the protocol clear to you? Any questions? (Answer whichever questions come up)
-- You are going to interact with one of the visualization for this protocol. I'm initially giving you 3 minutes to get accustomed to the animation controls.
+- You are going to interact with one of the visualization for this protocol. Note that the visualizations are non final and you might encouter a few bugs. You are only going to see the animation for one particolare case. I'm initially giving you 3 minutes to get accustomed to the animation controls.
 - Wait 3 minutes
 - Now, I'm giving you the following task to complete (mention one at a time and wait for the participants to complete it):
 
 - Start the animation and let it play until the end
 - Rewind the animation up to the start
-- Fast forward the animation and stop it just after all the collisions have been resolved
+- Fast forward the animation until all the sensors are sending data to the gateway
+- Fast forward the animation until you see the first sensor getting backed off for one turn
 
 #### Interview on demo
 - Did the animation help you to understand the protocol better?
@@ -46,7 +47,7 @@ Here's how it works:
 #### After both demos have been shown
 - Which version would you prefer to use for learning purposes to interact with?
 - Which version would you prefer to be shown during a lecture?
-- Do you have any other suggestions for improving the simulator?
+- Do you have any other suggestions that you would like on the simulation you preferred?
 
 #### Showing wireframes for possible design variations
 Now I'm going to show you different design variations. Imagine that your preferred animation is at the big square.
