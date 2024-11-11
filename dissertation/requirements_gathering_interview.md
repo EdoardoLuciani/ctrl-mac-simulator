@@ -25,7 +25,7 @@ Here's how it works:
 
 #### Start of the demo
 - Was the protocol clear to you? Any questions? (Answer whichever questions come up)
-- You are going to interact with one of the visualization for this protocol. Note that the visualizations are non final and you might encouter a few bugs. You are only going to see the animation for one particolare case. I'm initially giving you 3 minutes to get accustomed to the animation controls.
+- You are going to interact with one of the visualization for this protocol. Note that the visualizations are prototypes and you might encouter a few bugs. You are only going to see the same set of animations for one particolar simulation case, this is for control purposes. I'm initially giving you 3 minutes to get accustomed to the animation controls.
 - Wait 3 minutes
 - Now, I'm giving you the following task to complete (mention one at a time and wait for the participants to complete it):
 
