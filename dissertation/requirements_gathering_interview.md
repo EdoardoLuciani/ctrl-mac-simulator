@@ -36,11 +36,11 @@ Here's how it works:
 
 #### Interview on demo
 - Did the animation help you to understand the protocol better?
-- Was there any aspects of it you found confusing?
-- How easy is it to follow the sequence of events?
 - Which aspects of the protocol were easier to understand through the visualization?
+- Was there any aspects of the visualization that you found confusing?
+- How easy is to follow the sequence of events?
+- Did you feel the start/stop/rewind/fast-forward button were useful for controlling the animation?
 - What additional information would you like to see displayed?
-- Any other improvements you would like to suggest?
 
 #### Repeat the demo section for the 2nd animation to be shown.
 
