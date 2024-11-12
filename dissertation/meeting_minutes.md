@@ -139,3 +139,20 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Wireframes for the variations
 - Setup simple hardcoded animation for the demo prototypes
 - Recruit participants for next week
+
+
+## 12 Nov 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Wireframes for the variations
+- Setup simple hardcoded animation for the demo prototypes
+- Equalize the demos so the difference is only on the animation
+- Recruit participants for next week
+
+### Issues discussed and solutions agreed
+
+### Objectives for the next week
+- Proceed with the interviews
+- Transcript the interviews
+- Decide on which design to continue developing
