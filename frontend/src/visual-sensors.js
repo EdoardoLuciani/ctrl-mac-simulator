@@ -58,28 +58,17 @@ export class VisualSensors {
   animateTransmissionRequest(sensorIndex, destX, destY, text) {
     const sensor = this.sensors.children[sensorIndex];
 
-    const group = new Konva.Group({
-      x: sensor.x(),
-      y: sensor.y(),
-      visible: false,
-    });
-
     const dot = new Konva.Circle({
-      x: 0,
-      y: 0,
       radius: 6,
       fill: "black",
     });
 
-    const textObj = new Konva.Text({
-      x: 10,
-      y: 10,
-      text: "Slot: " + text,
-      fontSize: 18,
-      fontFamily: "Arial",
-    });
-    group.add(dot, textObj);
-
+    const group = this.#createInvisibleGroupWithText(
+      dot,
+      sensor.x(),
+      sensor.y(),
+      "Slot: " + text,
+    );
     return this.#tweenObject(group, destX, destY);
   }
 
@@ -90,17 +79,38 @@ export class VisualSensors {
       (Math.atan2(destY - sensor.y(), destX - sensor.x()) * 180) / Math.PI;
 
     const wedge = new Konva.Wedge({
-      x: sensor.x(),
-      y: sensor.y(),
       radius: 30,
       angle: 60,
       fill: "purple",
       stroke: "black",
       rotation: degs + (180 - 30),
+    });
+
+    const group = this.#createInvisibleGroupWithText(
+      wedge,
+      sensor.x(),
+      sensor.y(),
+      "Data",
+    );
+    return this.#tweenObject(group, destX, destY);
+  }
+
+  #createInvisibleGroupWithText(object, x, y, text) {
+    const group = new Konva.Group({
+      x: x,
+      y: y,
       visible: false,
     });
 
-    return this.#tweenObject(wedge, destX, destY);
+    const textObj = new Konva.Text({
+      x: 10,
+      y: 10,
+      text: text,
+      fontSize: 18,
+      fontFamily: "Arial",
+    });
+    group.add(object, textObj);
+    return group;
   }
 
   #tweenObject(objectToAnimate, destX, destY) {
