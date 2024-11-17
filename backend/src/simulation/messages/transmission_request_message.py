@@ -1,4 +1,4 @@
-from ctrl_mac_simulator.simulation.messages.abstract_message import AbstractMessage
+from simulation.messages.abstract_message import AbstractMessage
 
 
 class TransmissionRequestMessage(AbstractMessage):

@@ -1,8 +1,8 @@
 from typing import Callable
 from manim import *
-from ctrl_mac_simulator.visual.components import LeftSidebar
-from ctrl_mac_simulator.visual.components.visual_gateway import VisualGateway
-from ctrl_mac_simulator.visual.components.visual_sensors import VisualSensors
+from visual.components import LeftSidebar
+from visual.components.visual_gateway import VisualGateway
+from visual.components.visual_sensors import VisualSensors
 
 
 class ManimMainScene(Scene):
