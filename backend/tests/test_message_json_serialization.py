@@ -1,6 +1,6 @@
 import json, pytest
-from ctrl_mac_simulator.simulation.messages.request_reply_message import RequestReplyMessage
-from ctrl_mac_simulator.simulation.messages.sensor_measurement_message import SensorMeasurementMessage
+from simulation.messages.request_reply_message import RequestReplyMessage
+from simulation.messages.sensor_measurement_message import SensorMeasurementMessage
 
 
 def sensor_measurement_message():

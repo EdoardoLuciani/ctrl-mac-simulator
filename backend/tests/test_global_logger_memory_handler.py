@@ -1,6 +1,6 @@
 import logging
 
-from ctrl_mac_simulator.global_logger_memory_handler import GlobalLoggerMemoryHandler
+from global_logger_memory_handler import GlobalLoggerMemoryHandler
 
 
 def test_match_event(caplog):
