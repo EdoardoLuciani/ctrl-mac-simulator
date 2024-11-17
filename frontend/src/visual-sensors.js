@@ -107,11 +107,20 @@ export class VisualSensors {
     const layer = this.sensors.getLayer();
     layer.add(objectToAnimate);
 
-    return new Konva.Tween({
+    const oldPos = objectToAnimate.position();
+
+    return {
       node: objectToAnimate,
       duration: 1,
       x: destX,
       y: destY,
-    });
+      onStart: () => {
+        objectToAnimate.position(oldPos);
+        objectToAnimate.visible(true);
+      },
+      onFinish: () => {
+        objectToAnimate.visible(false);
+      },
+    };
   }
 }

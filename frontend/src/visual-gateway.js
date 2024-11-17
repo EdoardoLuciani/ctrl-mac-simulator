@@ -22,16 +22,8 @@ export class VisualGateway {
     text.y(-text.height() / 2);
 
     this.gateway.add(text);
-  }
 
-  get shape() {
-    return this.gateway;
-  }
-
-  animateRequestReplyMessage(circleRadius) {
-    const layer = this.gateway.getLayer();
-
-    const messageCircle = new Konva.Circle({
+    this.messageCircle = new Konva.Circle({
       x: this.gateway.x(),
       y: this.gateway.y(),
       radius: 80,
@@ -39,12 +31,24 @@ export class VisualGateway {
       strokeWidth: 4,
       visible: false,
     });
-    layer.add(messageCircle);
+  }
 
-    return new Konva.Tween({
-      node: messageCircle,
+  get shape() {
+    return [this.gateway, this.messageCircle];
+  }
+
+  animateRequestReplyMessage(circleRadius) {
+    return {
+      node: this.messageCircle,
       duration: 1,
       radius: circleRadius,
-    });
+      onStart: () => {
+        this.messageCircle.visible(true);
+        this.messageCircle.radius(80);
+      },
+      onFinish: () => {
+        this.messageCircle.visible(false);
+      },
+    };
   }
 }
