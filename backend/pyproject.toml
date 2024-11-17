@@ -10,7 +10,7 @@ dependencies = [
     "plotly>=5.24.1",
     "flask>=3.0.3",
 ]
-requires-python = ">= 3.9"
+requires-python = ">= 3.11"
 
 [build-system]
 requires = ["hatchling"]
@@ -24,7 +24,7 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/ctrl_mac_simulator"]
+packages = ["src"]
 
 [tool.ruff]
 line-length = 120
@@ -32,3 +32,4 @@ target-version = "py311"
 
 [tool.pytest.ini_options]
 addopts = "-p no:logging"
+pythonpath = ["src"]
