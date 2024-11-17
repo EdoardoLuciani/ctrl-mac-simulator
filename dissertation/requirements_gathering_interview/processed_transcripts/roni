@@ -1,0 +1,69 @@
+**Q: How old are you?**
+A: I'm 24.
+
+**Q: Have you completed your degree?**
+A: Yes.
+
+**Q: What is your degree in?**
+A: Integrated Masters in Computer Science.
+
+**Q: What uni year are you currently enrolled in?**
+A: I'm not enrolled anymore, I'm an alumni.
+
+### Protocol Understanding
+
+**Q: Was the protocol clear to you? Any questions?**
+A: I think more or less it's okay.
+
+### First Demo Evaluation
+
+**Q: Did the animation help you to understand the protocol better?**
+A: No, I still don't know the difference between this slot thing and this little arrow thing.
+
+**Q: Which aspects of the protocol were easier to understand through the visualization?**
+A: I think it's good to understand that there is, first of all, two types of signals that get sent to the gateway. So how you have the slot reservation and then the actual data load. You can definitely see how there is two different ones.
+
+**Q: How easy is to follow the sequence of events?**
+A: It's okay but I think it moves a little bit too quickly because it's okay for the data load but then for the slots it moves so quickly that I cannot read the numbers if I don't pause it.
+
+**Q: Did you feel the start/stop/rewind/fast-forward buttons were useful for controlling the animation?**
+A: Yes, the start and stop one is useful. The fast forward and the rewind, they need to be debugged. They do work but they only work when you actually start anyway.
+
+**Q: What additional information would you like to see displayed?**
+A: I think what would be useful is for the data load to have a little text underneath it to say this is data. Similar to how you have the slots here, because this is useful information.
+
+### Second Demo Evaluation
+
+**Q: Did this animation help you to understand the protocol better?**
+A: First of all, I'm a bit confused why we have now two sets of the slots. This makes it more confusing. I can definitely appreciate the part with the idle/transmitting data/backup so you understand which state the animation is in. This is a little bit nicer than the first simulation.
+
+**Q: Which aspects of the protocol are easier to understand through the visualization?**
+A: The transmission of data. Because this time you don't have the little arrows. It's also easier to understand what the backoff represents because in the previous simulation, the backoff just means that there's a lack of, that the gate is not doing anything.
+
+**Q: Was there any aspect of the visualization that you found confusing?**
+A: We have two sets of six for the gates and the gateway, that makes it more confusing. Again, the fast movement speed that does not give you enough time to read the numbers of the sensors.
+
+**Q: How easy is to follow the sequence of events?**
+A: I would say it's a bit tough again due to the speed so I will slow it down.
+
+**Q: Did you feel the start/stop/rewind/fast-forward buttons were useful for controlling the animation?**
+A: I think now that I got a hang of it it's easier than before but then again having to press multiple times onto the rewind button is not intuitive.
+
+**Q: What additional information would you like to see displayed?**
+A: A tutorial for the buttons, an explanation of how it has to be running to be able to fast forward or to rewind. Also, maybe a better explanation about the back-off.
+
+### Final Comparisons
+
+**Q: Which version would you prefer to use for learning purposes to interact with?**
+A: Personally I prefer the second version [slot based] because I like how it explains the states properly. I would remove the 12 gates because this makes things worse.
+
+**Q: Which version would you prefer to be shown during a lecture?**
+A: The second one. [slot based]
+
+**Q: Which layout makes the most sense to you?**
+A: I would put the controls like the play buttons directly underneath of the simulation because it reminds you of something like a video. In all of the three variants, because the play buttons are underneath the logs, it actually looks like the play buttons are for the logs as opposed to for the simulation.
+
+### Final Questions
+
+**Q: Do you have any questions?**
+A: Can you make the play buttons work properly and put them in an intuitive place? No other questions.

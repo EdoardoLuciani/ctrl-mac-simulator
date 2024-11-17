@@ -25,28 +25,29 @@ Here's how it works:
 
 #### Start of the demo
 - Was the protocol clear to you? Any questions? (Answer whichever questions come up)
-- You are going to interact with one of the visualization for this protocol. I'm initially giving you 3 minutes to get accustomed to the animation controls.
+- You are going to interact with one of the visualization for this protocol. Note that the visualizations are prototypes and you might encouter a few bugs. You are only going to see the same set of animations for one particolar simulation case, this is for control purposes. I'm initially giving you 3 minutes to get accustomed to the animation controls.
 - Wait 3 minutes
 - Now, I'm giving you the following task to complete (mention one at a time and wait for the participants to complete it):
 
 - Start the animation and let it play until the end
 - Rewind the animation up to the start
-- Fast forward the animation and stop it just after all the collisions have been resolved
+- Fast forward the animation until all the sensors are sending data to the gateway
+- Fast forward the animation until you see the first sensor getting backed off for one turn
 
 #### Interview on demo
 - Did the animation help you to understand the protocol better?
-- Was there any aspects of it you found confusing?
-- How easy is it to follow the sequence of events?
 - Which aspects of the protocol were easier to understand through the visualization?
+- Was there any aspects of the visualization that you found confusing?
+- How easy is to follow the sequence of events?
+- Did you feel the start/stop/rewind/fast-forward button were useful for controlling the animation?
 - What additional information would you like to see displayed?
-- Any other improvements you would like to suggest?
 
 #### Repeat the demo section for the 2nd animation to be shown.
 
 #### After both demos have been shown
 - Which version would you prefer to use for learning purposes to interact with?
 - Which version would you prefer to be shown during a lecture?
-- Do you have any other suggestions for improving the simulator?
+- Do you have any other suggestions that you would like on the simulation you preferred?
 
 #### Showing wireframes for possible design variations
 Now I'm going to show you different design variations. Imagine that your preferred animation is at the big square.

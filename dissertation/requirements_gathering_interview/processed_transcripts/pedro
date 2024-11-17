@@ -1,0 +1,71 @@
+**Q: How old are you?**
+A: I think I'm 22.
+
+**Q: Have you completed your degree?**
+A: No.
+
+**Q: What is your degree in?**
+A: Software Engineering.
+
+**Q: What year are you going to enroll in?**
+A: Fifth.
+
+[Protocol explanation section]
+
+**Q: Was the protocol clear to you? Do you have any questions?**
+A: I think it's pretty clear. If I have any technical questions, it would be mainly about how the communication happens, like when the RRM message is sent and when it receives an answer back for census booking.
+
+[Demo tasks and interaction section]
+
+**Q: Did the animation help you to understand the protocol better?**
+A: No.
+
+**Q: Which aspects of the protocol were easier to understand through the visualization?**
+A: I'm not sure.
+
+**Q: Were there any aspects that you found confusing?**
+A: Yes. There's no labels on anything. I don't know that these are slots, I mean imagine these are slots, but why are there two gateways? The movement is very quick, and there's no axis labels. The terminology isn't clear.
+
+**Q: How hard is it to follow the sequence of events?**
+A: They're very fast. So I'd say it's kind of hard because of that. If it was slower, I think it makes more or less sense.
+
+**Q: Did you feel that the start, stop, rewind, fast forward buttons were useful for controlling the animation?**
+A: I think so, but especially with rewind, because it moves so fast, you're okay with waiting or getting back up when you wanted, but I think the skipping around could be easier.
+
+**Q: What additional information would you like to see displayed?**
+A: I don't think any additional information is needed. I just think that explanations of different things are needed. If you didn't have the explanation previous about the protocol, it would be very confusing.
+
+[Second demo section]
+
+**Q: Did this animation help you to understand the protocol better?**
+A: Yes.
+
+**Q: Which aspects of the protocol were easier to understand through the visualization?**
+A: What each sensor is trying to do and how the gateway communicates with them.
+
+**Q: Were there any aspects that you found confusing?**
+A: Same issues as before with labeling and clarity.
+
+**Q: How is this to follow the sequence of events?**
+A: I say it's pretty easy. This one is easier than the other one, for sure.
+
+**Q: Did you feel the start, stop, rewind, fast forward buttons were useful for controlling animation?**
+A: Yes, I think they're useful definitely, but they require too much speed to use them properly.
+
+**Q: What additional information would you like to see displayed?**
+A: Content of RRM, just saying data. This may be saying that it's backed up for one second.
+
+**Q: Which version would you prefer to use for learning purposes to interact with?**
+A: This one [circle based].
+
+**Q: Which version would you prefer to be shown during a lecture?**
+A: This one [circle based].
+
+**Q: Do you have any other suggestions that you would like to see on the simulation that you prefer?**
+A: I don't think they're exclusive, you could just have one and then the other under. I think this is better for an introduction, but the other one helps understanding.
+
+**Q: Which one do you think is more visually appealing between these [wireframes]?**
+A: This one [participant chose the left most one]
+
+**Q: Which layout of information makes the most sense to you?**
+A: This one [participant chose the left most one]

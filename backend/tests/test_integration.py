@@ -1,8 +1,8 @@
-from ctrl_mac_simulator.main_flask import setup_simulation
-from ctrl_mac_simulator.simulation.devices import Gateway, Sensor
-from ctrl_mac_simulator.simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
+from main_flask import setup_simulation
+from simulation.devices import Gateway, Sensor
+from simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
-from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
+from simulation.stat_tracker import StatTracker
 import random, simpy
 
 
