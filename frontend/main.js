@@ -74,6 +74,11 @@ document.getElementById("nextButton").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToNextGroup();
 });
 
+document.getElementById("restartButton").addEventListener("click", () => {
+  scene.tweenTimeTraveler.goToGroup(0);
+  scene.tweenTimeTraveler.playQueue();
+});
+
 // Keyboard shortcuts
 document.addEventListener("keydown", (event) => {
   if (event.target.tagName === "INPUT") return;
