@@ -1,9 +1,9 @@
-from ctrl_mac_simulator.simulation.messages import SensorMeasurementMessage
-from ctrl_mac_simulator.simulation.messages import TransmissionRequestMessage
-from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
+from simulation.messages import SensorMeasurementMessage
+from simulation.messages import TransmissionRequestMessage
+from simulation.stat_tracker import StatTracker
 import random, simpy, logging
 from typing import Callable, Optional
-from ctrl_mac_simulator.simulation.messages import RequestReplyMessage
+from simulation.messages import RequestReplyMessage
 from abc import ABC, abstractmethod
 
 

@@ -1,4 +1,4 @@
-from ctrl_mac_simulator.simulation.stat_tracker import StatTracker
+from simulation.stat_tracker import StatTracker
 import simpy, logging, collections
 from ..messages import RequestReplyMessage, TransmissionRequestMessage
 from typing import Optional
