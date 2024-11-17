@@ -1,7 +1,9 @@
 export class TweenTimeTraveler {
   constructor() {
-    this.tweenGroupQueue = [];
-    this.groupCallbacks = [];
+    this.tweenGroups = [];
+    this.groupsCallback = [];
+
+    this.activeTweenGroup = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
@@ -12,16 +14,14 @@ export class TweenTimeTraveler {
       return this;
     }
 
-    this.tweenGroupQueue.push(tweensBatch);
-    this.groupCallbacks.push(groupCallback);
+    this.tweenGroups.push(tweensBatch);
+    this.groupsCallback.push(groupCallback);
     return this;
   }
 
   #manageTweens(action) {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween[action](),
-      );
+    if (this.activeTweenGroup.length) {
+      this.activeTweenGroup.forEach((tween) => tween[action]());
     }
   }
 
@@ -38,31 +38,23 @@ export class TweenTimeTraveler {
   }
 
   goToPreviousGroup() {
-    if (this.tweenGroupQueue.length && this.currentGroupIndex > 0) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.reset(),
-      );
-    }
+    this.goToGroup(this.currentGroupIndex - 1);
   }
 
   goToNextGroup() {
-    if (
-      this.tweenGroupQueue.length &&
-      this.currentGroupIndex < this.tweenGroupQueue.length - 1
-    ) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.finish(),
-      );
+    this.goToGroup(this.currentGroupIndex + 1);
+  }
+
+  goToGroup(groupIndex) {
+    if (groupIndex >= 0 && groupIndex < this.tweenGroups.length) {
+      this.currentGroupIndex = groupIndex - 1;
+      this.#manageTweens("finish");
     }
   }
 
   clearQueue() {
-    if (this.tweenGroupQueue.length) {
-      this.tweenGroupQueue[this.currentGroupIndex].forEach((tween) =>
-        tween.destroy(),
-      );
-      this.tweenGroupQueue = [];
-    }
+    this.#manageTweens("destroy");
+    this.tweenGroups = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
@@ -70,62 +62,42 @@ export class TweenTimeTraveler {
   async #playGroups() {
     this.isPlaying = true;
 
-    while (this.currentGroupIndex < this.tweenGroupQueue.length) {
-      const callback = this.groupCallbacks[this.currentGroupIndex];
+    while (this.currentGroupIndex < this.tweenGroups.length) {
+      const callback = this.groupsCallback[this.currentGroupIndex];
       if (callback) callback();
 
-      const currentGroup = this.tweenGroupQueue[this.currentGroupIndex];
-
-      const originalOnResetFunctions = currentGroup.map((e) => e.onReset);
-      const originalOnFinishFunctions = currentGroup.map((e) => e.onFinish);
+      const currentGroup = this.tweenGroups[this.currentGroupIndex];
 
       const tweenPromise = new Promise((resolve, reject) => {
         let completedTweens = 0;
 
-        currentGroup.forEach((tween, index) => {
-          tween.reset();
+        this.activeTweenGroup = currentGroup.map((tweenConstructor, index) => {
+          if (tweenConstructor.onStart) tweenConstructor.onStart();
 
-          tween.onReset = () => {
-            if (originalOnResetFunctions[index]) {
-              originalOnResetFunctions[index]();
-            }
-            completedTweens++;
-            if (completedTweens === currentGroup.length) {
-              resolve("reset");
-            }
-          };
+          const tween = new Konva.Tween(tweenConstructor);
 
           tween.onFinish = () => {
-            if (originalOnFinishFunctions[index]) {
-              originalOnFinishFunctions[index]();
-            }
+            if (tweenConstructor.onFinish) tweenConstructor.onFinish();
+
             completedTweens++;
             if (completedTweens === currentGroup.length) {
-              resolve("finished");
+              resolve();
             }
           };
 
-          tween.node.visible(true);
           tween.play();
+
+          return tween;
         });
       });
 
-      const value = await tweenPromise;
+      await tweenPromise;
 
-      currentGroup.forEach((tween, index) => {
-        tween.onReset = originalOnResetFunctions[index];
-        tween.onFinish = originalOnFinishFunctions[index];
-        tween.node.visible(false);
-      });
-
-      if (value === "finished") {
-        this.currentGroupIndex++;
-      } else {
-        this.currentGroupIndex--;
-      }
+      this.#manageTweens("destroy");
+      this.activeTweenGroup = [];
+      this.currentGroupIndex++;
     }
 
     this.isPlaying = false;
-    this.currentGroupIndex = 0;
   }
 }

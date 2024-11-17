@@ -35,7 +35,7 @@ export class Scene {
       this.centerY,
     );
 
-    this.layer.add(this.visualSensors.shape, this.visualGateway.shape);
+    this.layer.add(this.visualSensors.shape, ...this.visualGateway.shape);
     this.logHighlighter.setLog(log);
   }
 
