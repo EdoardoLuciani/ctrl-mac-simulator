@@ -156,3 +156,21 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Proceed with the interviews
 - Transcript the interviews
 - Decide on which design to continue developing
+
+
+## 19 Nov 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Intervieved 3 participants
+- Transcription of the audio recordings
+- Continued development on some shared code by both simulations
+
+### Issues discussed and solutions agreed
+
+### Objectives for the next week
+- Do the last interview
+- Provide early findings and suggestions
+- Decide on which simulation to continue development with
+- Evaluate and create github issues for suggestions raised
+- Start working on those
