@@ -5,3 +5,9 @@ export function matches_started_request_reply_message(line) {
     STANDARD_PATTERN + "Started RequestReplyMessage transmission",
   );
 }
+
+export function matches_finished_request_reply_message(line) {
+  return line.match(
+    STANDARD_PATTERN + "Finished RequestReplyMessage transmission",
+  );
+}
