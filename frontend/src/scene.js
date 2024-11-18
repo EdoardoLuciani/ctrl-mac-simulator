@@ -51,7 +51,7 @@ export class Scene {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
-        this.logHighlighter.highlightLogGroup(1);
+        this.logHighlighter.highlightLogGroup(2);
         this.visualSensors.clearAllSensorSubscripts();
       },
     );
@@ -64,36 +64,6 @@ export class Scene {
         4: 3,
         5: 0,
       }),
-      () => {
-        this.logHighlighter.highlightLogGroup(1);
-        this.visualSensors.clearAllSensorSubscripts();
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(2);
-        this.visualSensors.clearAllSensorSubscripts();
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: null,
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(2);
-        this.visualSensors.clearAllSensorSubscripts();
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(3);
         this.visualSensors.clearAllSensorSubscripts();
@@ -109,6 +79,36 @@ export class Scene {
     );
     this.tweenTimeTraveler.queueTweenGroup(
       this.#getTransmissionRequestAnimations({
+        0: null,
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null,
+      }),
+      () => {
+        this.logHighlighter.highlightLogGroup(5);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
+    );
+
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => {
+        this.logHighlighter.highlightLogGroup(6);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
+    );
+
+    this.tweenTimeTraveler.queueTweenGroup(
+      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+      () => {
+        this.logHighlighter.highlightLogGroup(8);
+        this.visualSensors.clearAllSensorSubscripts();
+      },
+    );
+    this.tweenTimeTraveler.queueTweenGroup(
+      this.#getTransmissionRequestAnimations({
         0: 5,
         1: 4,
         2: 4,
@@ -117,7 +117,7 @@ export class Scene {
         5: 5,
       }),
       () => {
-        this.logHighlighter.highlightLogGroup(4);
+        this.logHighlighter.highlightLogGroup(9);
         this.visualSensors.clearAllSensorSubscripts();
       },
     );
@@ -125,7 +125,7 @@ export class Scene {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
-        this.logHighlighter.highlightLogGroup(5);
+        this.logHighlighter.highlightLogGroup(10);
         this.visualSensors.clearAllSensorSubscripts();
       },
     );
@@ -137,7 +137,7 @@ export class Scene {
         5: 3,
       }),
       () => {
-        this.logHighlighter.highlightLogGroup(5);
+        this.logHighlighter.highlightLogGroup(11);
         this.visualSensors.clearAllSensorSubscripts();
         this.visualSensors.setSensorSubscript(1, 1);
         this.visualSensors.setSensorSubscript(2, 1);
@@ -147,7 +147,7 @@ export class Scene {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
-        this.logHighlighter.highlightLogGroup(5);
+        this.logHighlighter.highlightLogGroup(12);
         this.visualSensors.clearAllSensorSubscripts();
         this.visualSensors.setSensorSubscript(1, 1);
         this.visualSensors.setSensorSubscript(2, 1);
@@ -160,7 +160,7 @@ export class Scene {
         2: 2,
       }),
       () => {
-        this.logHighlighter.highlightLogGroup(6);
+        this.logHighlighter.highlightLogGroup(13);
         this.visualSensors.clearAllSensorSubscripts();
         this.visualSensors.setSensorSubscript(5, 1);
         this.visualSensors.setSensorSubscript(4, 1);
