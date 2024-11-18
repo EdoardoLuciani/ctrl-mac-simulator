@@ -84,11 +84,11 @@ export class VisualSensors {
     const rads = Math.atan2(destY - sensor.y(), destX - sensor.x());
     const degs = (rads * 180) / Math.PI;
 
-    const offsetDistance = 7.5;
+    const offsetDistance = 10;
     const wedge = new Konva.Wedge({
       x: Math.cos(rads) * offsetDistance,
       y: Math.sin(rads) * offsetDistance,
-      radius: 15,
+      radius: 20,
       angle: 60,
       fill: "purple",
       stroke: "black",
