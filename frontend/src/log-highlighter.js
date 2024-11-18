@@ -35,9 +35,14 @@ export class LogHighligther {
       };
       lineContainer.appendChild(button);
 
-      const textDiv = document.createElement("div");
-      textDiv.innerText = section.join("\n");
-      lineContainer.appendChild(textDiv);
+      const detailsDiv = document.createElement("details");
+      detailsDiv.innerText = section.join("\n");
+
+      const summaryDiv = document.createElement("summary");
+      summaryDiv.innerText = "Animation " + index;
+      detailsDiv.appendChild(summaryDiv);
+
+      lineContainer.appendChild(detailsDiv);
 
       resultContainer.appendChild(lineContainer);
     });
@@ -47,15 +52,15 @@ export class LogHighligther {
     const lineContainers = document.querySelectorAll(".line-container");
 
     if (this.prevHighlightIdx != null) {
-      const textDiv =
-        lineContainers[this.prevHighlightIdx].querySelector("div");
-      textDiv.innerHTML = textDiv.innerText;
+      const summaryDiv =
+        lineContainers[this.prevHighlightIdx].querySelector("summary");
+      summaryDiv.innerHTML = summaryDiv.innerText;
     }
 
     if (groupIdx >= 0 && groupIdx < lineContainers.length) {
       const targetContainer = lineContainers[groupIdx];
-      const textDiv = targetContainer.querySelector("div");
-      textDiv.innerHTML = `<mark>${textDiv.innerText}</mark>`;
+      const summaryDiv = targetContainer.querySelector("summary");
+      summaryDiv.innerHTML = `<mark>${summaryDiv.innerText}</mark>`;
 
       document.getElementById("result").scroll({
         left: 0,
