@@ -1,4 +1,6 @@
 import Konva from "konva";
+import { blake3 } from "@noble/hashes/blake3";
+import { bytesToHex } from "@noble/hashes/utils";
 
 export class VisualSensors {
   constructor(sensorCount, radius, x, y) {
@@ -58,9 +60,13 @@ export class VisualSensors {
   animateTransmissionRequest(sensorIndex, destX, destY, text) {
     const sensor = this.sensors.children[sensorIndex];
 
+    const color = "#" + bytesToHex(blake3(text.toString())).substring(0, 6);
+
     const dot = new Konva.Circle({
       radius: 6,
-      fill: "black",
+      fill: color,
+      stroke: "black",
+      strokeWidth: 1,
     });
 
     const group = this.#createInvisibleGroupWithText(
@@ -86,6 +92,7 @@ export class VisualSensors {
       angle: 60,
       fill: "purple",
       stroke: "black",
+      strokeWidth: 1,
       rotation: degs + (180 - 30),
     });
 
