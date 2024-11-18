@@ -1,4 +1,4 @@
-import { matches_started_request_reply_message } from "./helpers/log-matcher-helper";
+import * as logMatcher from "./helpers/log-matcher-helper";
 
 export class LogHighligther {
   constructor(tweenTimeTraveler) {
@@ -8,8 +8,11 @@ export class LogHighligther {
 
   setLog(inputTextLines) {
     const result = inputTextLines.reduce((acc, line) => {
-      if (matches_started_request_reply_message(line)) {
+      if (logMatcher.matches_started_request_reply_message(line)) {
         acc.push([line]);
+      } else if (logMatcher.matches_finished_request_reply_message(line)) {
+        acc[acc.length - 1].push(line);
+        acc.push([]);
       } else if (acc.length > 0) {
         acc[acc.length - 1].push(line);
       }
