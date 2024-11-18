@@ -75,11 +75,14 @@ export class VisualSensors {
   animateDataTransmission(sensorIndex, destX, destY) {
     const sensor = this.sensors.children[sensorIndex];
 
-    const degs =
-      (Math.atan2(destY - sensor.y(), destX - sensor.x()) * 180) / Math.PI;
+    const rads = Math.atan2(destY - sensor.y(), destX - sensor.x());
+    const degs = (rads * 180) / Math.PI;
 
+    const offsetDistance = 7.5;
     const wedge = new Konva.Wedge({
-      radius: 30,
+      x: Math.cos(rads) * offsetDistance,
+      y: Math.sin(rads) * offsetDistance,
+      radius: 15,
       angle: 60,
       fill: "purple",
       stroke: "black",
