@@ -17,11 +17,21 @@
                 <form id="simulationForm">
                     <label>
                         Sensor Count:
-                        <input type="number" name="sensor_count" value="6" />
+                        <input
+                            type="number"
+                            name="sensor_count"
+                            value="6"
+                            title="Enter the number of sensors to simulate"
+                        />
                     </label>
                     <label>
                         Data Channels:
-                        <input type="number" name="data_channels" value="3" />
+                        <input
+                            type="number"
+                            name="data_channels"
+                            value="3"
+                            title="Number of data channels available for sending data transmissions"
+                        />
                     </label>
                     <label>
                         Data Slots per Channel:
@@ -29,19 +39,35 @@
                             type="number"
                             name="data_slots_per_channel"
                             value="2"
+                            title="Number of time based data slots for each channel"
                         />
                     </label>
                     <label>
                         Request Slots:
-                        <input type="number" name="request_slots" value="6" />
+                        <input
+                            type="number"
+                            name="request_slots"
+                            value="6"
+                            title="Number of requests slots in the rrm message"
+                        />
                     </label>
                     <label>
                         RRM Period:
-                        <input type="number" name="rrm_period" value="0.5" />
+                        <input
+                            type="number"
+                            name="rrm_period"
+                            value="0.5"
+                            title="Time in seconds, specifying the time between each rrm message"
+                        />
                     </label>
                     <label>
                         Max Cycles:
-                        <input type="number" name="max_cycles" value="7" />
+                        <input
+                            type="number"
+                            name="max_cycles"
+                            value="7"
+                            title="Number of cycles to simulate"
+                        />
                     </label>
                     <label>
                         Sensors Measurement Chance:
@@ -51,6 +77,7 @@
                             value="1"
                             min="0"
                             max="1"
+                            title="Chance of each sensor sensing data to send when in idle state"
                         />
                     </label>
                     <label>
@@ -60,6 +87,7 @@
                             name="seed"
                             placeholder="Leave empty for random seed"
                             value="226"
+                            title="Seed for the simulation, define to get deterministic simulation"
                         />
                     </label>
                     <button type="submit">Generate Simulation</button>
