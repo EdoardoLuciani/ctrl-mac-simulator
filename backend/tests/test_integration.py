@@ -7,7 +7,7 @@ import random, simpy
 
 
 def test_scenario_1():
-    env, stat_tracker, global_logger_memory_handler, gateway, sensors = setup_simulation(3, 2, 6, 0.5, 6, 6, seed=834)
+    env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, seed=834)
 
     env.run(0.50)
     # RRM message in first cycle must have all slots free and sensors are ready to send the transmission request on the next cycle
@@ -45,7 +45,7 @@ def test_scenario_1():
 
 
 def test_scenario_2():
-    env, stat_tracker, global_logger_memory_handler, gateway, sensors = setup_simulation(3, 2, 6, 0.5, 2, 6, seed = "226")
+    env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(3, 2, 6, 0.5, 2, 6, seed = "226")
 
     env.run()
 

@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route("/api/simulate", methods=["GET"])
 def simulate():
     try:
-        env, stat_tracker, global_logger_memory_handler, gateway, sensors, used_seed = setup_simulation(**request.args)
+        env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(**request.args)
     except ValueError as e:
         return str(e), HTTPStatus.BAD_REQUEST
 
@@ -23,7 +23,7 @@ def simulate():
         "log": global_logger_memory_handler.log,
         "ftr_values": stat_tracker.ftr_tracker,
         "measurement_latencies": stat_tracker.measurement_latencies,
-        "seed": used_seed
+        "seed": seed
     })
 
 
@@ -37,12 +37,9 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
     max_cycles = int(max_cycles)
     sensors_measurement_chance = float(sensors_measurement_chance)
 
-    # Set seed for deterministic runs
-    if seed is not None:
-        used_seed = int(seed)
-    else:
-        used_seed = int.from_bytes(os.urandom(4), 'big')
-    random.seed(used_seed)
+    if seed is None:
+        seed = int.from_bytes(os.urandom(4), 'big')
+    random.seed(seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
@@ -77,7 +74,7 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
         for i in range(sensor_count)
     ]
 
-    return env, stat_tracker, global_logger_memory_handler, gateway, sensors, used_seed
+    return env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed
 
 
 if __name__ == "__main__":
