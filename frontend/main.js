@@ -1,4 +1,3 @@
-import "./style.css";
 import { Scene } from "./src/scene";
 import { Plotter } from "./src/plotter";
 
