@@ -1,7 +1,7 @@
 import { Scene } from "./src/js/scene";
 import { Plotter } from "./src/js/plotter";
 
-const scene = new Scene("canvasColumn");
+const scene = new Scene("canvas-column");
 const plotter = new Plotter("plotly-graph");
 
 document
