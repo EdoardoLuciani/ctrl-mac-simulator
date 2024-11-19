@@ -36,16 +36,16 @@ export class Scene {
       this.centerY,
     );
 
-    console.log(this.visualSensors.map((e) => e.shape));
-
     this.layer.add(
       ...this.visualSensors.map((e) => e.shape).flat(),
       ...this.visualGateway.shape,
     );
     this.logHighlighter.setLog(log);
+
+    this.#queueAnimations(log);
   }
 
-  queueAnimations() {
+  #queueAnimations(log) {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {

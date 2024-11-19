@@ -36,7 +36,6 @@ document
 
         scene.clearScene();
         scene.setupScene(formData.get("sensor_count"), data.log);
-        scene.queueAnimations();
       })
       .catch((error) => {
         console.error(error);
