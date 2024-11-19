@@ -10,7 +10,7 @@ export class Plotter {
       x: Array.from(Array(ftrValues.length).keys()),
       y: ftrValues,
       type: "scatter",
-      mode: "lines+markers",
+      mode: "lines",
       name: "FTR Values",
     };
 
@@ -23,39 +23,22 @@ export class Plotter {
     };
 
     const layout = {
-      grid: { rows: 2, columns: 1, pattern: "independent" },
+      grid: { rows: 1, columns: 2, pattern: "independent" },
       height: 800,
-      margin: { l: 0, r: 0, t: 150, b: 0 },
+      margin: { l: 0, r: 0, t: 200, b: 0 },
       title: "FTR and Measurement Latency Analysis",
-      legend: {
-        orientation: "h",
-        x: 0.5,
-        y: 1.1,
-        xanchor: "center",
-        yanchor: "top",
+      xaxis: {
+        title: "Cycle Index",
       },
-      annotations: [
-        {
-          text: "FTR Values Time Series",
-          xref: "paper",
-          yref: "paper",
-          x: 0.5,
-          y: 1.0,
-          xanchor: "center",
-          yanchor: "bottom",
-          showarrow: false,
-        },
-        {
-          text: "Distribution of Measurement Latencies",
-          xref: "paper",
-          yref: "paper",
-          x: 0.5,
-          y: 0.45,
-          xanchor: "center",
-          yanchor: "bottom",
-          showarrow: false,
-        },
-      ],
+      yaxis: {
+        title: "FTR Value",
+      },
+      xaxis2: {
+        title: "Latency (s)",
+      },
+      yaxis2: {
+        title: "Frequency",
+      },
     };
 
     const config = { responsive: true };
