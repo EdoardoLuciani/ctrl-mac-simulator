@@ -1,4 +1,4 @@
-import simpy, random, logging, sys, pathlib, io
+import simpy, random, logging, sys, pathlib, io, os
 from flask import Flask, request, jsonify
 from http import HTTPStatus
 
@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route("/api/simulate", methods=["GET"])
 def simulate():
     try:
-        env, stat_tracker, global_logger_memory_handler, gateway, sensors = setup_simulation(**request.args)
+        env, stat_tracker, global_logger_memory_handler, gateway, sensors, used_seed = setup_simulation(**request.args)
     except ValueError as e:
         return str(e), HTTPStatus.BAD_REQUEST
 
@@ -22,7 +22,8 @@ def simulate():
     return jsonify({
         "log": global_logger_memory_handler.log,
         "ftr_values": stat_tracker.ftr_tracker,
-        "measurement_latencies": stat_tracker.measurement_latencies
+        "measurement_latencies": stat_tracker.measurement_latencies,
+        "seed": used_seed
     })
 
 
@@ -38,7 +39,10 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
 
     # Set seed for deterministic runs
     if seed is not None:
-        random.seed(seed)
+        used_seed = int(seed)
+    else:
+        used_seed = int.from_bytes(os.urandom(4), 'big')
+    random.seed(used_seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
@@ -73,7 +77,7 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
         for i in range(sensor_count)
     ]
 
-    return env, stat_tracker, global_logger_memory_handler, gateway, sensors
+    return env, stat_tracker, global_logger_memory_handler, gateway, sensors, used_seed
 
 
 if __name__ == "__main__":
