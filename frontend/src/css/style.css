@@ -49,6 +49,15 @@ select {
     display: block;
 }
 
+#seed-box {
+    margin-top: 20px;
+    display: block;
+}
+
+#seed-box:empty {
+    display: none;
+}
+
 #result {
     border: 1px solid #ccc;
     padding: 10px;
