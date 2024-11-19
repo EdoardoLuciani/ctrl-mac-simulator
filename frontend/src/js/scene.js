@@ -146,7 +146,9 @@ export class Scene {
         this.logHighlighter.highlightLogGroup(11);
         this.#clearAllSensorsSubscripts;
         this.visualSensors[1].setSensorSubscript(1);
+        this.visualSensors[1].setSensorColor("red");
         this.visualSensors[2].setSensorSubscript(1);
+        this.visualSensors[2].setSensorColor("red");
       },
     );
 
