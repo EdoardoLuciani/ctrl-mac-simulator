@@ -1,5 +1,5 @@
-import { Scene } from "./src/scene";
-import { Plotter } from "./src/plotter";
+import { Scene } from "./src/js/scene";
+import { Plotter } from "./src/js/plotter";
 
 const scene = new Scene("canvasColumn");
 const plotter = new Plotter("plotly-graph");
