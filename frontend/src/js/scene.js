@@ -39,7 +39,7 @@ export class Scene {
     console.log(this.visualSensors.map((e) => e.shape));
 
     this.layer.add(
-      ...this.visualSensors.map((e) => e.shape),
+      ...this.visualSensors.map((e) => e.shape).flat(),
       ...this.visualGateway.shape,
     );
     this.logHighlighter.setLog(log);

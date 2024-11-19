@@ -11,6 +11,8 @@ export function buildSensorArray(sensorCount, radius, x, y) {
         x + radius * Math.cos(i * angle),
         y + radius * Math.sin(i * angle),
         `S${i}`,
+        x,
+        y,
       ),
     );
   }
