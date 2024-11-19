@@ -31,10 +31,19 @@ export class VisualGateway {
       strokeWidth: 4,
       visible: false,
     });
+
+    this.rrmText = new Konva.Text({
+      x: this.gateway.x() + 80,
+      y: this.gateway.y() + 80,
+      text: "Sending RRM",
+      fontSize: 18,
+      fontFamily: "Arial",
+      visible: false,
+    });
   }
 
   get shape() {
-    return [this.gateway, this.messageCircle];
+    return [this.gateway, this.messageCircle, this.rrmText];
   }
 
   animateRequestReplyMessage(circleRadius) {
@@ -45,9 +54,11 @@ export class VisualGateway {
       onStart: () => {
         this.messageCircle.visible(true);
         this.messageCircle.radius(80);
+        this.rrmText.visible(true);
       },
       onFinish: () => {
         this.messageCircle.visible(false);
+        this.rrmText.visible(false);
       },
     };
   }
