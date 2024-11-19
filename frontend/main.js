@@ -5,7 +5,7 @@ const scene = new Scene("canvas-column");
 const plotter = new Plotter("plotly-graph");
 
 document
-  .getElementById("simulationForm")
+  .getElementById("simulation-form")
   .addEventListener("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -28,7 +28,7 @@ document
         return response.json();
       })
       .then((data) => {
-        document.getElementById("errorBox").textContent = null;
+        document.getElementById("error-box").textContent = null;
         document.getElementById("seed-box").textContent =
           "Seed of the simulation is: " + data.seed;
 
@@ -40,19 +40,19 @@ document
       })
       .catch((error) => {
         console.error(error);
-        document.getElementById("errorBox").textContent =
+        document.getElementById("error-box").textContent =
           `An error occurred: ${error.message}`;
       });
   });
 
 // Button event listeners
-document.getElementById("resetButton").addEventListener("click", () => {
+document.getElementById("reset-button").addEventListener("click", () => {
   document.getElementById("seed-box").textContent = null;
   scene.clearScene();
 });
 
-document.getElementById("playPauseButton").addEventListener("click", () => {
-  const playPauseButton = document.getElementById("playPauseButton");
+document.getElementById("play-pause-button").addEventListener("click", () => {
+  const playPauseButton = document.getElementById("play-pause-button");
   const currentState = playPauseButton.dataset.state;
 
   if (currentState === "paused") {
@@ -68,15 +68,15 @@ document.getElementById("playPauseButton").addEventListener("click", () => {
   }
 });
 
-document.getElementById("prevButton").addEventListener("click", () => {
+document.getElementById("prev-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToPreviousGroup();
 });
 
-document.getElementById("nextButton").addEventListener("click", () => {
+document.getElementById("next-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToNextGroup();
 });
 
-document.getElementById("restartButton").addEventListener("click", () => {
+document.getElementById("restart-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToGroup(0);
   scene.tweenTimeTraveler.playQueue();
 });
@@ -89,15 +89,15 @@ document.addEventListener("keydown", (event) => {
     case "Space":
       // Prevent the default spacebar action (like scrolling)
       event.preventDefault();
-      document.getElementById("playPauseButton").click();
+      document.getElementById("play-pause-button").click();
       break;
     case "ArrowLeft":
       event.preventDefault();
-      document.getElementById("prevButton").click();
+      document.getElementById("prev-button").click();
       break;
     case "ArrowRight":
       event.preventDefault();
-      document.getElementById("nextButton").click();
+      document.getElementById("next-button").click();
       break;
   }
 });
