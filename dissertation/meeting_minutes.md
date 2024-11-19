@@ -167,6 +167,7 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Continued development on some shared code by both simulations
 
 ### Issues discussed and solutions agreed
+- No issues raised
 
 ### Objectives for the next week
 - Do the last interview
