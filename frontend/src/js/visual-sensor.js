@@ -3,7 +3,7 @@ import { blake3 } from "@noble/hashes/blake3";
 import { bytesToHex } from "@noble/hashes/utils";
 
 export class VisualSensor {
-  constructor(x, y, sensorText) {
+  constructor(x, y, sensorText, gatewayXPos, gatewayYPos) {
     this.sensor = new Konva.Group({ x: x, y: y });
 
     this.sensor.add(
@@ -30,62 +30,41 @@ export class VisualSensor {
     subscript.y(subscript.height() / 2.5);
 
     this.sensor.add(text, subscript);
-  }
 
-  get shape() {
-    return this.sensor;
-  }
-
-  setSensorSubscript(text) {
-    this.sensor.getChildren()[2].text(text);
-  }
-
-  setSensorColor(color) {
-    this.sensor.getChildren()[0].stroke(color);
-  }
-
-  animateTransmissionRequest(destX, destY, text) {
-    const color = "#" + bytesToHex(blake3(text.toString())).substring(0, 6);
-
-    const dot = new Konva.Circle({
-      radius: 6,
-      fill: color,
-      stroke: "black",
-      strokeWidth: 1,
-    });
-
-    const group = this.#createInvisibleGroupWithText(
-      dot,
-      this.sensor.x(),
-      this.sensor.y(),
-      "Slot: " + text,
+    // Data transmission obj creation
+    const rads = Math.atan2(
+      gatewayYPos - this.sensor.y(),
+      gatewayXPos - this.sensor.x(),
     );
-    return this.#tweenObject(group, destX, destY);
-  }
-
-  animateDataTransmission(destX, destY) {
-    const rads = Math.atan2(destY - this.sensor.y(), destX - this.sensor.x());
     const degs = (rads * 180) / Math.PI;
 
     const offsetDistance = 10;
-    const wedge = new Konva.Wedge({
-      x: Math.cos(rads) * offsetDistance,
-      y: Math.sin(rads) * offsetDistance,
-      radius: 20,
-      angle: 60,
-      fill: "purple",
-      stroke: "black",
-      strokeWidth: 1,
-      rotation: degs + (180 - 30),
-    });
-
-    const group = this.#createInvisibleGroupWithText(
-      wedge,
+    this.dataTransmission = this.#createInvisibleGroupWithText(
+      new Konva.Wedge({
+        x: Math.cos(rads) * offsetDistance,
+        y: Math.sin(rads) * offsetDistance,
+        radius: 20,
+        angle: 60,
+        fill: "purple",
+        stroke: "black",
+        strokeWidth: 1,
+        rotation: degs + (180 - 30),
+      }),
       this.sensor.x(),
       this.sensor.y(),
       "Data",
     );
-    return this.#tweenObject(group, destX, destY);
+
+    // Transmission request obj creation
+    this.transmissionRequest = this.#createInvisibleGroupWithText(
+      new Konva.Circle({
+        radius: 6,
+        stroke: "black",
+        strokeWidth: 1,
+      }),
+      this.sensor.x(),
+      this.sensor.y(),
+    );
   }
 
   #createInvisibleGroupWithText(object, x, y, text) {
@@ -102,27 +81,57 @@ export class VisualSensor {
       fontSize: 18,
       fontFamily: "Arial",
     });
-    group.add(object, textObj);
+    group.add(textObj, object);
     return group;
   }
 
-  #tweenObject(objectToAnimate, destX, destY) {
-    const layer = this.sensor.getLayer();
-    layer.add(objectToAnimate);
+  get shape() {
+    return [this.sensor, this.dataTransmission, this.transmissionRequest];
+  }
 
-    const oldPos = objectToAnimate.position();
+  setSensorSubscript(text) {
+    this.sensor.getChildren()[2].text(text);
+  }
+
+  setSensorColor(color) {
+    this.sensor.getChildren()[0].stroke(color);
+  }
+
+  animateTransmissionRequest(destX, destY, text) {
+    const color = "#" + bytesToHex(blake3(text.toString())).substring(0, 6);
+    const oldPos = this.transmissionRequest.position();
 
     return {
-      node: objectToAnimate,
+      node: this.transmissionRequest,
       duration: 1,
       x: destX,
       y: destY,
       onStart: () => {
-        objectToAnimate.position(oldPos);
-        objectToAnimate.visible(true);
+        this.transmissionRequest.position(oldPos);
+        this.transmissionRequest.getChildren()[0].text("Slot: " + text);
+        this.transmissionRequest.getChildren()[1].fill(color);
+        this.transmissionRequest.visible(true);
       },
       onFinish: () => {
-        objectToAnimate.visible(false);
+        this.transmissionRequest.visible(false);
+      },
+    };
+  }
+
+  animateDataTransmission(destX, destY) {
+    const oldPos = this.dataTransmission.position();
+
+    return {
+      node: this.dataTransmission,
+      duration: 1,
+      x: destX,
+      y: destY,
+      onStart: () => {
+        this.dataTransmission.position(oldPos);
+        this.dataTransmission.visible(true);
+      },
+      onFinish: () => {
+        this.dataTransmission.visible(false);
       },
     };
   }
