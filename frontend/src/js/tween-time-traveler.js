@@ -89,6 +89,10 @@ export class TweenTimeTraveler {
 
           return tween;
         });
+
+        if (this.activeTweenGroup.length === 0) {
+          resolve();
+        }
       });
 
       await tweenPromise;

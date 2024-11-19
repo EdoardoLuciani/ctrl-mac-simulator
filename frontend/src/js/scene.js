@@ -54,6 +54,11 @@ export class Scene {
       },
     );
 
+    this.tweenTimeTraveler.queueTweenGroup([], () => {
+      this.logHighlighter.highlightLogGroup(1);
+      this.#clearAllSensorsSubscripts;
+    });
+
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
