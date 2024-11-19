@@ -16,7 +16,7 @@ export class VisualSensors {
 
       group.add(
         new Konva.Circle({
-          radius: 30,
+          radius: 22,
           stroke: "red",
         }),
       );
