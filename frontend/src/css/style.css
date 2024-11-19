@@ -4,18 +4,18 @@
     align-items: flex-start;
 }
 
-#formColumn {
+#form-column {
     width: 20%;
     padding-left: 20px;
     padding-right: 20px;
 }
 
-#canvasColumn {
+#canvas-column {
     width: 50%;
     border: 1px solid black;
 }
 
-#resultColumn {
+#simulation-control {
     width: 30%;
     padding-left: 20px;
     padding-right: 20px;
