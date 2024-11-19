@@ -9,7 +9,7 @@ export class VisualSensor {
     this.sensor.add(
       new Konva.Circle({
         radius: 22,
-        stroke: "red",
+        stroke: "green",
       }),
     );
 
@@ -38,6 +38,10 @@ export class VisualSensor {
 
   setSensorSubscript(text) {
     this.sensor.getChildren()[2].text(text);
+  }
+
+  setSensorColor(color) {
+    this.sensor.getChildren()[0].stroke(color);
   }
 
   animateTransmissionRequest(destX, destY, text) {
