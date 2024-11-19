@@ -145,10 +145,10 @@ export class Scene {
       () => {
         this.logHighlighter.highlightLogGroup(11);
         this.#clearAllSensorsSubscripts;
-        this.visualSensors[1].setSensorSubscript(1);
-        this.visualSensors[1].setSensorColor("red");
-        this.visualSensors[2].setSensorSubscript(1);
-        this.visualSensors[2].setSensorColor("red");
+        this.visualSensors[1].setSubscript(1);
+        this.visualSensors[1].setColor("red");
+        this.visualSensors[2].setSubscript(1);
+        this.visualSensors[2].setColor("red");
       },
     );
 
@@ -157,8 +157,8 @@ export class Scene {
       () => {
         this.logHighlighter.highlightLogGroup(12);
         this.#clearAllSensorsSubscripts;
-        this.visualSensors[1].setSensorSubscript(1);
-        this.visualSensors[2].setSensorSubscript(1);
+        this.visualSensors[1].setSubscript(1);
+        this.visualSensors[2].setSubscript(1);
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -170,14 +170,14 @@ export class Scene {
       () => {
         this.logHighlighter.highlightLogGroup(13);
         this.#clearAllSensorsSubscripts;
-        this.visualSensors[5].setSensorSubscript(1);
-        this.visualSensors[4].setSensorSubscript(1);
+        this.visualSensors[5].setSubscript(1);
+        this.visualSensors[4].setSubscript(1);
       },
     );
   }
 
   #clearAllSensorsSubscripts() {
-    this.visualSensors.forEach((e) => e.setSensorSubscript(null));
+    this.visualSensors.forEach((e) => e.setSubscript(null));
   }
 
   #getTransmissionRequestAnimations(sensorToSlot) {
