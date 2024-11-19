@@ -45,7 +45,7 @@ export class Scene {
     this.logHighlighter.setLog(log);
   }
 
-  playAnimations() {
+  queueAnimations() {
     this.tweenTimeTraveler.queueTweenGroup(
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
