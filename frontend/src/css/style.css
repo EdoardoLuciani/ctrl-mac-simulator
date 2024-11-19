@@ -6,7 +6,8 @@
 
 #formColumn {
     width: 20%;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 #canvasColumn {
@@ -16,7 +17,8 @@
 
 #resultColumn {
     width: 30%;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 form {
@@ -60,7 +62,8 @@ select {
 
 #result {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 500px;
     overflow-y: auto;
     white-space: pre-wrap;
