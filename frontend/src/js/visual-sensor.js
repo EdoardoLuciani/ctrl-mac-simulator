@@ -89,11 +89,11 @@ export class VisualSensor {
     return [this.sensor, this.dataTransmission, this.transmissionRequest];
   }
 
-  setSensorSubscript(text) {
+  setSubscript(text) {
     this.sensor.getChildren()[2].text(text);
   }
 
-  setSensorColor(color) {
+  setColor(color) {
     this.sensor.getChildren()[0].stroke(color);
   }
 
