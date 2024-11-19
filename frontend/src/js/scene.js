@@ -1,6 +1,7 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
-import { VisualSensors } from "./visual-sensors";
+import { buildSensorArray } from "./helpers/build-sensor-array";
+import { VisualSensor } from "./visual-sensor";
 import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
 
@@ -28,14 +29,19 @@ export class Scene {
 
   setupScene(sensorCount, log) {
     this.visualGateway = new VisualGateway(this.centerX, this.centerY);
-    this.visualSensors = new VisualSensors(
+    this.visualSensors = buildSensorArray(
       sensorCount,
       this.sensorRadius,
       this.centerX,
       this.centerY,
     );
 
-    this.layer.add(this.visualSensors.shape, ...this.visualGateway.shape);
+    console.log(this.visualSensors.map((e) => e.shape));
+
+    this.layer.add(
+      ...this.visualSensors.map((e) => e.shape),
+      ...this.visualGateway.shape,
+    );
     this.logHighlighter.setLog(log);
   }
 
@@ -44,7 +50,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(0);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
 
@@ -52,7 +58,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(2);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -66,7 +72,7 @@ export class Scene {
       }),
       () => {
         this.logHighlighter.highlightLogGroup(3);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
 
@@ -74,7 +80,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(4);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -88,7 +94,7 @@ export class Scene {
       }),
       () => {
         this.logHighlighter.highlightLogGroup(5);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
 
@@ -96,7 +102,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(6);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
 
@@ -104,7 +110,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(8);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -118,7 +124,7 @@ export class Scene {
       }),
       () => {
         this.logHighlighter.highlightLogGroup(9);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
 
@@ -126,7 +132,7 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(10);
-        this.visualSensors.clearAllSensorSubscripts();
+        this.#clearAllSensorsSubscripts;
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -138,9 +144,9 @@ export class Scene {
       }),
       () => {
         this.logHighlighter.highlightLogGroup(11);
-        this.visualSensors.clearAllSensorSubscripts();
-        this.visualSensors.setSensorSubscript(1, 1);
-        this.visualSensors.setSensorSubscript(2, 1);
+        this.#clearAllSensorsSubscripts;
+        this.visualSensors[1].setSensorSubscript(1);
+        this.visualSensors[2].setSensorSubscript(1);
       },
     );
 
@@ -148,9 +154,9 @@ export class Scene {
       [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
       () => {
         this.logHighlighter.highlightLogGroup(12);
-        this.visualSensors.clearAllSensorSubscripts();
-        this.visualSensors.setSensorSubscript(1, 1);
-        this.visualSensors.setSensorSubscript(2, 1);
+        this.#clearAllSensorsSubscripts;
+        this.visualSensors[1].setSensorSubscript(1);
+        this.visualSensors[2].setSensorSubscript(1);
       },
     );
     this.tweenTimeTraveler.queueTweenGroup(
@@ -161,25 +167,27 @@ export class Scene {
       }),
       () => {
         this.logHighlighter.highlightLogGroup(13);
-        this.visualSensors.clearAllSensorSubscripts();
-        this.visualSensors.setSensorSubscript(5, 1);
-        this.visualSensors.setSensorSubscript(4, 1);
+        this.#clearAllSensorsSubscripts;
+        this.visualSensors[5].setSensorSubscript(1);
+        this.visualSensors[4].setSensorSubscript(1);
       },
     );
+  }
+
+  #clearAllSensorsSubscripts() {
+    this.visualSensors.forEach((e) => e.setSensorSubscript(null));
   }
 
   #getTransmissionRequestAnimations(sensorToSlot) {
     return Object.entries(sensorToSlot).map(([key, value]) => {
       if (typeof value == "number") {
-        return this.visualSensors.animateTransmissionRequest(
-          key,
+        return this.visualSensors[key].animateTransmissionRequest(
           this.centerX,
           this.centerY,
           value,
         );
       } else {
-        return this.visualSensors.animateDataTransmission(
-          key,
+        return this.visualSensors[key].animateDataTransmission(
           this.centerX,
           this.centerY,
         );
