@@ -29,6 +29,8 @@ document
       })
       .then((data) => {
         document.getElementById("errorBox").textContent = null;
+        document.getElementById("seed-box").textContent =
+          "Seed of the simulation is: " + data.seed;
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
@@ -45,6 +47,7 @@ document
 
 // Button event listeners
 document.getElementById("resetButton").addEventListener("click", () => {
+  document.getElementById("seed-box").textContent = null;
   scene.clearScene();
 });
 
