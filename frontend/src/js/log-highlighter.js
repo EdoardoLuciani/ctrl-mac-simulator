@@ -6,23 +6,11 @@ export class LogHighligther {
     this.prevHighlightIdx = null;
   }
 
-  setLog(inputTextLines) {
-    const result = inputTextLines.reduce((acc, line) => {
-      if (logMatcher.matches_started_request_reply_message(line)) {
-        acc.push([line]);
-      } else if (logMatcher.matches_finished_request_reply_message(line)) {
-        acc[acc.length - 1].push(line);
-        acc.push([]);
-      } else if (acc.length > 0) {
-        acc[acc.length - 1].push(line);
-      }
-      return acc;
-    }, []);
-
+  setLog(logGroups) {
     const resultContainer = document.getElementById("result");
     resultContainer.innerHTML = "";
 
-    result.forEach((section, index) => {
+    logGroups.forEach((section, index) => {
       const lineContainer = document.createElement("div");
       lineContainer.className = "line-container";
 
