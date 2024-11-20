@@ -131,27 +131,6 @@ export class Scene {
     });
   }
 
-  #clearAllSensorsSubscripts() {
-    this.visualSensors.forEach((e) => e.setSubscript(null));
-  }
-
-  #getTransmissionRequestAnimations(sensorToSlot) {
-    return Object.entries(sensorToSlot).map(([key, value]) => {
-      if (typeof value == "number") {
-        return this.visualSensors[key].animateTransmissionRequest(
-          this.centerX,
-          this.centerY,
-          value,
-        );
-      } else {
-        return this.visualSensors[key].animateDataTransmission(
-          this.centerX,
-          this.centerY,
-        );
-      }
-    });
-  }
-
   clearScene() {
     this.tweenTimeTraveler.clearQueue();
     this.layer.destroyChildren();
