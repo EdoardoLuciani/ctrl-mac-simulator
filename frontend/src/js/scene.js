@@ -4,6 +4,7 @@ import { buildSensorArray } from "./helpers/build-sensor-array";
 import { VisualSensor } from "./visual-sensor";
 import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
+import * as logMatcher from "./helpers/log-matcher-helper";
 
 export class Scene {
   constructor(containerId) {
@@ -42,7 +43,98 @@ export class Scene {
     );
     this.logHighlighter.setLog(log);
 
-    this.#queueAnimations(log);
+    // let logGroup = 0;
+    // let queueGroup = [];
+
+    // log.forEach((line, index) => {
+    //   let result;
+
+    //   if (logMatcher.matches_started_request_reply_message(line)) {
+    //     if (queueGroup.length > 0) {
+    //       this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
+    //         this.logHighlighter.highlightLogGroup(logGroup);
+    //         this.#clearAllSensorsSubscripts;
+    //       });
+    //     }
+
+    //     queueGroup = [];
+    //     logGroup += 1;
+
+    //     queueGroup.push(
+    //       this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
+    //     );
+    //   } else if (
+    //     (result = logMatcher.matches_started_transmission_request_message(line))
+    //   ) {
+    //     queueGroup.push(
+    //       this.visualSensors[
+    //         Number(result[1].split("-", 2)[1])
+    //       ].animateTransmissionRequest(this.centerX, this.centerY, result[2]),
+    //     );
+    //   } else if (
+    //     (result = logMatcher.matches_started_sensor_measurement_message(line))
+    //   ) {
+    //     queueGroup.push(
+    //       this.visualSensors[
+    //         Number(result[1].split("-", 2)[1])
+    //       ].animateDataTransmission(this.centerX, this.centerY),
+    //     );
+    //   }
+    // });
+
+    const result = log.reduce((acc, line) => {
+      if (logMatcher.matches_started_request_reply_message(line)) {
+        acc.push([line]);
+      } else if (logMatcher.matches_finished_request_reply_message(line)) {
+        acc[acc.length - 1].push(line);
+        acc.push([]);
+      } else if (acc.length > 0) {
+        acc[acc.length - 1].push(line);
+      }
+      return acc;
+    }, []);
+
+    result.forEach((cycle_lines, index) => {
+      const queueGroup = [];
+
+      if (logMatcher.matches_started_request_reply_message(cycle_lines[0])) {
+        queueGroup.push(
+          this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
+        );
+      } else {
+        let result = null;
+
+        cycle_lines.forEach((e) => {
+          if (
+            (result =
+              logMatcher.matches_started_transmission_request_message(e))
+          ) {
+            queueGroup.push(
+              this.visualSensors[
+                Number(result[1].split("-", 2)[1])
+              ].animateTransmissionRequest(
+                this.centerX,
+                this.centerY,
+                result[2],
+              ),
+            );
+          } else if (
+            (result = logMatcher.matches_started_sensor_measurement_message(e))
+          ) {
+            queueGroup.push(
+              this.visualSensors[
+                Number(result[1].split("-", 2)[1])
+              ].animateDataTransmission(this.centerX, this.centerY),
+            );
+          }
+        });
+      }
+
+      this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
+        this.logHighlighter.highlightLogGroup(index);
+        this.#clearAllSensorsSubscripts;
+      });
+    });
   }
 
   #queueAnimations(log) {
