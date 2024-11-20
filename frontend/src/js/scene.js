@@ -78,6 +78,7 @@ export class Scene {
               result.requestSlot,
             ),
           );
+          sensorsBackoff.set(result.sensorIndex, null);
         } else if (
           (result = logMatcher.matches_started_sensor_measurement_message(line))
         ) {
@@ -100,156 +101,12 @@ export class Scene {
       this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
         this.logHighlighter.highlightLogGroup(index);
 
-        for (let i = 0; i < this.visualSensors.length; i++) {
-          let backoff;
-
-          if ((backoff = sensorsBackoff.get(i))) {
-            console.log(backoff);
-            this.visualSensors[i].setSubscript(backoff);
-            this.visualSensors[i].setColor("red");
-          } else {
-            this.visualSensors[i].setSubscript(null);
-            this.visualSensors[i].setColor("green");
-          }
+        for (let [key, value] of sensorsBackoff.entries()) {
+          this.visualSensors[key].setSubscript(value);
+          this.visualSensors[key].setColor(value == null ? "green" : "red");
         }
       });
     });
-  }
-
-  #queueAnimations(log) {
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(0);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup([], () => {
-      this.logHighlighter.highlightLogGroup(1);
-      this.#clearAllSensorsSubscripts;
-    });
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(2);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: 4,
-        1: 1,
-        2: 2,
-        3: 5,
-        4: 3,
-        5: 0,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(3);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(4);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: null,
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(5);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(6);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(8);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: 5,
-        1: 4,
-        2: 4,
-        3: 3,
-        4: 5,
-        5: 5,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(9);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(10);
-        this.#clearAllSensorsSubscripts;
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: 1,
-        3: null,
-        4: 3,
-        5: 3,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(11);
-        this.#clearAllSensorsSubscripts;
-        this.visualSensors[1].setSubscript(1);
-        this.visualSensors[1].setColor("red");
-        this.visualSensors[2].setSubscript(1);
-        this.visualSensors[2].setColor("red");
-      },
-    );
-
-    this.tweenTimeTraveler.queueTweenGroup(
-      [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
-      () => {
-        this.logHighlighter.highlightLogGroup(12);
-        this.#clearAllSensorsSubscripts;
-        this.visualSensors[1].setSubscript(1);
-        this.visualSensors[2].setSubscript(1);
-      },
-    );
-    this.tweenTimeTraveler.queueTweenGroup(
-      this.#getTransmissionRequestAnimations({
-        0: null,
-        1: 0,
-        2: 2,
-      }),
-      () => {
-        this.logHighlighter.highlightLogGroup(13);
-        this.#clearAllSensorsSubscripts;
-        this.visualSensors[5].setSubscript(1);
-        this.visualSensors[4].setSubscript(1);
-      },
-    );
   }
 
   #clearAllSensorsSubscripts() {
