@@ -35,7 +35,7 @@ document
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
         scene.clearScene();
-        scene.setupScene(formData.get("sensor_count"), data.log);
+        scene.setupScene(Number(formData.get("sensor_count")), data.log);
       })
       .catch((error) => {
         console.error(error);
