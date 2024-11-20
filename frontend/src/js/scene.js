@@ -58,6 +58,7 @@ export class Scene {
 
     logGroups.forEach((cycle_lines, index) => {
       const queueGroup = [];
+      const sensorsBackoff = new Map();
 
       cycle_lines.forEach((line) => {
         let result = null;
@@ -86,11 +87,31 @@ export class Scene {
               this.centerY,
             ),
           );
+        } else if (
+          (result = logMatcher.matches_on_timeout_for_x_periods(line))
+        ) {
+          sensorsBackoff.set(
+            result.sensorIndex,
+            String(Number(result.timeoutPeriod) + 1),
+          );
         }
       });
+
       this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
         this.logHighlighter.highlightLogGroup(index);
-        this.#clearAllSensorsSubscripts;
+
+        for (let i = 0; i < this.visualSensors.length; i++) {
+          let backoff;
+
+          if ((backoff = sensorsBackoff.get(i))) {
+            console.log(backoff);
+            this.visualSensors[i].setSubscript(backoff);
+            this.visualSensors[i].setColor("red");
+          } else {
+            this.visualSensors[i].setSubscript(null);
+            this.visualSensors[i].setColor("green");
+          }
+        }
       });
     });
   }
