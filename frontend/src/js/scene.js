@@ -42,7 +42,7 @@ export class Scene {
       ...this.visualGateway.shape,
     );
 
-    const logGroups = log.reduce((acc, line) => {
+    const logGroups2 = log.reduce((acc, line) => {
       if (logMatcher.matches_started_request_reply_message(line)) {
         acc.push([line]);
       } else if (logMatcher.matches_finished_request_reply_message(line)) {
@@ -54,20 +54,40 @@ export class Scene {
       return acc;
     }, []);
 
-    this.logHighlighter.setLog(logGroups);
+    this.logHighlighter.setLog(logGroups2);
 
-    logGroups.forEach((cycle_lines, index) => {
-      const queueGroup = [];
-      const sensorsBackoff = new Map();
+    const logGroups = log.reduce((acc, line) => {
+      if (logMatcher.matches_started_request_reply_message(line)) {
+        acc.push([line]);
+      } else {
+        acc[acc.length - 1].push(line);
+      }
+      return acc;
+    }, []);
 
-      cycle_lines.forEach((line) => {
+    const sensorsBackoffs = Array(sensorCount).fill(null);
+
+    logGroups.forEach((group_lines, index) => {
+      const previousBackoffs = [...sensorsBackoffs];
+
+      this.tweenTimeTraveler.queueTweenGroup(
+        [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
+        () => {
+          this.logHighlighter.highlightLogGroup(2 * index);
+
+          previousBackoffs.forEach((value, i) => {
+            this.visualSensors[i].setSubscript(value);
+            this.visualSensors[i].setColor(value == null ? "green" : "red");
+          });
+        },
+      );
+
+      let queueGroup = [];
+
+      group_lines.forEach((line) => {
         let result = null;
 
-        if (logMatcher.matches_started_request_reply_message(line)) {
-          queueGroup.push(
-            this.visualGateway.animateRequestReplyMessage(this.sensorRadius),
-          );
-        } else if (
+        if (
           (result =
             logMatcher.matches_started_transmission_request_message(line))
         ) {
@@ -78,7 +98,7 @@ export class Scene {
               result.requestSlot,
             ),
           );
-          sensorsBackoff.set(result.sensorIndex, null);
+          sensorsBackoffs[result.sensorIndex] = null;
         } else if (
           (result = logMatcher.matches_started_sensor_measurement_message(line))
         ) {
@@ -88,23 +108,25 @@ export class Scene {
               this.centerY,
             ),
           );
+          sensorsBackoffs[result.sensorIndex] = null;
         } else if (
           (result = logMatcher.matches_on_timeout_for_x_periods(line))
         ) {
-          sensorsBackoff.set(
-            result.sensorIndex,
-            String(Number(result.timeoutPeriod) + 1),
+          sensorsBackoffs[result.sensorIndex] = String(
+            Number(result.timeoutPeriod) + 1,
           );
         }
       });
 
-      this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
-        this.logHighlighter.highlightLogGroup(index);
+      const updatedBackoffs = [...sensorsBackoffs];
 
-        for (let [key, value] of sensorsBackoff.entries()) {
-          this.visualSensors[key].setSubscript(value);
-          this.visualSensors[key].setColor(value == null ? "green" : "red");
-        }
+      this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
+        this.logHighlighter.highlightLogGroup(2 * index + 1);
+
+        updatedBackoffs.forEach((value, i) => {
+          this.visualSensors[i].setSubscript(value);
+          this.visualSensors[i].setColor(value == null ? "green" : "red");
+        });
       });
     });
   }
