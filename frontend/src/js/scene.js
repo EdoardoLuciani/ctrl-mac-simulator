@@ -44,6 +44,10 @@ export class Scene {
 
     this.logHighlighter.setLog(log);
 
+    this.#queueAnimations(log);
+  }
+
+  #queueAnimations(log) {
     const logGroups = log.reduce((acc, line) => {
       if (logMatcher.matches_started_request_reply_message(line)) {
         acc.push([line]);
@@ -53,7 +57,7 @@ export class Scene {
       return acc;
     }, []);
 
-    const sensorsBackoffs = Array(sensorCount).fill(null);
+    const sensorsBackoffs = Array(this.visualSensors.length).fill(null);
 
     logGroups.forEach((group_lines, index) => {
       const previousBackoffs = [...sensorsBackoffs];
@@ -101,6 +105,10 @@ export class Scene {
           );
         }
       });
+
+      if (sensorsBackoffs.length !== this.visualSensors.length) {
+        alert("Mismatch between backoffs and sensor count!");
+      }
 
       const updatedBackoffs = [...sensorsBackoffs];
 
