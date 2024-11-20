@@ -55,6 +55,8 @@ export class TweenTimeTraveler {
   clearQueue() {
     this.#manageTweens("destroy");
     this.tweenGroups = [];
+    this.groupsCallback = [];
+    this.activeTweenGroup = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
   }
