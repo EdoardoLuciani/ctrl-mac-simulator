@@ -1,8 +1,11 @@
 export class TweenTimeTraveler {
   constructor() {
+    this.#resetState();
+  }
+
+  #resetState() {
     this.tweenGroups = [];
     this.groupsCallback = [];
-
     this.activeTweenGroup = [];
     this.currentGroupIndex = 0;
     this.isPlaying = false;
@@ -54,11 +57,7 @@ export class TweenTimeTraveler {
 
   clearQueue() {
     this.#manageTweens("destroy");
-    this.tweenGroups = [];
-    this.groupsCallback = [];
-    this.activeTweenGroup = [];
-    this.currentGroupIndex = 0;
-    this.isPlaying = false;
+    this.#resetState();
   }
 
   async #playGroups() {
