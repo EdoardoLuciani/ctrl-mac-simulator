@@ -6,7 +6,19 @@ export class LogHighligther {
     this.prevHighlightIdx = null;
   }
 
-  setLog(logGroups) {
+  setLog(log) {
+    const logGroups = log.reduce((acc, line) => {
+      if (logMatcher.matches_started_request_reply_message(line)) {
+        acc.push([line]);
+      } else if (logMatcher.matches_finished_request_reply_message(line)) {
+        acc[acc.length - 1].push(line);
+        acc.push([]);
+      } else if (acc.length > 0) {
+        acc[acc.length - 1].push(line);
+      }
+      return acc;
+    }, []);
+
     const resultContainer = document.getElementById("result");
     resultContainer.innerHTML = "";
 
