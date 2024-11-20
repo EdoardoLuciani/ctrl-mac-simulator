@@ -35,3 +35,15 @@ export function matches_started_sensor_measurement_message(line) {
     sensorIndex: Number(match[1].split("-", 2)[1]),
   };
 }
+
+export function matches_on_timeout_for_x_periods(line) {
+  const match = line.match(
+    STANDARD_PATTERN + "On timeout for ([0-9]*) more periods",
+  );
+  if (!match) return null;
+
+  return {
+    sensorIndex: Number(match[1].split("-", 2)[1]),
+    timeoutPeriod: match[2],
+  };
+}
