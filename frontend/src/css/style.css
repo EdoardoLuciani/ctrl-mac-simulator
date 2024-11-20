@@ -64,7 +64,7 @@ select {
     border: 1px solid #ccc;
     padding-left: 10px;
     padding-right: 10px;
-    height: 500px;
+    height: 700px;
     overflow-y: auto;
     white-space: pre-wrap;
 }
