@@ -70,17 +70,20 @@ export class Scene {
             logMatcher.matches_started_transmission_request_message(line))
         ) {
           queueGroup.push(
-            this.visualSensors[
-              Number(result[1].split("-", 2)[1])
-            ].animateTransmissionRequest(this.centerX, this.centerY, result[2]),
+            this.visualSensors[result.sensorIndex].animateTransmissionRequest(
+              this.centerX,
+              this.centerY,
+              result.requestSlot,
+            ),
           );
         } else if (
           (result = logMatcher.matches_started_sensor_measurement_message(line))
         ) {
           queueGroup.push(
-            this.visualSensors[
-              Number(result[1].split("-", 2)[1])
-            ].animateDataTransmission(this.centerX, this.centerY),
+            this.visualSensors[result.sensorIndex].animateDataTransmission(
+              this.centerX,
+              this.centerY,
+            ),
           );
         }
       });
