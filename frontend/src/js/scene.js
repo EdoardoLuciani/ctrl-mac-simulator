@@ -41,9 +41,8 @@ export class Scene {
       ...this.visualSensors.map((e) => e.shape).flat(),
       ...this.visualGateway.shape,
     );
-    this.logHighlighter.setLog(log);
 
-    const result = log.reduce((acc, line) => {
+    const logGroups = log.reduce((acc, line) => {
       if (logMatcher.matches_started_request_reply_message(line)) {
         acc.push([line]);
       } else if (logMatcher.matches_finished_request_reply_message(line)) {
@@ -55,7 +54,9 @@ export class Scene {
       return acc;
     }, []);
 
-    result.forEach((cycle_lines, index) => {
+    this.logHighlighter.setLog(logGroups);
+
+    logGroups.forEach((cycle_lines, index) => {
       const queueGroup = [];
 
       cycle_lines.forEach((line) => {
