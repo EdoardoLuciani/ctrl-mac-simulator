@@ -1,0 +1,70 @@
+First animation: slot
+Second animation: circle
+
+### General Section:
+Q: How old are you?
+A: 23
+
+Q: Have you completed your degree?
+A: No
+
+Q: What is your degree in?
+A: Software Engineering
+
+Q: What year are you currently enrolled in?
+A: Fifth year
+
+### Protocol Understanding:
+Q: Was the protocol clear to you?
+A: Yes (followed by questions about specific slot requests)
+
+### Demo Feedback (First Animation):
+Q: Did the animation help you to understand the protocol better?
+A: Yes
+
+Q: Which aspects of the protocol were easier to understand through this visualization?
+A: The request-response process between sensors and gateway, and the visual distinction between different states through different shapes
+
+Q: Were there any aspects of the visualization that you found confusing?
+A: The log could be confusing; suggested it should be hidden by default. Parameter changes weren't immediately clear.
+
+Q: Did you feel the start/stop/rewind/fast-forward buttons were useful?
+A: Yes, but two controls weren't clear and needed better feedback
+
+Q: What additional information would you like to see displayed?
+A: Visual indication when sensors are waiting/blocked
+
+### Demo Feedback (Second Animation):
+Q: Did this animation help you to understand the protocol better?
+A: Yes, but expressed uncertainty about the backoff mechanism and turn completion
+
+Q: Which aspects of the protocol were easier to understand?
+A: The backoff aspect was clearer in this version
+
+Q: Were there any aspects confusing?
+A: The log again, and requested better labeling for data slots
+
+Q: How easy was it to follow the sequence of events?
+A: Pretty easy, except for understanding what happens after certain states
+
+### Preferences:
+Q: Which version would you prefer for learning purposes?
+A: First one if enhanced, but saw value in both
+
+Q: Which version would you prefer during a lecture?
+A: Suggested both serve different purposes - second one is more sensor-centric, first one more gateway-centric
+
+### Design Variations:
+Q: Which design is more visually appealing?
+A: The left one, citing better space usage and larger central display
+
+### Interesting Observations:
+1. The participant showed strong analytical skills by identifying different focuses of the two animations (sensor-centric vs. gateway-centric)
+2. They consistently mentioned issues with the log display across both versions
+3. They demonstrated good understanding of UX principles by suggesting:
+   - Hidden-by-default complex information
+   - Better visual feedback for controls
+   - Clear labeling
+   - Visual indicators for different states
+4. They were able to see value in both versions for different use cases rather than simply choosing one
+5. The participant showed particular interest in understanding the temporal aspects (turns, time periods) of the protocol
