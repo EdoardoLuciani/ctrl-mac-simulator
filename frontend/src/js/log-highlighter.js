@@ -6,8 +6,8 @@ export class LogHighligther {
     this.prevHighlightIdx = null;
   }
 
-  setLog(inputTextLines) {
-    const result = inputTextLines.reduce((acc, line) => {
+  setLog(log) {
+    const logGroups = log.reduce((acc, line) => {
       if (logMatcher.matches_started_request_reply_message(line)) {
         acc.push([line]);
       } else if (logMatcher.matches_finished_request_reply_message(line)) {
@@ -22,7 +22,7 @@ export class LogHighligther {
     const resultContainer = document.getElementById("result");
     resultContainer.innerHTML = "";
 
-    result.forEach((section, index) => {
+    logGroups.forEach((section, index) => {
       const lineContainer = document.createElement("div");
       lineContainer.className = "line-container";
 
