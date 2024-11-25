@@ -10,6 +10,7 @@ export class VisualSensor {
       new Konva.Circle({
         radius: 22,
         stroke: "green",
+        fill: "white",
       }),
     );
 
@@ -65,6 +66,16 @@ export class VisualSensor {
       this.sensor.x(),
       this.sensor.y(),
     );
+
+    // Sensor wakeup text
+    this.wakeupText = new Konva.Text({
+      x: x + 10,
+      y: y - 40,
+      text: "Sensed data!",
+      fontSize: 14,
+      fontFamily: "Arial",
+      visible: false,
+    });
   }
 
   #createInvisibleGroupWithText(object, x, y, text) {
@@ -86,7 +97,12 @@ export class VisualSensor {
   }
 
   get shape() {
-    return [this.sensor, this.dataTransmission, this.transmissionRequest];
+    return [
+      this.sensor,
+      this.wakeupText,
+      this.dataTransmission,
+      this.transmissionRequest,
+    ];
   }
 
   setSubscript(text) {
@@ -132,6 +148,21 @@ export class VisualSensor {
       },
       onFinish: () => {
         this.dataTransmission.visible(false);
+      },
+    };
+  }
+
+  animateColorChange(color) {
+    return {
+      node: this.sensor.getChildren()[0],
+      duration: 1,
+      fill: color,
+      onStart: () => {
+        this.wakeupText.visible(true);
+      },
+      onFinish: () => {
+        this.wakeupText.visible(false);
+        this.sensor.getChildren()[0].fill("white");
       },
     };
   }
