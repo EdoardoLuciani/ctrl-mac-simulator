@@ -47,3 +47,15 @@ export function matches_on_timeout_for_x_periods(line) {
     timeoutPeriod: match[2],
   };
 }
+
+export function matches_syncing_to_next_rrm(line) {
+  const match = line.match(
+    STANDARD_PATTERN +
+      "Data is available, syncing to next RRM for transmission request",
+  );
+  if (!match) return null;
+
+  return {
+    sensorIndex: Number(match[1].split("-", 2)[1]),
+  };
+}
