@@ -49,7 +49,7 @@ export class VisualGateway {
   animateRequestReplyMessage(circleRadius) {
     return {
       node: this.messageCircle,
-      duration: 1,
+      duration: 1.5,
       radius: circleRadius,
       onStart: () => {
         this.messageCircle.visible(true);
