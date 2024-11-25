@@ -1,8 +1,10 @@
 import { Scene } from "./src/js/scene";
 import { Plotter } from "./src/js/plotter";
+import { PlayPauseController } from "./src/js/play-pause-controller";
 
 const scene = new Scene("canvas-column");
 const plotter = new Plotter("plotly-graph");
+const playPauseController = new PlayPauseController("play-pause-button");
 
 document
   .getElementById("simulation-form")
@@ -51,28 +53,21 @@ document.getElementById("reset-button").addEventListener("click", () => {
 });
 
 document.getElementById("play-pause-button").addEventListener("click", () => {
-  const playPauseButton = document.getElementById("play-pause-button");
-  const currentState = playPauseButton.dataset.state;
-
-  if (currentState === "paused") {
+  if (playPauseController.toggle() === "playing") {
     scene.tweenTimeTraveler.playQueue();
-    playPauseButton.querySelector("i").classList.remove("fa-play");
-    playPauseButton.querySelector("i").classList.add("fa-pause");
-    playPauseButton.dataset.state = "playing";
   } else {
     scene.tweenTimeTraveler.pauseQueue();
-    playPauseButton.querySelector("i").classList.remove("fa-pause");
-    playPauseButton.querySelector("i").classList.add("fa-play");
-    playPauseButton.dataset.state = "paused";
   }
 });
 
 document.getElementById("prev-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToPreviousGroup();
+  playPauseController.setState("playing");
 });
 
 document.getElementById("next-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToNextGroup();
+  playPauseController.setState("playing");
 });
 
 document.getElementById("restart-button").addEventListener("click", () => {
