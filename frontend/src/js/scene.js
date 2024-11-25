@@ -86,7 +86,10 @@ export class Scene {
               result.requestSlot,
             ),
           );
-          sensorsBackoffs[result.sensorIndex] = null;
+          sensorsBackoffs[result.sensorIndex] = {
+            color: "green",
+            backoff: null,
+          };
         } else if (
           (result = logMatcher.matches_started_sensor_measurement_message(line))
         ) {
@@ -96,19 +99,27 @@ export class Scene {
               this.centerY,
             ),
           );
-          sensorsBackoffs[result.sensorIndex] = null;
+          sensorsBackoffs[result.sensorIndex] = {
+            color: "green",
+            backoff: null,
+          };
         } else if (
           (result = logMatcher.matches_on_timeout_for_x_periods(line))
         ) {
-          sensorsBackoffs[result.sensorIndex] = String(
-            Number(result.timeoutPeriod) + 1,
+          sensorsBackoffs[result.sensorIndex] = {
+            color: "red",
+            backoff: String(Number(result.timeoutPeriod) + 1),
+          };
+        } else if ((result = logMatcher.matches_syncing_to_next_rrm(line))) {
+          queueGroup.push(
+            this.visualSensors[result.sensorIndex].animateColorChange("green"),
           );
+          sensorsBackoffs[result.sensorIndex] = {
+            color: "green",
+            backoff: null,
+          };
         }
       });
-
-      if (sensorsBackoffs.length !== this.visualSensors.length) {
-        alert("Mismatch between backoffs and sensor count!");
-      }
 
       const updatedBackoffs = [...sensorsBackoffs];
 
@@ -121,8 +132,10 @@ export class Scene {
 
   #updateSensorBackoffs(backoffs) {
     backoffs.forEach((value, i) => {
-      this.visualSensors[i].setSubscript(value);
-      this.visualSensors[i].setColor(value == null ? "green" : "red");
+      if (value) {
+        this.visualSensors[i].setSubscript(value.backoff);
+        this.visualSensors[i].setColor(value.color);
+      }
     });
   }
 
