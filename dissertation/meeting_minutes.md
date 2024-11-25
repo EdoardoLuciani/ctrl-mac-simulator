@@ -175,3 +175,24 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Decide on which simulation to continue development with
 - Evaluate and create github issues for suggestions raised
 - Start working on those
+
+
+## 26 Nov 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Intervieved last participant
+- Finalized early findings
+- Added navbar and multi page support on the app
+- Fixed some of the problems raised, animation speed, more labelling, various bug fixes
+- Implemented the logic to queue events from simulation log
+- Added sensor wake up animation
+
+### Issues discussed and solutions agreed
+
+
+### Objectives for the next week
+- Sidebar log should display quick info on summary
+- Better style for navbar and site
+- And bugfixes if they come up
+- Start looking at deployment
