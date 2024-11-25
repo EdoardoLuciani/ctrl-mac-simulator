@@ -57,16 +57,16 @@ export class Scene {
       return acc;
     }, []);
 
-    const sensorsBackoffs = Array(this.visualSensors.length).fill(null);
+    const sensorsStatus = Array(this.visualSensors.length).fill(null);
 
     logGroups.forEach((group_lines, index) => {
-      const previousBackoffs = [...sensorsBackoffs];
+      const previousSensorStatus = [...sensorsStatus];
 
       this.tweenTimeTraveler.queueTweenGroup(
         [this.visualGateway.animateRequestReplyMessage(this.sensorRadius)],
         () => {
           this.logHighlighter.highlightLogGroup(2 * index);
-          this.#updateSensorBackoffs(previousBackoffs);
+          this.#updateSensorStatus(previousSensorStatus);
         },
       );
 
@@ -86,7 +86,7 @@ export class Scene {
               result.requestSlot,
             ),
           );
-          sensorsBackoffs[result.sensorIndex] = {
+          sensorsStatus[result.sensorIndex] = {
             color: "green",
             backoff: null,
           };
@@ -99,14 +99,14 @@ export class Scene {
               this.centerY,
             ),
           );
-          sensorsBackoffs[result.sensorIndex] = {
+          sensorsStatus[result.sensorIndex] = {
             color: "grey",
             backoff: null,
           };
         } else if (
           (result = logMatcher.matches_on_timeout_for_x_periods(line))
         ) {
-          sensorsBackoffs[result.sensorIndex] = {
+          sensorsStatus[result.sensorIndex] = {
             color: "red",
             backoff: String(Number(result.timeoutPeriod) + 1),
           };
@@ -114,23 +114,23 @@ export class Scene {
           queueGroup.push(
             this.visualSensors[result.sensorIndex].animateColorChange("green"),
           );
-          sensorsBackoffs[result.sensorIndex] = {
+          sensorsStatus[result.sensorIndex] = {
             color: "green",
             backoff: null,
           };
         }
       });
 
-      const updatedBackoffs = [...sensorsBackoffs];
+      const updatedSensorStatus = [...sensorsStatus];
 
       this.tweenTimeTraveler.queueTweenGroup(queueGroup, () => {
         this.logHighlighter.highlightLogGroup(2 * index + 1);
-        this.#updateSensorBackoffs(updatedBackoffs);
+        this.#updateSensorStatus(updatedSensorStatus);
       });
     });
   }
 
-  #updateSensorBackoffs(backoffs) {
+  #updateSensorStatus(backoffs) {
     backoffs.forEach((value, i) => {
       if (value) {
         this.visualSensors[i].setSubscript(value.backoff);
