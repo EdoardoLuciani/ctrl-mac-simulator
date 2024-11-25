@@ -57,7 +57,10 @@ export class Scene {
       return acc;
     }, []);
 
-    const sensorsStatus = Array(this.visualSensors.length).fill(null);
+    const sensorsStatus = Array(this.visualSensors.length).fill({
+      color: "grey",
+      backoff: null,
+    });
 
     logGroups.forEach((group_lines, index) => {
       const previousSensorStatus = [...sensorsStatus];
@@ -130,12 +133,10 @@ export class Scene {
     });
   }
 
-  #updateSensorStatus(backoffs) {
-    backoffs.forEach((value, i) => {
-      if (value) {
-        this.visualSensors[i].setSubscript(value.backoff);
-        this.visualSensors[i].setColor(value.color);
-      }
+  #updateSensorStatus(statuses) {
+    statuses.forEach((value, i) => {
+      this.visualSensors[i].setSubscript(value.backoff);
+      this.visualSensors[i].setColor(value.color);
     });
   }
 
