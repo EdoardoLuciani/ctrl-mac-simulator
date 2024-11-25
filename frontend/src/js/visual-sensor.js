@@ -9,7 +9,7 @@ export class VisualSensor {
     this.sensor.add(
       new Konva.Circle({
         radius: 22,
-        stroke: "green",
+        stroke: "grey",
         fill: "white",
       }),
     );

@@ -100,7 +100,7 @@ export class Scene {
             ),
           );
           sensorsBackoffs[result.sensorIndex] = {
-            color: "green",
+            color: "grey",
             backoff: null,
           };
         } else if (
