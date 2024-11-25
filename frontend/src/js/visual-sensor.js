@@ -103,7 +103,7 @@ export class VisualSensor {
 
     return {
       node: this.transmissionRequest,
-      duration: 1,
+      duration: 2,
       x: destX,
       y: destY,
       onStart: () => {
@@ -123,7 +123,7 @@ export class VisualSensor {
 
     return {
       node: this.dataTransmission,
-      duration: 1,
+      duration: 2,
       x: destX,
       y: destY,
       onStart: () => {
