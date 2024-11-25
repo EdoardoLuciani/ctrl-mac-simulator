@@ -38,7 +38,7 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
     sensors_measurement_chance = float(sensors_measurement_chance)
 
     if seed is None:
-        seed = int.from_bytes(os.urandom(4), 'big')
+        seed = str(int.from_bytes(os.urandom(4), 'big'))
     random.seed(seed)
 
     # Set up and run the simulation
