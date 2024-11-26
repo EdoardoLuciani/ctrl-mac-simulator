@@ -21,9 +21,15 @@
     padding-right: 20px;
 }
 
-form {
+#simulation-form {
     display: grid;
     gap: 10px;
+}
+
+#simulation-form-advanced-section {
+    display: grid;
+    gap: 10px;
+    padding-top: 10px;
 }
 
 label {
