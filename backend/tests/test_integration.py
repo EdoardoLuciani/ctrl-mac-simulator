@@ -37,9 +37,9 @@ def test_scenario_random_seed():
     assert len(stat_tracker.ftr_values) != 0
     assert len(stat_tracker.measurement_latencies) != 0
 
-def test_seed_converted_to_string():
+def test_parameters_in_string():
     env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, seed="123")
-    env2, _, glmh2, _, _, seed2 = setup_simulation(3, 2, 6, 0.5, 6, 6, seed=123)
+    env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", seed=123)
 
     env.run()
     env2.run()
