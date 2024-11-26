@@ -29,6 +29,25 @@
                         />
                     </label>
                     <label>
+                        Max Cycles:
+                        <input
+                            type="number"
+                            name="max_cycles"
+                            value="7"
+                            title="Number of cycles to simulate"
+                        />
+                    </label>
+                    <label>
+                        Seed:
+                        <input
+                            type="string"
+                            name="seed"
+                            placeholder="Leave empty for random seed"
+                            value="226"
+                            title="Seed for the simulation, define to get deterministic behaviour"
+                        />
+                    </label>
+                    <label>
                         Data Channels:
                         <input
                             type="number"
@@ -46,51 +65,38 @@
                             title="Number of time based data slots for each channel"
                         />
                     </label>
-                    <label>
-                        Request Slots:
-                        <input
-                            type="number"
-                            name="request_slots"
-                            value="6"
-                            title="Number of requests slots in the rrm message"
-                        />
-                    </label>
-                    <label>
-                        RRM Period:
-                        <input
-                            type="number"
-                            name="rrm_period"
-                            value="0.5"
-                            title="Time in seconds, specifying the time between each rrm message"
-                        />
-                    </label>
-                    <label>
-                        Max Cycles:
-                        <input
-                            type="number"
-                            name="max_cycles"
-                            value="7"
-                            title="Number of cycles to simulate"
-                        />
-                    </label>
-                    <label>
-                        Sensors Measurement Chance:
-                        <input
-                            type="string"
-                            name="sensors_measurement_chance"
-                            title="Chance of each sensor sensing data to send when in idle state"
-                        />
-                    </label>
-                    <label>
-                        Seed:
-                        <input
-                            type="string"
-                            name="seed"
-                            placeholder="Leave empty for random seed"
-                            value="226"
-                            title="Seed for the simulation, define to get deterministic behaviour"
-                        />
-                    </label>
+
+                    <details>
+                        <summary>Advanced Settings</summary>
+                        <div id="simulation-form-advanced-section">
+                            <label>
+                                Request Slots:
+                                <input
+                                    type="number"
+                                    name="request_slots"
+                                    value="6"
+                                    title="Number of requests slots in the rrm message"
+                                />
+                            </label>
+                            <label>
+                                RRM Period:
+                                <input
+                                    type="number"
+                                    name="rrm_period"
+                                    value="0.5"
+                                    title="Time in seconds, specifying the time between each rrm message"
+                                />
+                            </label>
+                            <label>
+                                Sensors Measurement Chance:
+                                <input
+                                    type="string"
+                                    name="sensors_measurement_chance"
+                                    title="Chance of each sensor sensing data to send when in idle state"
+                                />
+                            </label>
+                        </div>
+                    </details>
                     <button type="submit">Generate Simulation</button>
                     <button type="button" id="reset-button">Reset</button>
                 </form>
