@@ -189,7 +189,8 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Added sensor wake up animation
 
 ### Issues discussed and solutions agreed
-
+- Change input box to hide advanced parameter
+- Compute the rrm cycle time from the number of slots
 
 ### Objectives for the next week
 - Sidebar log should display quick info on summary
