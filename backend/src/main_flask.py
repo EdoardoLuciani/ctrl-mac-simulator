@@ -27,7 +27,7 @@ def simulate():
     })
 
 
-def setup_simulation(data_channels: int, data_slots_per_channel: int, request_slots: int, rrm_period: float, max_cycles: int, sensor_count: int, sensors_measurement_chance: float = "1.0", seed = None):
+def setup_simulation(data_channels: int, data_slots_per_channel: int, request_slots: int, rrm_period: float, max_cycles: int, sensor_count: int, sensors_measurement_chance: str = "1.0", seed = None):
     # Convert string parameters to appropriate numeric types
     data_channels = int(data_channels)
     data_slots_per_channel = int(data_slots_per_channel)
