@@ -27,7 +27,7 @@ def simulate():
     })
 
 
-def setup_simulation(data_channels: int, data_slots_per_channel: int, request_slots: int, rrm_period: float, max_cycles: int, sensor_count: int, sensors_measurement_chance: str = "1.0", seed = None):
+def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, sensors_measurement_chance: float | str = "1.0", seed: str = None):
     # Convert string parameters to appropriate numeric types
     data_channels = int(data_channels)
     data_slots_per_channel = int(data_slots_per_channel)
@@ -38,7 +38,8 @@ def setup_simulation(data_channels: int, data_slots_per_channel: int, request_sl
     sensors_measurement_chance = float(sensors_measurement_chance)
 
     if seed is None:
-        seed = str(int.from_bytes(os.urandom(4), 'big'))
+        seed = (int.from_bytes(os.urandom(4), 'big'))
+    seed = str(seed)
     random.seed(seed)
 
     # Set up and run the simulation
