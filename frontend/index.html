@@ -48,21 +48,12 @@
                         />
                     </label>
                     <label>
-                        Data Channels:
+                        Request Slots:
                         <input
                             type="number"
-                            name="data_channels"
-                            value="3"
-                            title="Number of data channels available for sending data transmissions"
-                        />
-                    </label>
-                    <label>
-                        Data Slots per Channel:
-                        <input
-                            type="number"
-                            name="data_slots_per_channel"
-                            value="2"
-                            title="Number of time based data slots for each channel"
+                            name="request_slots"
+                            value="6"
+                            title="Number of requests slots in the rrm message"
                         />
                     </label>
 
@@ -70,12 +61,21 @@
                         <summary>Advanced Settings</summary>
                         <div id="simulation-form-advanced-section">
                             <label>
-                                Request Slots:
+                                Data Channels:
                                 <input
                                     type="number"
-                                    name="request_slots"
-                                    value="6"
-                                    title="Number of requests slots in the rrm message"
+                                    name="data_channels"
+                                    value="3"
+                                    title="Number of data channels available for sending data transmissions"
+                                />
+                            </label>
+                            <label>
+                                Data Slots per Channel:
+                                <input
+                                    type="number"
+                                    name="data_slots_per_channel"
+                                    value="2"
+                                    title="Number of time based data slots for each channel"
                                 />
                             </label>
                             <label>
