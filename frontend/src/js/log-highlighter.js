@@ -23,29 +23,37 @@ export class LogHighligther {
     resultContainer.innerHTML = "";
 
     logGroups.forEach((section, index) => {
-      const lineContainer = document.createElement("div");
-      lineContainer.className = "line-container";
-
-      const button = document.createElement("button");
-      button.className = "line-button";
-      button.textContent = "→";
-      button.onclick = () => {
-        this.tweenTimeTraveler.goToGroup(index);
-        this.tweenTimeTraveler.playQueue();
-      };
-      lineContainer.appendChild(button);
-
-      const detailsDiv = document.createElement("details");
-      detailsDiv.innerText = section.join("\n");
-
-      const summaryDiv = document.createElement("summary");
-      summaryDiv.innerText = "Animation " + index;
-      detailsDiv.appendChild(summaryDiv);
-
-      lineContainer.appendChild(detailsDiv);
-
-      resultContainer.appendChild(lineContainer);
+      const elem = this.#createVisualLogGroup(
+        "Animation " + index,
+        section.join("\n"),
+        () => {
+          this.tweenTimeTraveler.goToGroup(index);
+          this.tweenTimeTraveler.playQueue();
+        },
+      );
+      resultContainer.appendChild(elem);
     });
+  }
+
+  #createVisualLogGroup(summaryText, detailsText, buttonCallback) {
+    const lineContainer = document.createElement("div");
+    lineContainer.className = "line-container";
+
+    const button = document.createElement("button");
+    button.className = "line-button";
+    button.textContent = "→";
+    button.onclick = buttonCallback;
+    lineContainer.appendChild(button);
+
+    const detailsDiv = document.createElement("details");
+    detailsDiv.innerText = detailsText;
+
+    const summaryDiv = document.createElement("summary");
+    summaryDiv.innerText = summaryText;
+    detailsDiv.appendChild(summaryDiv);
+
+    lineContainer.appendChild(detailsDiv);
+    return lineContainer;
   }
 
   highlightLogGroup(groupIdx) {
