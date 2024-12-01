@@ -17,35 +17,35 @@ export function matches_started_transmission_request_message(line) {
     STANDARD_PATTERN +
       "Started TransmissionRequestMessage for request slot ([0-9]*) transmission",
   );
-  if (!match) return null;
-
-  return {
-    sensorIndex: Number(match[1].split("-", 2)[1]),
-    requestSlot: match[2],
-  };
+  return match
+    ? {
+        sensorIndex: Number(match[1].split("-", 2)[1]),
+        requestSlot: match[2],
+      }
+    : null;
 }
 
 export function matches_started_sensor_measurement_message(line) {
   const match = line.match(
     STANDARD_PATTERN + "Started SensorMeasurementMessage transmission",
   );
-  if (!match) return null;
-
-  return {
-    sensorIndex: Number(match[1].split("-", 2)[1]),
-  };
+  return match
+    ? {
+        sensorIndex: Number(match[1].split("-", 2)[1]),
+      }
+    : null;
 }
 
 export function matches_on_timeout_for_x_periods(line) {
   const match = line.match(
     STANDARD_PATTERN + "On timeout for ([0-9]*) more periods",
   );
-  if (!match) return null;
-
-  return {
-    sensorIndex: Number(match[1].split("-", 2)[1]),
-    timeoutPeriod: match[2],
-  };
+  return match
+    ? {
+        sensorIndex: Number(match[1].split("-", 2)[1]),
+        timeoutPeriod: match[2],
+      }
+    : null;
 }
 
 export function matches_syncing_to_next_rrm(line) {
@@ -53,9 +53,22 @@ export function matches_syncing_to_next_rrm(line) {
     STANDARD_PATTERN +
       "Data is available, syncing to next RRM for transmission request",
   );
-  if (!match) return null;
+  return match
+    ? {
+        sensorIndex: Number(match[1].split("-", 2)[1]),
+      }
+    : null;
+}
 
-  return {
-    sensorIndex: Number(match[1].split("-", 2)[1]),
-  };
+export function matches_any_line(line) {
+  const match = line.match("Time ([0-9]*.[0-9]*):");
+  return match ? match[1] : null;
+}
+
+export function matches_debug_log(line) {
+  return line.match("INFO");
+}
+
+export function matches_debug_rrm_message(line) {
+  return line.match("DEBUG: Gateway: {");
 }
