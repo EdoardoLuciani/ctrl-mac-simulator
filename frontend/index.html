@@ -104,31 +104,32 @@
                     <button type="button" id="reset-button">Reset</button>
                 </form>
                 <div id="error-box" class="error-box"></div>
-                <div id="seed-box"></div>
-            </div>
-            <div id="canvas-column"></div>
-            <div id="simulation-control-column">
-                <div id="result"></div>
+                <div id="seed-box">No simulation loaded!</div>
 
-                <div id="simulation-control">
-                    <button type="button" , id="prev-button">
-                        <i class="fas fa-backward"></i>
-                    </button>
-                    <button
-                        type="button"
-                        id="play-pause-button"
-                        data-state="paused"
-                    >
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <button type="button" , id="next-button">
-                        <i class="fas fa-forward"></i>
-                    </button>
-                    <button type="button" , id="restart-button">
-                        <i class="fas fa-redo"></i>
-                    </button>
+                <div id="simulation-result">
+                    <div id="result"></div>
+
+                    <div id="simulation-control">
+                        <button type="button" , id="prev-button">
+                            <i class="fas fa-backward"></i>
+                        </button>
+                        <button
+                            type="button"
+                            id="play-pause-button"
+                            data-state="paused"
+                        >
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button type="button" , id="next-button">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                        <button type="button" , id="restart-button">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div id="canvas-column"></div>
         </div>
         <div id="plotly-graph"></div>
 

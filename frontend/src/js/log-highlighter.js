@@ -4,6 +4,12 @@ export class LogHighligther {
   constructor(goToGroupCallback) {
     this.goToGroupCallback = goToGroupCallback;
     this.prevHighlightIdx = null;
+
+    const canvasColumn = document.getElementById("canvas-column");
+    const result = document.getElementById("result");
+    if (canvasColumn && result) {
+      result.style.height = `${canvasColumn.offsetHeight - 400}px`;
+    }
   }
 
   setLog(log) {

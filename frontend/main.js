@@ -48,7 +48,7 @@ document
 
 // Button event listeners
 document.getElementById("reset-button").addEventListener("click", () => {
-  document.getElementById("seed-box").textContent = null;
+  document.getElementById("seed-box").textContent = "No simulation loaded!";
   scene.clearScene();
 });
 
