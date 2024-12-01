@@ -1,8 +1,8 @@
 import * as logMatcher from "./helpers/log-matcher-helper";
 
 export class LogHighligther {
-  constructor(tweenTimeTraveler) {
-    this.tweenTimeTraveler = tweenTimeTraveler;
+  constructor(goToGroupCallback) {
+    this.goToGroupCallback = goToGroupCallback;
     this.prevHighlightIdx = null;
   }
 
@@ -49,10 +49,7 @@ export class LogHighligther {
       const elem = this.#createVisualLogGroup(
         `Cycle: ${cycleNo} | Time: ${time} | ${isSensorGroup ? "Sensor" : "RRM Slots Status"}:<br> ${groupDesc}`,
         this.#processLogGroup(section),
-        () => {
-          this.tweenTimeTraveler.goToGroup(index);
-          this.tweenTimeTraveler.playQueue();
-        },
+        index,
       );
       resultContainer.appendChild(elem);
     });
@@ -65,14 +62,16 @@ export class LogHighligther {
       .join("\n");
   }
 
-  #createVisualLogGroup(summaryText, detailsText, buttonCallback) {
+  #createVisualLogGroup(summaryText, detailsText, index) {
     const lineContainer = document.createElement("div");
     lineContainer.className = "line-container";
 
     const button = document.createElement("button");
     button.className = "line-button";
     button.textContent = "→";
-    button.onclick = buttonCallback;
+    button.onclick = () => {
+      this.goToGroupCallback(index);
+    };
     lineContainer.appendChild(button);
 
     const detailsDiv = document.createElement("details");

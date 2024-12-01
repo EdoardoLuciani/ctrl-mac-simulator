@@ -7,7 +7,7 @@ import { LogHighligther } from "./log-highlighter";
 import * as logMatcher from "./helpers/log-matcher-helper";
 
 export class Scene {
-  constructor(containerId) {
+  constructor(containerId, playPauseController) {
     const container = document.getElementById(containerId);
 
     this.stage = new Konva.Stage({
@@ -25,7 +25,11 @@ export class Scene {
     this.sensorRadius = this.layer.width() / 2.5;
 
     this.tweenTimeTraveler = new TweenTimeTraveler();
-    this.logHighlighter = new LogHighligther(this.tweenTimeTraveler);
+    this.logHighlighter = new LogHighligther((index) => {
+      this.tweenTimeTraveler.goToGroup(index);
+      this.tweenTimeTraveler.playQueue();
+      playPauseController.setState("playing");
+    });
   }
 
   setupScene(sensorCount, log) {
