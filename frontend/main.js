@@ -2,9 +2,9 @@ import { Scene } from "./src/js/scene";
 import { Plotter } from "./src/js/plotter";
 import { PlayPauseController } from "./src/js/play-pause-controller";
 
-const scene = new Scene("canvas-column");
 const plotter = new Plotter("plotly-graph");
 const playPauseController = new PlayPauseController("play-pause-button");
+const scene = new Scene("canvas-column", playPauseController);
 
 document
   .getElementById("simulation-form")
