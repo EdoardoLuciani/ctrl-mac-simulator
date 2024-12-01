@@ -91,3 +91,15 @@ select {
     grid-template-columns: auto auto auto auto;
     gap: 10px;
 }
+
+.contention-rrm-status-text {
+    background-color: red;
+}
+
+.no_contention-rrm-status-text {
+    background-color: green;
+}
+
+.free-rrm-status-text {
+    background-color: greenyellow;
+}
