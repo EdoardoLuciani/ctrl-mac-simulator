@@ -72,7 +72,7 @@ document.getElementById("next-button").addEventListener("click", () => {
 
 document.getElementById("restart-button").addEventListener("click", () => {
   scene.tweenTimeTraveler.goToGroup(0);
-  scene.tweenTimeTraveler.playQueue();
+  playPauseController.setState("playing");
 });
 
 // Keyboard shortcuts
