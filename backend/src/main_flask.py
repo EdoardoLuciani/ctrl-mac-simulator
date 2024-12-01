@@ -47,7 +47,7 @@ def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str
 
     stat_tracker = StatTracker()
     global_logger_memory_handler = GlobalLoggerMemoryHandler()
-    logging_level = logging.INFO
+    logging_level = logging.DEBUG
 
     gateway = Gateway(
         env,

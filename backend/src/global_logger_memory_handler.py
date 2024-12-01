@@ -8,7 +8,7 @@ class GlobalLoggerMemoryHandler(logging.Handler):
         self.log = []
 
     def emit(self, record: logging.LogRecord):
-        self.log.append(f"{record.name}: {(record.msg)}")
+        self.log.append(f"{record.levelname}: {record.name}: {(record.msg)}")
 
     def match_events_in_sublist(self, pattern: str, starting_idx: int) -> Optional[str]:
         matches = list(
