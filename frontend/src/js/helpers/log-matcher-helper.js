@@ -20,7 +20,7 @@ export function matches_started_transmission_request_message(line) {
   return match
     ? {
         sensorIndex: Number(match[1].split("-", 2)[1]),
-        requestSlot: match[2],
+        requestSlot: Number(match[2]),
       }
     : null;
 }
