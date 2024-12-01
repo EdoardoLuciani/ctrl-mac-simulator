@@ -23,9 +23,32 @@ export class LogHighligther {
     resultContainer.innerHTML = "";
 
     logGroups.forEach((section, index) => {
+      const cycleNo = Math.floor(index / 2);
+      const time = logMatcher.matches_any_line(section[0]);
+      const isSensorGroup = index % 2;
+
+      let groupDesc;
+      if (isSensorGroup) {
+        groupDesc = "sensor";
+      } else {
+        const debugMessage = section.find((e) =>
+          logMatcher.matches_debug_rrm_message(e),
+        );
+        const debugJson = JSON.parse(
+          debugMessage.slice(debugMessage.indexOf("{")),
+        );
+        const stringValue = debugJson["request_slots"]
+          .map(
+            (e) =>
+              `<span class="${e["state"]}-rrm-status-text">${e["state"]}</span>`,
+          )
+          .join("|");
+        groupDesc = stringValue;
+      }
+
       const elem = this.#createVisualLogGroup(
-        "Animation " + index,
-        section.join("\n"),
+        `Cycle: ${cycleNo} | Time: ${time} | ${isSensorGroup ? "Sensor" : "RRM Slots Status"}:<br> ${groupDesc}`,
+        this.#processLogGroup(section),
         () => {
           this.tweenTimeTraveler.goToGroup(index);
           this.tweenTimeTraveler.playQueue();
@@ -33,6 +56,13 @@ export class LogHighligther {
       );
       resultContainer.appendChild(elem);
     });
+  }
+
+  #processLogGroup(logGroup) {
+    return logGroup
+      .filter((e) => logMatcher.matches_debug_log(e))
+      .map((e) => e.slice(e.indexOf(":") + 2))
+      .join("\n");
   }
 
   #createVisualLogGroup(summaryText, detailsText, buttonCallback) {
@@ -49,7 +79,7 @@ export class LogHighligther {
     detailsDiv.innerText = detailsText;
 
     const summaryDiv = document.createElement("summary");
-    summaryDiv.innerText = summaryText;
+    summaryDiv.innerHTML = summaryText;
     detailsDiv.appendChild(summaryDiv);
 
     lineContainer.appendChild(detailsDiv);
@@ -60,15 +90,15 @@ export class LogHighligther {
     const lineContainers = document.querySelectorAll(".line-container");
 
     if (this.prevHighlightIdx != null) {
-      const summaryDiv =
-        lineContainers[this.prevHighlightIdx].querySelector("summary");
-      summaryDiv.innerHTML = summaryDiv.innerText;
+      const currentLineContainer = lineContainers[this.prevHighlightIdx];
+      currentLineContainer.querySelector("summary").innerHTML =
+        currentLineContainer.querySelector("mark").innerHTML;
     }
 
     if (groupIdx >= 0 && groupIdx < lineContainers.length) {
       const targetContainer = lineContainers[groupIdx];
       const summaryDiv = targetContainer.querySelector("summary");
-      summaryDiv.innerHTML = `<mark>${summaryDiv.innerText}</mark>`;
+      summaryDiv.innerHTML = `<mark>${summaryDiv.innerHTML}</mark>`;
 
       document.getElementById("result").scroll({
         left: 0,
