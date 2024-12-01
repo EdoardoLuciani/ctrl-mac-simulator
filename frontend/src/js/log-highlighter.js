@@ -41,18 +41,31 @@ export class LogHighligther {
               (sectionCounts[match.requestSlot] || 0) + 1;
           }
         });
-        const noCollisionSlots = sectionCounts
-          .filter((e) => e == 1)
-          .map((_, i) => i);
+
+        const noCollisionSlots = [];
+        const collisionSlots = [];
+        sectionCounts.forEach((elem, idx) => {
+          if (elem > 1) {
+            collisionSlots.push(idx);
+          } else if (elem === 1) {
+            noCollisionSlots.push(idx);
+          }
+        });
+
         if (noCollisionSlots.length) {
-          groupDesc += `Not collided slots ${noCollisionSlots.toString()} | `;
+          groupDesc += `Uncontented slots: ${noCollisionSlots.toString()}`;
         }
 
-        const collisionSlots = sectionCounts
-          .filter((e) => e > 1)
-          .map((_, i) => i);
+        if (noCollisionSlots.length && collisionSlots.length) {
+          groupDesc += " | ";
+        }
+
         if (collisionSlots.length) {
-          groupDesc += `Collided slots ${collisionSlots.toString()} |`;
+          groupDesc += `Contented slots: ${collisionSlots.toString()}`;
+        }
+
+        if (groupDesc === "") {
+          groupDesc = "No sensor sent a transmission request message";
         }
       } else {
         const debugMessage = section.find((e) =>
@@ -71,7 +84,7 @@ export class LogHighligther {
       }
 
       const elem = this.#createVisualLogGroup(
-        `Cycle: ${cycleNo} | Time: ${time} | ${isSensorGroup ? "Sensor" : "RRM Slots Status"}:<br> ${groupDesc}`,
+        `Cycle: ${cycleNo} | Time: ${time} | ${isSensorGroup ? "Sensor Slots Collisions" : "RRM Slots Status"}:<br> ${groupDesc}`,
         this.#processLogGroup(section),
         index,
       );
