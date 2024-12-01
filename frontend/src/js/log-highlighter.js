@@ -22,14 +22,38 @@ export class LogHighligther {
     const resultContainer = document.getElementById("result");
     resultContainer.innerHTML = "";
 
+    // Dynamically determined by the first rrm message processed by the simulator
+    let requestSlotsCount = null;
+
     logGroups.forEach((section, index) => {
       const cycleNo = Math.floor(index / 2);
       const time = logMatcher.matches_any_line(section[0]);
       const isSensorGroup = index % 2;
 
-      let groupDesc;
+      let groupDesc = "";
       if (isSensorGroup) {
-        groupDesc = "sensor";
+        const sectionCounts = new Array(requestSlotsCount).fill(null);
+        section.forEach((e) => {
+          const match =
+            logMatcher.matches_started_transmission_request_message(e);
+          if (match) {
+            sectionCounts[match.requestSlot] =
+              (sectionCounts[match.requestSlot] || 0) + 1;
+          }
+        });
+        const noCollisionSlots = sectionCounts
+          .filter((e) => e == 1)
+          .map((_, i) => i);
+        if (noCollisionSlots.length) {
+          groupDesc += `Not collided slots ${noCollisionSlots.toString()} | `;
+        }
+
+        const collisionSlots = sectionCounts
+          .filter((e) => e > 1)
+          .map((_, i) => i);
+        if (collisionSlots.length) {
+          groupDesc += `Collided slots ${collisionSlots.toString()} |`;
+        }
       } else {
         const debugMessage = section.find((e) =>
           logMatcher.matches_debug_rrm_message(e),
@@ -37,13 +61,13 @@ export class LogHighligther {
         const debugJson = JSON.parse(
           debugMessage.slice(debugMessage.indexOf("{")),
         );
-        const stringValue = debugJson["request_slots"]
+        requestSlotsCount = debugJson["request_slots"].length;
+        groupDesc = debugJson["request_slots"]
           .map(
             (e) =>
               `<span class="${e["state"]}-rrm-status-text">${e["state"]}</span>`,
           )
           .join("|");
-        groupDesc = stringValue;
       }
 
       const elem = this.#createVisualLogGroup(
