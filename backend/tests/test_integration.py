@@ -1,4 +1,4 @@
-from main_flask import setup_simulation
+from main import setup_simulation
 from simulation.devices import Gateway, Sensor
 from simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
@@ -7,7 +7,7 @@ import random, simpy
 
 
 def test_scenario_random_seed():
-    env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, seed="123")
+    env, stat_tracker, _, gateway, sensors, _ = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed="123")
 
     env.run(0.50)
     # RRM message in first cycle must have all slots free and sensors are ready to send the transmission request on the next cycle
@@ -38,17 +38,17 @@ def test_scenario_random_seed():
     assert len(stat_tracker.measurement_latencies) != 0
 
 def test_parameters_in_string():
-    env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, seed="123")
-    env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", seed=123)
+    env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed="123", server=True)
+    env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", 'info', 1.0, seed=123, server=True)
 
     env.run()
     env2.run()
-    assert glmh.log == glmh2.log
+    assert glmh.getvalue() == glmh2.getvalue()
     assert seed == seed2
 
 
 def test_scenario_lucky_seed_no_collision():
-    env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(3, 2, 6, 0.5, 2, 6, seed = "226")
+    env, _, _, _, sensors, _ = setup_simulation(3, 2, 6, 0.5, 2, 6, 'info', 1.0, seed = "226")
 
     env.run()
 
