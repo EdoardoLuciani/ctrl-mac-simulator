@@ -24,7 +24,9 @@ export class Scene {
 
     this.sensorRadius = this.layer.width() / 2.5;
 
-    this.tweenTimeTraveler = new TweenTimeTraveler();
+    this.tweenTimeTraveler = new TweenTimeTraveler(() => {
+      playPauseController.setState("paused");
+    });
     this.logHighlighter = new LogHighligther((index) => {
       this.tweenTimeTraveler.goToGroup(index);
       playPauseController.setState("playing");

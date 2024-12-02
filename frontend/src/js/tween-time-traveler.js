@@ -1,5 +1,6 @@
 export class TweenTimeTraveler {
-  constructor() {
+  constructor(queueEndCallback = null) {
+    this.queueEndCallback = queueEndCallback;
     this.#resetState();
   }
 
@@ -107,5 +108,7 @@ export class TweenTimeTraveler {
 
     this.currentGroupIndex = -1;
     this.isPlaying = false;
+
+    if (this.queueEndCallback) this.queueEndCallback();
   }
 }
