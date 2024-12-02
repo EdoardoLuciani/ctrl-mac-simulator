@@ -25,6 +25,7 @@ export class LogHighligther {
       return acc;
     }, []);
 
+    this.prevHighlightIdx = null;
     const resultContainer = document.getElementById("result");
     resultContainer.innerHTML = "";
 
@@ -132,12 +133,9 @@ export class LogHighligther {
     const lineContainers = document.querySelectorAll(".line-container");
 
     if (this.prevHighlightIdx != null) {
-      const prevLineContainer = lineContainers[this.prevHighlightIdx];
-      const prevMarkedContent = prevLineContainer.querySelector("mark");
-      if (prevMarkedContent) {
-        prevLineContainer.querySelector("summary").innerHTML =
-          prevMarkedContent.innerHTML;
-      }
+      const currentLineContainer = lineContainers[this.prevHighlightIdx];
+      currentLineContainer.querySelector("summary").innerHTML =
+        currentLineContainer.querySelector("mark").innerHTML;
     }
 
     if (groupIdx >= 0 && groupIdx < lineContainers.length) {
