@@ -18,6 +18,7 @@ document
         params.append(key, value);
       }
     }
+    params.append("log_level", "debug");
 
     fetch(`/api/simulate?${params.toString()}`)
       .then(async (response) => {
