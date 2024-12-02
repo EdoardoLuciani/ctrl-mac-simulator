@@ -142,10 +142,9 @@ export class LogHighligther {
       const summaryDiv = targetContainer.querySelector("summary");
       summaryDiv.innerHTML = `<mark>${summaryDiv.innerHTML}</mark>`;
 
-      document.getElementById("result").scroll({
-        left: 0,
-        top: targetContainer.offsetTop,
+      targetContainer.scrollIntoView({
         behavior: "smooth",
+        block: "nearest",
       });
     }
 
