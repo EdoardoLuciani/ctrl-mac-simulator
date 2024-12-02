@@ -34,6 +34,7 @@ document
         document.getElementById("seed-box").textContent =
           "Seed of the simulation is: " + data.seed;
         disableSimulationControlButtons(false);
+        playPauseController.setState("paused");
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
