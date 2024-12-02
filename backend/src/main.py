@@ -1,10 +1,10 @@
-import simpy, random, logging, os
+import simpy, random, logging, os, sys
+from io import StringIO
 from flask import Flask, request, jsonify
 from http import HTTPStatus
 
 from simulation.stat_tracker import StatTracker
 from simulation.devices import Sensor, Gateway
-from global_logger_memory_handler import GlobalLoggerMemoryHandler
 from config import configure_parser_and_get_args
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route("/api/simulate", methods=["GET"])
 def simulate():
     try:
-        env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed = setup_simulation(**request.args)
+        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**request.args)
     except ValueError as e:
         return str(e), HTTPStatus.BAD_REQUEST
 
@@ -21,14 +21,14 @@ def simulate():
 
     # Prepare response
     return jsonify({
-        "log": global_logger_memory_handler.log,
+        "log": log_stream.getvalue().split('\n'),
         "ftr_values": stat_tracker.ftr_tracker,
         "measurement_latencies": stat_tracker.measurement_latencies,
         "seed": seed
     })
 
 
-def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, log_level: str, sensors_measurement_chance: float | str, seed: str = None, **kwargs):
+def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, log_level: str, sensors_measurement_chance: float | str, seed: str = None, server: bool = False, **kwargs):
     # Convert string parameters to appropriate numeric types
     data_channels = int(data_channels)
     data_slots_per_channel = int(data_slots_per_channel)
@@ -47,7 +47,14 @@ def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str
     env = simpy.Environment()
 
     stat_tracker = StatTracker()
-    global_logger_memory_handler = GlobalLoggerMemoryHandler()
+
+    if (server):
+        log_stream = StringIO()
+    else:
+        log_stream = sys.stdout
+    handler = logging.StreamHandler(log_stream)
+    handler.setFormatter(logging.Formatter('%(levelname)s: %(name)s: %(message)s'))
+
     logging_level = getattr(logging, log_level.upper())
 
     gateway = Gateway(
@@ -57,7 +64,7 @@ def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str
         request_slots,
         rrm_period,
         max_cycles,
-        global_logger_memory_handler,
+        handler,
         logging_level,
         stat_tracker,
     )
@@ -69,14 +76,14 @@ def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
-            global_logger_memory_handler,
+            handler,
             logging_level,
             stat_tracker,
         )
         for i in range(sensor_count)
     ]
 
-    return env, stat_tracker, global_logger_memory_handler, gateway, sensors, seed
+    return env, stat_tracker, log_stream, gateway, sensors, seed
 
 
 if __name__ == "__main__":
