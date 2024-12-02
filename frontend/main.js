@@ -51,6 +51,7 @@ document
 document.getElementById("reset-button").addEventListener("click", () => {
   document.getElementById("seed-box").textContent = "No simulation loaded!";
   scene.clearScene();
+  playPauseController.setState("paused");
   disableSimulationControlButtons(true);
 });
 
