@@ -27,7 +27,6 @@ export class Scene {
     this.tweenTimeTraveler = new TweenTimeTraveler();
     this.logHighlighter = new LogHighligther((index) => {
       this.tweenTimeTraveler.goToGroup(index);
-      this.tweenTimeTraveler.playQueue();
       playPauseController.setState("playing");
     });
   }

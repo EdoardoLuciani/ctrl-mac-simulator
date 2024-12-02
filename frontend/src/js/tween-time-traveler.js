@@ -52,6 +52,7 @@ export class TweenTimeTraveler {
     if (groupIndex >= 0 && groupIndex < this.tweenGroups.length) {
       this.currentGroupIndex = groupIndex - 1;
       this.#manageTweens("finish");
+      this.playQueue();
     }
   }
 
@@ -104,6 +105,7 @@ export class TweenTimeTraveler {
       this.activeTweenGroup = [];
     }
 
+    this.currentGroupIndex = -1;
     this.isPlaying = false;
   }
 }
