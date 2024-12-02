@@ -132,9 +132,12 @@ export class LogHighligther {
     const lineContainers = document.querySelectorAll(".line-container");
 
     if (this.prevHighlightIdx != null) {
-      const currentLineContainer = lineContainers[this.prevHighlightIdx];
-      currentLineContainer.querySelector("summary").innerHTML =
-        currentLineContainer.querySelector("mark").innerHTML;
+      const prevLineContainer = lineContainers[this.prevHighlightIdx];
+      const prevMarkedContent = prevLineContainer.querySelector("mark");
+      if (prevMarkedContent) {
+        prevLineContainer.querySelector("summary").innerHTML =
+          prevMarkedContent.innerHTML;
+      }
     }
 
     if (groupIdx >= 0 && groupIdx < lineContainers.length) {
