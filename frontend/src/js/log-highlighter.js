@@ -118,14 +118,18 @@ export class LogHighligther {
     };
     lineContainer.appendChild(button);
 
-    const detailsDiv = document.createElement("details");
-    detailsDiv.innerText = detailsText;
+    const details = document.createElement("details");
 
-    const summaryDiv = document.createElement("summary");
-    summaryDiv.innerHTML = summaryText;
-    detailsDiv.appendChild(summaryDiv);
+    const detailsDiv = document.createElement("div");
+    detailsDiv.className = "details-content";
+    detailsDiv.innerHTML = "<hr>" + detailsText;
+    details.appendChild(detailsDiv);
 
-    lineContainer.appendChild(detailsDiv);
+    const summary = document.createElement("summary");
+    summary.innerHTML = summaryText;
+    details.appendChild(summary);
+
+    lineContainer.appendChild(details);
     return lineContainer;
   }
 
