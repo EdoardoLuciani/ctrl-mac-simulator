@@ -7,7 +7,7 @@ export class TweenTimeTraveler {
     this.tweenGroups = [];
     this.groupsCallback = [];
     this.activeTweenGroup = [];
-    this.currentGroupIndex = 0;
+    this.currentGroupIndex = -1;
     this.isPlaying = false;
   }
 
@@ -63,7 +63,9 @@ export class TweenTimeTraveler {
   async #playGroups() {
     this.isPlaying = true;
 
-    while (this.currentGroupIndex < this.tweenGroups.length) {
+    while (this.currentGroupIndex < this.tweenGroups.length - 1) {
+      this.currentGroupIndex++;
+
       const callback = this.groupsCallback[this.currentGroupIndex];
       if (callback) callback();
 
@@ -100,7 +102,6 @@ export class TweenTimeTraveler {
 
       this.#manageTweens("destroy");
       this.activeTweenGroup = [];
-      this.currentGroupIndex++;
     }
 
     this.isPlaying = false;
