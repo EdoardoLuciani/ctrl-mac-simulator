@@ -8,7 +8,7 @@ export class LogHighligther {
     const canvasColumn = document.getElementById("canvas-column");
     const result = document.getElementById("result");
     if (canvasColumn && result) {
-      result.style.height = `${canvasColumn.offsetHeight - 400}px`;
+      result.style.height = `${canvasColumn.offsetHeight - 450}px`;
     }
   }
 
