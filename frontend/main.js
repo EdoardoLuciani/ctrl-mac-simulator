@@ -33,6 +33,7 @@ document
         document.getElementById("error-box").textContent = null;
         document.getElementById("seed-box").textContent =
           "Seed of the simulation is: " + data.seed;
+        disableSimulationControlButtons(false);
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
 
@@ -50,6 +51,7 @@ document
 document.getElementById("reset-button").addEventListener("click", () => {
   document.getElementById("seed-box").textContent = "No simulation loaded!";
   scene.clearScene();
+  disableSimulationControlButtons(true);
 });
 
 document.getElementById("play-pause-button").addEventListener("click", () => {
@@ -95,3 +97,12 @@ document.addEventListener("keydown", (event) => {
       break;
   }
 });
+
+function disableSimulationControlButtons(disabled) {
+  const simulationControlButtons = document.querySelectorAll(
+    "#simulation-control button",
+  );
+  simulationControlButtons.forEach((button) => {
+    button.disabled = disabled;
+  });
+}
