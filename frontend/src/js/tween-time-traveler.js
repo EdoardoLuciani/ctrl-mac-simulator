@@ -108,7 +108,6 @@ export class TweenTimeTraveler {
 
     this.currentGroupIndex = -1;
     this.isPlaying = false;
-
     if (this.queueEndCallback) this.queueEndCallback();
   }
 }
