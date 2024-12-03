@@ -6,6 +6,8 @@ export class Plotter {
   }
 
   plot(ftrValues, measurementLatencies) {
+    this.clear();
+
     const trace1 = {
       x: Array.from(Array(ftrValues.length).keys()),
       y: ftrValues,
@@ -43,5 +45,9 @@ export class Plotter {
 
     const config = { responsive: true };
     Plotly.react(this.container, [trace1, trace2], layout, config);
+  }
+
+  clear() {
+    Plotly.purge(this.container);
   }
 }

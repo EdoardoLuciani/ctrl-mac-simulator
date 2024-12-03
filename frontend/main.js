@@ -38,8 +38,6 @@ document
         playPauseController.setState("paused");
 
         plotter.plot(data.ftr_values, data.measurement_latencies);
-
-        scene.clearScene();
         scene.setupScene(Number(formData.get("sensor_count")), data.log);
       })
       .catch((error) => {
@@ -53,6 +51,7 @@ document
 document.getElementById("reset-button").addEventListener("click", () => {
   document.getElementById("seed-box").textContent = "No simulation loaded!";
   scene.clearScene();
+  plotter.clear();
   playPauseController.setState("paused");
   disableSimulationControlButtons(true);
 });
