@@ -1,4 +1,4 @@
-import simpy, random, logging, os, sys
+import simpy, random, logging, os, sys, numpy as np
 from io import StringIO
 from flask import Flask, request, jsonify
 from http import HTTPStatus
@@ -19,10 +19,16 @@ def simulate():
 
     env.run()
 
+    ftr_values_array = np.array(stat_tracker.ftr_tracker)
+    ftr_median_value = np.median(ftr_values_array)
+    cycles_to_ftr_equilibrium = np.where(ftr_values_array >= ftr_median_value)[0][0].item()
+
     # Prepare response
     return jsonify({
         "log": log_stream.getvalue().split('\n'),
         "ftr_values": stat_tracker.ftr_tracker,
+        "ftr_median_value": ftr_median_value,
+        "cycles_to_ftr_equilibrium": cycles_to_ftr_equilibrium,
         "measurement_latencies": stat_tracker.measurement_latencies,
         "seed": seed
     })
