@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route("/api/simulate", methods=["GET"])
 def simulate():
     try:
-        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**request.args)
+        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**request.args, server=True)
     except ValueError as e:
         return str(e), HTTPStatus.BAD_REQUEST
 
