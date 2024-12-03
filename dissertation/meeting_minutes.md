@@ -210,7 +210,8 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Cleanup of the codebase, removed superflous code and consolided entry point for backend command line and web server start
 
 ### Issues discussed and solutions agreed
-
+- Display ftr value on result-container
+- Make rrm period dependant on data transmission message length and expose such length
 
 ### Objectives for the next week
 - Median ftr value and cycles to ramp up
