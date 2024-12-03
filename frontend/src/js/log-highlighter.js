@@ -82,12 +82,13 @@ export class LogHighligther {
           debugMessage.slice(debugMessage.indexOf("{")),
         );
         requestSlotsCount = debugJson["request_slots"].length;
-        groupDesc = debugJson["request_slots"]
-          .map(
-            (e) =>
-              `<span class="${e["state"]}-rrm-status-text">${e["state"]}</span>`,
-          )
-          .join("|");
+        groupDesc =
+          debugJson["request_slots"]
+            .map(
+              (e) =>
+                `<span class="${e["state"]}-rrm-status-text">${e["state"]}</span>`,
+            )
+            .join("|") + ` FTR: ${debugJson["ftr"]}`;
       }
 
       const elem = this.#createVisualLogGroup(
