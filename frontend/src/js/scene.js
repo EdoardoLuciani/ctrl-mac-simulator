@@ -34,6 +34,8 @@ export class Scene {
   }
 
   setupScene(sensorCount, log) {
+    this.clearScene();
+
     this.visualGateway = new VisualGateway(this.centerX, this.centerY);
     this.visualSensors = buildSensorArray(
       sensorCount,
