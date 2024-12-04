@@ -54,6 +54,17 @@ export class Plotter {
 
     this.cellContainer[0].textContent = statistics.median_ftr;
     this.cellContainer[1].textContent = statistics.cycles_to_ftr_equilibrium;
+
+    this.cellContainer[2].textContent =
+      statistics.measurement_latency_1_percentile;
+    this.cellContainer[3].textContent =
+      statistics.measurement_latency_25_percentile;
+    this.cellContainer[4].textContent =
+      statistics.measurement_latency_50_percentile;
+    this.cellContainer[5].textContent =
+      statistics.measurement_latency_75_percentile;
+    this.cellContainer[6].textContent =
+      statistics.measurement_latency_99_percentile;
   }
 
   clear() {
