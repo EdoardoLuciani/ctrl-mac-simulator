@@ -2,7 +2,7 @@ import { Scene } from "./src/js/scene";
 import { Plotter } from "./src/js/plotter";
 import { PlayPauseController } from "./src/js/play-pause-controller";
 
-const plotter = new Plotter("plotly-graph", "summary-statistics");
+const plotter = new Plotter();
 const playPauseController = new PlayPauseController("play-pause-button");
 const scene = new Scene("canvas-column", playPauseController);
 
