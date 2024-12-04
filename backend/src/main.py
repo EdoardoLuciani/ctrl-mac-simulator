@@ -23,15 +23,23 @@ def simulate():
     median_ftr = np.median(ftr_values_array)
     cycles_to_ftr_equilibrium = np.where(ftr_values_array >= median_ftr)[0][0].item()
 
+    measurement_latencies_array = np.array(stat_tracker.measurement_latencies)
+    measurement_latencies_percentiles = np.round(np.percentile(measurement_latencies_array, [1, 25, 50, 75, 99]), decimals=3)
+
     # Prepare response
     return jsonify({
         "log": log_stream.getvalue().split('\n'),
         "ftr_values": stat_tracker.ftr_tracker,
+        "measurement_latencies": stat_tracker.measurement_latencies,
         "statistics": {
             "median_ftr": median_ftr,
             "cycles_to_ftr_equilibrium": cycles_to_ftr_equilibrium,
+            "measurement_latency_1_percentile": measurement_latencies_percentiles[0],
+            "measurement_latency_25_percentile": measurement_latencies_percentiles[1],
+            "measurement_latency_50_percentile": measurement_latencies_percentiles[2],
+            "measurement_latency_75_percentile": measurement_latencies_percentiles[3],
+            "measurement_latency_99_percentile": measurement_latencies_percentiles[4],
         },
-        "measurement_latencies": stat_tracker.measurement_latencies,
         "seed": seed
     })
 
