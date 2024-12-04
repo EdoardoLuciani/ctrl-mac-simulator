@@ -123,7 +123,6 @@ button {
 #simulation-form button {
     background-color: #4caf50;
     color: white;
-    font-size: 21;
 }
 
 #simulation-form button:hover {
@@ -170,15 +169,6 @@ input {
     border-radius: 6px;
 }
 
-label {
-    color: #333;
-    font-size: 16px;
-}
-
-#simulation-form > details > summary {
-    color: #333;
-}
-
 /* Style for number inputs - hide spinner buttons */
 input[type="number"] {
     -moz-appearance: textfield;
@@ -198,4 +188,40 @@ input::placeholder {
 /* Add invalid input styling */
 input:invalid {
     border-color: #ff4444;
+}
+
+#summary-statistics {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+#summary-statistics h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#summary-statistics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: white;
+}
+
+#summary-statistics-table td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+}
+
+#summary-statistics-table td:first-child {
+    width: 60%;
+    font-weight: bold;
+}
+
+#summary-statistics-table td:last-child {
+    text-align: center;
 }
