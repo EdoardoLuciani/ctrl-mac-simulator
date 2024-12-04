@@ -5,7 +5,7 @@ export class Plotter {
     this.plotterContainer = document.getElementById(plotterContainerId);
     this.statisticContainer = document.getElementById(statisticsContainerId);
     this.cellContainer = document.querySelectorAll(
-      `#${statisticsContainerId} table tr td:nth-child(2)`,
+      `#summary-statistics-table tr td:nth-child(2)`,
     );
   }
 
