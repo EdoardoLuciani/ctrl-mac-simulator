@@ -2,7 +2,7 @@ import { Scene } from "./src/js/scene";
 import { Plotter } from "./src/js/plotter";
 import { PlayPauseController } from "./src/js/play-pause-controller";
 
-const plotter = new Plotter("plotly-graph");
+const plotter = new Plotter("plotly-graph", "summary-statistics");
 const playPauseController = new PlayPauseController("play-pause-button");
 const scene = new Scene("canvas-column", playPauseController);
 
@@ -37,7 +37,11 @@ document
         disableSimulationControlButtons(false);
         playPauseController.setState("paused");
 
-        plotter.plot(data.ftr_values, data.measurement_latencies);
+        plotter.plot(
+          data.ftr_values,
+          data.measurement_latencies,
+          data.statistics,
+        );
         scene.setupScene(Number(formData.get("sensor_count")), data.log);
       })
       .catch((error) => {

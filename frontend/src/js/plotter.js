@@ -1,11 +1,15 @@
 import Plotly from "plotly.js-finance-dist-min";
 
 export class Plotter {
-  constructor(containerId) {
-    this.container = document.getElementById(containerId);
+  constructor(plotterContainerId, statisticsContainerId) {
+    this.plotterContainer = document.getElementById(plotterContainerId);
+    this.statisticContainer = document.getElementById(statisticsContainerId);
+    this.cellContainer = document.querySelectorAll(
+      `#${statisticsContainerId} table tr td:nth-child(2)`,
+    );
   }
 
-  plot(ftrValues, measurementLatencies) {
+  plot(ftrValues, measurementLatencies, statistics) {
     this.clear();
 
     const trace1 = {
@@ -44,10 +48,16 @@ export class Plotter {
     };
 
     const config = { responsive: true };
-    Plotly.react(this.container, [trace1, trace2], layout, config);
+    Plotly.react(this.plotterContainer, [trace1, trace2], layout, config);
+
+    this.statisticContainer.style.display = "block";
+
+    this.cellContainer[0].textContent = statistics.median_ftr;
+    this.cellContainer[1].textContent = statistics.cycles_to_ftr_equilibrium;
   }
 
   clear() {
-    Plotly.purge(this.container);
+    Plotly.purge(this.plotterContainer);
+    this.statisticContainer.style.display = "none";
   }
 }
