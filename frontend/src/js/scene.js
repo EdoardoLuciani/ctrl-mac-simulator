@@ -143,7 +143,7 @@ export class Scene {
   #updateSensorStatus(statuses) {
     statuses.forEach((value, i) => {
       this.visualSensors[i].setSubscript(value.backoff);
-      this.visualSensors[i].setColor(value.color);
+      this.visualSensors[i].setStrokeColor(value.color);
     });
   }
 
