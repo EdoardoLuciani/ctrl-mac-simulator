@@ -17,16 +17,56 @@
 
         <div class="more-information-div">
             <h1>About the Ctrl-Mac protocol</h1>
-            <p>The network protocol in question is named Ctrl-Mac and is concerned with solving collisions during radio communications in a network.<br><br> The network is made up of a gateway and a variable number of sensors, and there is a limited number of channels that the sensors can use to transmit their messages, which is typically much lower than the number of sensors.<br> As an example think of 25 sensors and 6 request slots, meaning that only 6 radio communications can happen at the same time.
-            Here's how it works:
+            <p>
+                The network protocol in question is named Ctrl-Mac and is
+                concerned with solving collisions during radio communications in
+                a network.<br /><br />
+                The network is made up of a gateway and a variable number of
+                sensors, and there is a limited number of channels that the
+                sensors can use to transmit their messages, which is typically
+                much lower than the number of sensors.<br />
+                As an example think of 25 sensors and 6 request slots, meaning
+                that only 6 radio communications can happen at the same time.
+                Here's how it works:
+            </p>
 
             <ul>
-                <li>The gateway sends a message, called rrm, to all sensors, which contains the status of the 6 slots, indicating if each slot was free (no sensor picked it), had no contention (only 1 sensor picked it) and had a contention (more than 1 sensor picked it)</li>
-                <li>The sensors then receive this rrm message and randomly pick a slot, by sending a transmission request message to the gateway, indicating the slot they chose. This is basically booking that slot, similar to a restaurant reservation (we assume that due to the small size and quick transmission time, this message does not collide).</li>
-                <li> Once a certain time has passed, the gateway analyses all the transmission request messages received and sends another rrm containing the status of the slots: free, no contention or contention.</li>
-                <li>The sensors read the rrm message received and if their picked slot had no collision then they actually send their data on the requested separate channel, continuing with the restaurant analogy, basically they show up to their booked table. If instead their slot had a collision, they backoff for a certain number of periods based on some computation of the number of the total collisions before trying asking for a slot again. This is basically to avoid network congestion. Similarly to a restaurant reservation, if they say that they are fully booked, you wait some more days before asking again for a table.</li>
+                <li>
+                    The gateway sends a message, called rrm, to all sensors,
+                    which contains the status of the 6 slots, indicating if each
+                    slot was free (no sensor picked it), had no contention (only
+                    1 sensor picked it) and had a contention (more than 1 sensor
+                    picked it)
+                </li>
+                <li>
+                    The sensors then receive this rrm message and randomly pick
+                    a slot, by sending a transmission request message to the
+                    gateway, indicating the slot they chose. This is basically
+                    booking that slot, similar to a restaurant reservation (we
+                    assume that due to the small size and quick transmission
+                    time, this message does not collide).
+                </li>
+                <li>
+                    Once a certain time has passed, the gateway analyses all the
+                    transmission request messages received and sends another rrm
+                    containing the status of the slots: free, no contention or
+                    contention.
+                </li>
+                <li>
+                    The sensors read the rrm message received and if their
+                    picked slot had no collision then they actually send their
+                    data on the requested separate channel, continuing with the
+                    restaurant analogy, basically they show up to their booked
+                    table. If instead their slot had a collision, they backoff
+                    for a certain number of periods based on some computation of
+                    the number of the total collisions before trying asking for
+                    a slot again. This is basically to avoid network congestion.
+                    Similarly to a restaurant reservation, if they say that they
+                    are fully booked, you wait some more days before asking
+                    again for a table.
+                </li>
                 <li>The cycle then repeats</li>
-            </ul></p>
+            </ul>
         </div>
     </body>
 </html>
