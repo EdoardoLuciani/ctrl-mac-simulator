@@ -1,4 +1,4 @@
-from main import setup_simulation
+from app import setup_simulation
 from simulation.devices import Gateway, Sensor
 from simulation.devices.sensor import _TransmissionRequestState, _DataTransmissionState, _IdleState
 
