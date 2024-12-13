@@ -55,11 +55,15 @@ def configure_parser_and_get_args() -> argparse.Namespace:
     )
 
     # Misc Settings
-    parser.add_argument("--server", action="store_true", help="Run as web server")
-    parser.add_argument("--port", type=int, default=5000, help="Port for web server")
-
     parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
     parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
-    parser.add_argument("--version", action="version", version="%(prog)s 1.0")
+
+    # Web Server Settings
+    parser.add_argument("--server", action="store_true", help="Run as web server")
+    parser.add_argument("--host",type=str, default="127.0.0.1", help="Host address to bind to")
+    parser.add_argument("--port", type=int, default=5000, help="Port for web server")
+    parser.add_argument("--workers", type=int, default=1, help="Number of worker processes")
+    parser.add_argument("--no-reload", dest="reload", action="store_false", default=True, help="Disable auto-reload for development")
+
 
     return parser.parse_args()
