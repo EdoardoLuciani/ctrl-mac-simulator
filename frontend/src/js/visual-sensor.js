@@ -109,8 +109,12 @@ export class VisualSensor {
     this.sensor.getChildren()[2].text(text);
   }
 
-  setColor(color) {
+  setStrokeColor(color) {
     this.sensor.getChildren()[0].stroke(color);
+  }
+
+  setFillColor(color) {
+    this.sensor.getChildren()[0].fill(color);
   }
 
   animateTransmissionRequest(destX, destY, text) {
@@ -161,8 +165,11 @@ export class VisualSensor {
         this.wakeupText.visible(true);
       },
       onFinish: () => {
+        // Bit of a hack, but this solves the bug that the color is not reset properly after the animation is finished, happens during fast forwarding
+        setTimeout(() => {
+          this.setFillColor("white");
+        }, 1);
         this.wakeupText.visible(false);
-        this.sensor.getChildren()[0].fill("white");
       },
     };
   }

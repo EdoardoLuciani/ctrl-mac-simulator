@@ -34,6 +34,8 @@ export class Scene {
   }
 
   setupScene(sensorCount, log) {
+    this.clearScene();
+
     this.visualGateway = new VisualGateway(this.centerX, this.centerY);
     this.visualSensors = buildSensorArray(
       sensorCount,
@@ -141,7 +143,7 @@ export class Scene {
   #updateSensorStatus(statuses) {
     statuses.forEach((value, i) => {
       this.visualSensors[i].setSubscript(value.backoff);
-      this.visualSensors[i].setColor(value.color);
+      this.visualSensors[i].setStrokeColor(value.color);
     });
   }
 

@@ -1,175 +1,112 @@
-# Fix for rye that does not load the src directory as a path
-import simpy, random, logging, argparse, sys, pathlib
-sys.path.insert(0, pathlib.Path(__file__).parents[1].as_posix())
-
+import simpy, random, logging, os, sys, numpy as np
+from io import StringIO
+from flask import Flask, request, jsonify
+from http import HTTPStatus
 
 from simulation.stat_tracker import StatTracker
 from simulation.devices import Sensor, Gateway
-from visual.manim_main_scene import ManimMainScene
-from visual.components.left_sidebar import LeftSidebar
-from visual.components.visual_gateway import VisualGateway
-from visual.components.visual_sensors import VisualSensors
-from global_logger_memory_handler import GlobalLoggerMemoryHandler
+from config import configure_parser_and_get_args
+
+app = Flask(__name__)
 
 
-def configure_parser_and_get_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
+@app.route("/api/simulate", methods=["GET"])
+def simulate():
+    try:
+        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**request.args, server=True)
+    except ValueError as e:
+        return str(e), HTTPStatus.BAD_REQUEST
 
-    # Simulation Settings
-    parser.add_argument(
-        "--data-channels",
-        dest="data_channels",
-        type=int,
-        default=3,
-        help="Sets how many data channels are available for data transmission",
-    )
-    parser.add_argument(
-        "--data-slots-per-channel",
-        dest="data_slots_per_channel",
-        type=int,
-        default=2,
-        help="Sets how many data slots each channel have",
-    )
-    parser.add_argument(
-        "--request-slots",
-        dest="request_slots",
-        type=int,
-        default=6,
-        help="Sets how many requests slots the RRM message has",
-    )
-    parser.add_argument(
-        "--rrm-period",
-        dest="rrm_period",
-        type=float,
-        default=0.5,
-        help="How often (in seconds) to send an rrm message",
-    )
-    parser.add_argument(
-        "--max-cycles",
-        dest="max_cycles",
-        type=int,
-        default=5,
-        help="Sets how many RRM messages to send before simulation stops",
-    )
-    parser.add_argument(
-        "--sensor-count",
-        dest="sensor_count",
-        type=int,
-        default=6,
-        help="Sets how many sensors the simulation should have",
-    )
-    parser.add_argument(
-        "--sensors-measurement-chance",
-        dest="sensors_measurement_chance",
-        type=float,
-        default=1,
-        help="Sets how often the sensors sense new data when in idle state",
-    )
+    env.run()
 
-    # Video Settings
-    parser.add_argument(
-        "--video",
-        dest="video",
-        default=None,
-        choices=["render", "show"],
-        help="Enable to render or show the manim simulation",
-    )
-    parser.add_argument(
-        "--video-quality",
-        dest="video_quality",
-        default="low_quality",
-        choices=["low_quality", "medium_quality", "high_quality", "production_quality"],
-        help="If video output is enabled, sets the quality of the rendered manim simulation",
-    )
+    ftr_values_array = np.array(stat_tracker.ftr_tracker)
+    median_ftr = np.median(ftr_values_array)
+    cycles_to_ftr_equilibrium = np.where(ftr_values_array >= median_ftr)[0][0].item()
 
-    # Misc Settings
-    parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
-    parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
-    parser.add_argument("--plot", dest="plot", action="store_true", help="Enable plotting of ftr and latency")
-    parser.add_argument("--version", action="version", version="%(prog)s 1.0")
+    measurement_latencies_array = np.array(stat_tracker.measurement_latencies)
+    measurement_latencies_percentiles = np.round(np.percentile(measurement_latencies_array, [1, 25, 50, 75, 99]), decimals=3)
 
-    args = parser.parse_args()
-
-    return args
+    # Prepare response
+    return jsonify({
+        "log": log_stream.getvalue().split('\n'),
+        "ftr_values": stat_tracker.ftr_tracker,
+        "measurement_latencies": stat_tracker.measurement_latencies,
+        "statistics": {
+            "median_ftr": median_ftr,
+            "cycles_to_ftr_equilibrium": cycles_to_ftr_equilibrium,
+            "measurement_latency_1_percentile": measurement_latencies_percentiles[0],
+            "measurement_latency_25_percentile": measurement_latencies_percentiles[1],
+            "measurement_latency_50_percentile": measurement_latencies_percentiles[2],
+            "measurement_latency_75_percentile": measurement_latencies_percentiles[3],
+            "measurement_latency_99_percentile": measurement_latencies_percentiles[4],
+        },
+        "seed": seed
+    })
 
 
-if __name__ == "__main__":
-    args = configure_parser_and_get_args()
+def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, log_level: str, sensors_measurement_chance: float | str, seed: str = None, server: bool = False, **kwargs):
+    # Convert string parameters to appropriate numeric types
+    data_channels = int(data_channels)
+    data_slots_per_channel = int(data_slots_per_channel)
+    sensor_count = int(sensor_count)
+    request_slots = int(request_slots)
+    rrm_period = float(rrm_period)
+    max_cycles = int(max_cycles)
+    sensors_measurement_chance = float(sensors_measurement_chance)
 
-    logging.basicConfig(level=getattr(logging, args.log_level.upper()))
-
-    global_logger_memory_handler = GlobalLoggerMemoryHandler()
-    logging.getLogger().addHandler(global_logger_memory_handler)
-
-    # Set seed for deterministic runs
-    if args.seed is not None:
-        random.seed(args.seed)
+    if seed is None:
+        seed = int.from_bytes(os.urandom(4), 'big')
+    seed = str(seed)
+    random.seed(seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
 
+    stat_tracker = StatTracker()
+
+    if (server):
+        log_stream = StringIO()
+    else:
+        log_stream = sys.stdout
+    handler = logging.StreamHandler(log_stream)
+    handler.setFormatter(logging.Formatter('%(levelname)s: %(name)s: %(message)s'))
+
+    logging_level = getattr(logging, log_level.upper())
+
     gateway = Gateway(
-        env, args.data_channels, args.data_slots_per_channel, args.request_slots, args.rrm_period, args.max_cycles
+        env,
+        data_channels,
+        data_slots_per_channel,
+        request_slots,
+        rrm_period,
+        max_cycles,
+        handler,
+        logging_level,
+        stat_tracker,
     )
     sensors = [
         Sensor(
             env,
             i,
-            args.sensors_measurement_chance,
+            sensors_measurement_chance,
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
+            handler,
+            logging_level,
+            stat_tracker,
         )
-        for i in range(args.sensor_count)
+        for i in range(sensor_count)
     ]
 
-    if args.video:
-        import manim
+    return env, stat_tracker, log_stream, gateway, sensors, seed
 
-        manim.config.quality = args.video_quality
-        scene = ManimMainScene()
 
-        def event_loop(visual_gateway: VisualGateway, visual_sensors: VisualSensors, left_sidebar: LeftSidebar):
-            log_idx = 0
-            while env.peek() < float("inf"):
-                env.step()
-                left_sidebar.update_timer(env.now)
+if __name__ == "__main__":
+    args = configure_parser_and_get_args()
 
-                if global_logger_memory_handler.match_events_in_sublist(
-                    "Finished RequestReplyMessage transmission", log_idx
-                ):
-                    visual_sensors.play_queued_animations()
-                    left_sidebar.add_row(
-                        [request_slot.state for request_slot in gateway._rrm.request_slots] + [str(gateway._rrm.ftr)]
-                    )
-                    visual_gateway.display_rrm()
-
-                if logger_names := global_logger_memory_handler.match_events_in_sublist(
-                    "Data is available, syncing to next RRM for transmission request", log_idx
-                ):
-                    for logger_name in logger_names:
-                        visual_sensors.queue_sensor_color_change(int(logger_name.split("-")[1]), 0.33)
-
-                if global_logger_memory_handler.match_events_in_sublist(
-                    "Finished TransmissionRequestMessage transmission", log_idx
-                ):
-                    message = gateway._transmission_request_messages.items[-1]
-                    visual_sensors.queue_transmission_request_message(message.sensor_id, message.chosen_request_slot)
-                    visual_sensors.queue_sensor_color_change(message.sensor_id, 0.66)
-
-                if global_logger_memory_handler.match_events_in_sublist(
-                    "Finished SensorMeasurementMessage transmission", log_idx
-                ):
-                    message = gateway._sensor_data_messages.items[-1]
-                    visual_sensors.queue_data_transmission(message.sensor_id)
-                    visual_sensors.queue_sensor_color_change(message.sensor_id, 0)
-
-                log_idx = len(global_logger_memory_handler.log)
-
-        scene.set_params(args.sensor_count, args.request_slots, event_loop)
-        scene.render(preview=args.video == "show")
+    if args.server:
+        app.run(debug=True, port=args.port)
     else:
+        env, _, _, _, _, _ = setup_simulation(**vars(args))
         env.run()
-
-    if args.plot:
-        StatTracker.plot_measurements()
