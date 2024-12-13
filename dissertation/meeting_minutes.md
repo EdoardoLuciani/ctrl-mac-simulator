@@ -197,3 +197,22 @@ Attendees: Edoardo Luciani, Ivaylo Valkov
 - Better style for navbar and site
 - And bugfixes if they come up
 - Start looking at deployment
+
+
+## 3 Dec 2024
+Attendees: Edoardo Luciani, Ivaylo Valkov
+
+### Achieved in previous week
+- Added multiple placeholder tabs
+- Added info to log summary
+- Better style over the whole website
+- Various bug fixes
+- Cleanup of the codebase, removed superflous code and consolided entry point for backend command line and web server start
+
+### Issues discussed and solutions agreed
+- Display ftr value on result-container
+- Make rrm period dependant on data transmission message length and expose such length
+
+### Objectives for the next week
+- Median ftr value and cycles to ramp up
+- Add more unit and integration test for the frontend

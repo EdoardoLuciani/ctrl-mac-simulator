@@ -1,11 +1,20 @@
 import Plotly from "plotly.js-finance-dist-min";
 
 export class Plotter {
-  constructor(containerId) {
-    this.container = document.getElementById(containerId);
+  constructor() {
+    this.dataDisplayContainer = document.getElementById("data-display");
+
+    this.plotterContainer = document.getElementById("plotly-graph");
+
+    this.cellContainer = document.querySelectorAll(
+      `#summary-statistics-table tr td:nth-child(2)`,
+    );
   }
 
-  plot(ftrValues, measurementLatencies) {
+  plot(ftrValues, measurementLatencies, statistics) {
+    this.clear();
+    this.dataDisplayContainer.style.display = "block";
+
     const trace1 = {
       x: Array.from(Array(ftrValues.length).keys()),
       y: ftrValues,
@@ -25,8 +34,7 @@ export class Plotter {
     const layout = {
       grid: { rows: 1, columns: 2, pattern: "independent" },
       height: 800,
-      margin: { l: 0, r: 0, t: 200, b: 0 },
-      title: "FTR and Measurement Latency Analysis",
+      margin: { l: 0, r: 0, t: 0, b: 0 },
       xaxis: {
         title: "Cycle Index",
       },
@@ -42,6 +50,25 @@ export class Plotter {
     };
 
     const config = { responsive: true };
-    Plotly.react(this.container, [trace1, trace2], layout, config);
+    Plotly.react(this.plotterContainer, [trace1, trace2], layout, config);
+
+    this.cellContainer[0].textContent = statistics.median_ftr;
+    this.cellContainer[1].textContent = statistics.cycles_to_ftr_equilibrium;
+
+    this.cellContainer[2].textContent =
+      statistics.measurement_latency_1_percentile;
+    this.cellContainer[3].textContent =
+      statistics.measurement_latency_25_percentile;
+    this.cellContainer[4].textContent =
+      statistics.measurement_latency_50_percentile;
+    this.cellContainer[5].textContent =
+      statistics.measurement_latency_75_percentile;
+    this.cellContainer[6].textContent =
+      statistics.measurement_latency_99_percentile;
+  }
+
+  clear() {
+    this.dataDisplayContainer.style.display = "none";
+    Plotly.purge(this.plotterContainer);
   }
 }
