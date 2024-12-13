@@ -1,21 +1,21 @@
 import simpy, random, logging, os, sys, numpy as np
 from io import StringIO
-from flask import Flask, request, jsonify
-from http import HTTPStatus
+from fastapi import FastAPI, HTTPException, Request
 
 from simulation.stat_tracker import StatTracker
 from simulation.devices import Sensor, Gateway
 from config import configure_parser_and_get_args
 
-app = Flask(__name__)
+app = FastAPI()
 
+@app.get("/api/simulate")
+async def simulate(request: Request):
+    query_params = dict(request.query_params)
 
-@app.route("/api/simulate", methods=["GET"])
-def simulate():
     try:
-        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**request.args, server=True)
+        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**query_params, server=True)
     except ValueError as e:
-        return str(e), HTTPStatus.BAD_REQUEST
+        raise HTTPException(status_code=400, detail=str(e))
 
     env.run()
 
@@ -27,7 +27,7 @@ def simulate():
     measurement_latencies_percentiles = np.round(np.percentile(measurement_latencies_array, [1, 25, 50, 75, 99]), decimals=3)
 
     # Prepare response
-    return jsonify({
+    return {
         "log": log_stream.getvalue().split('\n'),
         "ftr_values": stat_tracker.ftr_tracker,
         "measurement_latencies": stat_tracker.measurement_latencies,
@@ -41,7 +41,7 @@ def simulate():
             "measurement_latency_99_percentile": measurement_latencies_percentiles[4],
         },
         "seed": seed
-    })
+    }
 
 
 def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, log_level: str, sensors_measurement_chance: float | str, seed: str = None, server: bool = False, **kwargs):
@@ -106,7 +106,8 @@ if __name__ == "__main__":
     args = configure_parser_and_get_args()
 
     if args.server:
-        app.run(debug=True, port=args.port)
+        import uvicorn
+        uvicorn.run(app, host="127.0.0.1", port=args.port)
     else:
         env, _, _, _, _, _ = setup_simulation(**vars(args))
         env.run()
