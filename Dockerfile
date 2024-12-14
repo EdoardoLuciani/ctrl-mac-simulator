@@ -1,10 +1,3 @@
-# Build stage for frontend
-FROM node:22-bookworm-slim AS frontend-builder
-WORKDIR /app
-COPY frontend/ ./
-RUN npm install
-RUN npm run build
-
 # Build stage for backend
 FROM ghcr.io/astral-sh/uv:python3.13-alpine
 WORKDIR /app
@@ -18,7 +11,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project --no-dev
 
 COPY backend/src /app/src
-COPY --from=frontend-builder /app/dist /app/static
 
 # Expose port
 EXPOSE 8080
