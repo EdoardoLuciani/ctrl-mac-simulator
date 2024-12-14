@@ -6,21 +6,18 @@ RUN npm install
 RUN npm run build
 
 # Build stage for backend
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS backend-builder
+FROM ghcr.io/astral-sh/uv:python3.13-alpine
 WORKDIR /app
-COPY backend/ ./
-RUN uv sync --no-dev
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-# Final distroless stage
-FROM python:alpine
-WORKDIR /app
+# Install the project's dependencies using the lockfile and settings
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=backend/uv.lock,target=uv.lock \
+    --mount=type=bind,source=backend/pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-# Copy Python dependencies from backend-builder
-COPY --from=backend-builder /app/.venv /app/.venv
-
-# Copy your application code
-COPY --from=backend-builder /app/src /app/src
-# Copy frontend static files
+COPY backend/src /app/src
 COPY --from=frontend-builder /app/dist /app/static
 
 # Expose port
