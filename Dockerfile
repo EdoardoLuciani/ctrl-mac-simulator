@@ -12,18 +12,16 @@ COPY backend/ ./
 RUN uv sync --no-dev
 
 # Final distroless stage
-FROM gcr.io/distroless/static-debian12
+FROM python:alpine
 WORKDIR /app
 
 # Copy Python dependencies from backend-builder
 COPY --from=backend-builder /app/.venv /app/.venv
-COPY --from=backend-builder /root/.local/share/uv/ /root/.local/share/uv/
 
 # Copy your application code
 COPY --from=backend-builder /app/src /app/src
 # Copy frontend static files
 COPY --from=frontend-builder /app/dist /app/static
-
 
 # Expose port
 EXPOSE 8080
