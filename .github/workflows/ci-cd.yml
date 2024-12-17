@@ -75,7 +75,45 @@ jobs:
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          firebaseServiceAccount: "${{ secrets.GCP_DEPLOY_SERVICE_ACCOUNT_KEY }}"
           projectId: ctrl-mac-simulator
           channelId: live
           entryPoint: frontend
+
+  deploy-backend:
+    needs: [frontend-tests, backend-tests]
+    if: github.ref == 'refs/heads/main' # Only deploy on main branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ctrl-mac-simulator
+          service_account_key: ${{ secrets.GCP_DEPLOY_SERVICE_ACCOUNT_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
+
+      - name: Build Docker image
+        run: |
+          cd backend
+          docker build -t europe-west4-docker.pkg.dev/ctrl-mac-simulator/ctrl-mac-simulator-backend/backend:${{ github.sha }} .
+
+      - name: Push Docker image to Container Registry
+        run: |
+          docker push europe-west4-docker.pkg.dev/ctrl-mac-simulator/ctrl-mac-simulator-backend/backend:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy backend \
+            --image=europe-west4-docker.pkg.dev/ctrl-mac-simulator/ctrl-mac-simulator-backend/backend:${{ github.sha }} \
+            --allow-unauthenticated \
+            --port=8080 \
+            --service-account=github-action-frontend-deploy@ctrl-mac-simulator.iam.gserviceaccount.com \
+            --max-instances=1 \
+            --region=europe-west4 \
+            --project=ctrl-mac-simulator
