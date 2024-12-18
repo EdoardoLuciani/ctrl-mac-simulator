@@ -20,6 +20,10 @@ document
     }
     params.append("log_level", "debug");
 
+    document.getElementById("error-box").textContent = null;
+    document.getElementById("seed-box").textContent = null;
+    document.getElementById("loading-text").style.display = "block";
+
     fetch(`/api/simulate?${params.toString()}`)
       .then(async (response) => {
         scene.clearScene();
@@ -31,7 +35,6 @@ document
         return response.json();
       })
       .then((data) => {
-        document.getElementById("error-box").textContent = null;
         document.getElementById("seed-box").textContent =
           "Seed of the simulation is: " + data.seed;
         disableSimulationControlButtons(false);
@@ -48,6 +51,9 @@ document
         console.error(error);
         document.getElementById("error-box").textContent =
           `An error occurred: ${error.message}`;
+      })
+      .finally(() => {
+        document.getElementById("loading-text").style.display = "none";
       });
   });
 
