@@ -45,14 +45,14 @@ def test_without_parameters():
     response = client.get("/api/simulate")
     data = response.json()
     assert response.status_code == 400
-    assert data["detail"] == "missing 8 required positional arguments: 'data_channels', 'data_slots_per_channel', 'request_slots', 'rrm_period', 'max_cycles', 'sensor_count', 'log_level', and 'sensors_measurement_chance'"
+    assert "8 validation errors for SimulationParams" in data["detail"]
 
 def test_with_some_parameters():
     """Test simulation without parameters"""
     response = client.get("/api/simulate", params={"sensor_count" : 10})
     data = response.json()
     assert response.status_code == 400
-    assert data["detail"] == "missing 7 required positional arguments: 'data_channels', 'data_slots_per_channel', 'request_slots', 'rrm_period', 'max_cycles', 'log_level', and 'sensors_measurement_chance'"
+    assert "7 validation errors for SimulationParams" in data["detail"]
 
 def test_without_seed():
     """Test simulation without seed"""
