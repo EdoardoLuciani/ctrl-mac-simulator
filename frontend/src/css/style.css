@@ -60,9 +60,10 @@ select {
     color: #ff0000;
     border-radius: 4px;
     display: none;
+    white-space: pre;
 }
 
-.error-box:not(:empty) {
+#error-box:not(:empty) {
     display: block;
 }
 
