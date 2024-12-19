@@ -67,7 +67,10 @@ def test_invalid_parameters():
     new_params = default_params.copy()
     new_params["sensor_count"] = "-1"
     response = client.get("/api/simulate", params=new_params)
+    data = response.json()
+
     assert response.status_code == 400
+    assert "1 validation error for SimulationParams\nsensor_count\n  Input should be greater than 0" in data["detail"]
 
 def test_reproducibility():
     """Test if same seed produces same results"""
