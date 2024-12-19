@@ -17,8 +17,6 @@ async def simulate(request: Request):
         env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**query_params, server=True)
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
     env.run()
 
