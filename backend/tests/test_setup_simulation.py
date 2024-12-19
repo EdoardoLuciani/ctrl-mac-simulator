@@ -37,9 +37,20 @@ def test_setup_simulation_seed_123():
     assert len(stat_tracker.ftr_values) != 0
     assert len(stat_tracker.measurement_latencies) != 0
 
+
 def test_setup_simulation_with_parameters_in_string():
     env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed="123", server=True)
     env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", 'info', 1.0, seed=123, server=True)
+
+    env.run()
+    env2.run()
+    assert glmh.getvalue() == glmh2.getvalue()
+    assert seed == seed2
+
+
+def test_setup_simulation_with_random_generated_seed():
+    env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed=None, server=True)
+    env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", 'info', 1.0, seed=int(seed), server=True)
 
     env.run()
     env2.run()
