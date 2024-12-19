@@ -28,8 +28,8 @@ document
       .then(async (response) => {
         scene.clearScene();
         if (!response.ok) {
-          return response.text().then((errorMessage) => {
-            throw new Error(errorMessage);
+          return response.json().then((errorMessage) => {
+            throw new Error(errorMessage["detail"]);
           });
         }
         return response.json();
@@ -48,9 +48,7 @@ document
         scene.setupScene(Number(formData.get("sensor_count")), data.log);
       })
       .catch((error) => {
-        console.error(error);
-        document.getElementById("error-box").textContent =
-          `An error occurred: ${error.message}`;
+        document.getElementById("error-box").textContent = error;
       })
       .finally(() => {
         document.getElementById("loading-text").style.display = "none";
