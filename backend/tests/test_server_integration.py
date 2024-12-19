@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from src.app import app
 
@@ -92,15 +93,35 @@ def test_reproducibility():
 
 def test_performance_bounds():
     """Test simulation performance metrics are within reasonable bounds"""
-    response = client.get("/api/simulate", params=default_params)
+
+    new_params = {
+        "data_channels": "2",
+        "data_slots_per_channel": "3",
+        "request_slots": "6",
+        "rrm_period": "0.5",
+        "max_cycles": "15",
+        "sensor_count": "20",
+        "sensors_measurement_chance": "1",
+        "log_level": "info",
+        "seed": "12345"
+    }
+
+    response = client.get("/api/simulate", params=new_params)
     assert response.status_code == 200
     data = response.json()
 
-    stats = data["statistics"]
+    assert data["ftr_values"] == [0, 0, 0, 5, 5, 4, 3, 2, 3, 4, 5, 4, 4, 4, 5]
 
-    # FTR should be between 0 and 1
-    assert 0 <= stats["median_ftr"] <= 1
+    expected_latencies = [2.1239, 2.2905, 2.8215, 2.9882, 3.1858, 3.3525, 3.3525, 3.5191, 3.5191, 3.8834, 4.0501, 1.0619, 4.4144, 1.0619, 1.3952, 2.6548, 5.4764, 1.2286, 1.3952, 5.8407, 1.3952, 3.5191, 6.902, 1.3952, 7.4336, 3.7168, 4.0501]
+    assert data["measurement_latencies"] == pytest.approx(expected_latencies, rel=1e-4)
 
-    # Latencies should be positive
-    assert stats["measurement_latency_1_percentile"] >= 0
-    assert stats["measurement_latency_99_percentile"] >= stats["measurement_latency_1_percentile"]
+    expected_stats = {
+        'median_ftr': 4.0,
+        'cycles_to_ftr_equilibrium': 3,
+        'measurement_latency_1_percentile': 1.062,
+        'measurement_latency_25_percentile': 1.76,
+        'measurement_latency_50_percentile': 3.353,
+        'measurement_latency_75_percentile': 3.967,
+        'measurement_latency_99_percentile': 7.296
+    }
+    assert data["statistics"] == pytest.approx(expected_stats, rel=1e-3)
