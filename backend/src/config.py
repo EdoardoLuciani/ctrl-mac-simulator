@@ -1,5 +1,6 @@
 import argparse, logging
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
+from pydantic.functional_validators import field_validator
 
 def configure_parser_and_get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
@@ -81,13 +82,13 @@ class SimulationParams(BaseModel):
     log_level: str = Field(..., pattern="^(info|debug)$", description="Logging level")
     seed: int | None = Field(None, description="Random seed for reproducibility")
 
-    @validator('sensors_measurement_chance')
+    @field_validator('sensors_measurement_chance')
     def validate_measurement_chance(cls, v):
         if not 0 <= v <= 1:
             raise ValueError('sensors_measurement_chance must be between 0 and 1')
         return v
 
-    @validator('log_level')
+    @field_validator('log_level')
     def validate_log_level(cls, v):
         if v.lower() not in ['info', 'debug']:
             raise ValueError('log_level must be either "info" or "debug"')

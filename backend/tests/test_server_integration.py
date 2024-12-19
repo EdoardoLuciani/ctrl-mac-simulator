@@ -9,7 +9,7 @@ default_params = {
     "rrm_period": "0.3",
     "max_cycles": "3",
     "sensor_count": "4",
-    "sensors_measurement_chance": "0.8",
+    "sensors_measurement_chance": "1",
     "log_level": "info",
     "seed": "12345"
 }
