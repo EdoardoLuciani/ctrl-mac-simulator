@@ -55,7 +55,7 @@ def configure_parser_and_get_args() -> argparse.Namespace:
     )
 
     # Misc Settings
-    parser.add_argument("--log", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
+    parser.add_argument("--log-level", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
     parser.add_argument("--seed", dest="seed", type=int, help="Set the random seed for reproducible results")
 
     # Web Server Settings
