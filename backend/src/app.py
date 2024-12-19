@@ -1,9 +1,11 @@
 import simpy, random, logging, os, sys, numpy as np
 from io import StringIO
 from fastapi import FastAPI, HTTPException, Request
+from pydantic import ValidationError
 
 from simulation.stat_tracker import StatTracker
 from simulation.devices import Sensor, Gateway
+from config import SimulationParams
 
 app = FastAPI()
 
@@ -13,6 +15,8 @@ async def simulate(request: Request):
 
     try:
         env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**query_params, server=True)
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -43,20 +47,35 @@ async def simulate(request: Request):
     }
 
 
-def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str, request_slots: int | str, rrm_period: float | str, max_cycles: int | str, sensor_count: int | str, log_level: str, sensors_measurement_chance: float | str, seed: str = None, server: bool = False, **kwargs):
-    # Convert string parameters to appropriate numeric types
-    data_channels = int(data_channels)
-    data_slots_per_channel = int(data_slots_per_channel)
-    sensor_count = int(sensor_count)
-    request_slots = int(request_slots)
-    rrm_period = float(rrm_period)
-    max_cycles = int(max_cycles)
-    sensors_measurement_chance = float(sensors_measurement_chance)
+def setup_simulation(
+    data_channels: int | str = None,
+    data_slots_per_channel: int | str = None,
+    request_slots: int | str = None,
+    rrm_period: float | str = None,
+    max_cycles: int | str = None,
+    sensor_count: int | str = None,
+    log_level: str = None,
+    sensors_measurement_chance: float | str = None,
+    seed: str = None,
+    server: bool = False,
+    **kwargs):
 
-    if seed is None:
-        seed = int.from_bytes(os.urandom(4), 'big')
-    seed = str(seed)
-    random.seed(seed)
+    params = SimulationParams(
+        data_channels=data_channels,
+        data_slots_per_channel=data_slots_per_channel,
+        request_slots=request_slots,
+        rrm_period=rrm_period,
+        max_cycles=max_cycles,
+        sensor_count=sensor_count,
+        sensors_measurement_chance=sensors_measurement_chance,
+        log_level=log_level,
+        seed=seed
+    )
+
+    if params.seed is None:
+        params.seed = str(int.from_bytes(os.urandom(4), 'big'))
+    params.seed = str(params.seed)
+    random.seed(params.seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
@@ -70,32 +89,30 @@ def setup_simulation(data_channels: int | str, data_slots_per_channel: int | str
     handler = logging.StreamHandler(log_stream)
     handler.setFormatter(logging.Formatter('%(levelname)s: %(name)s: %(message)s'))
 
-    logging_level = getattr(logging, log_level.upper())
-
     gateway = Gateway(
         env,
-        data_channels,
-        data_slots_per_channel,
-        request_slots,
-        rrm_period,
-        max_cycles,
+        params.data_channels,
+        params.data_slots_per_channel,
+        params.request_slots,
+        params.rrm_period,
+        params.max_cycles,
         handler,
-        logging_level,
+        params.log_level,
         stat_tracker,
     )
     sensors = [
         Sensor(
             env,
             i,
-            sensors_measurement_chance,
+            params.sensors_measurement_chance,
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
             handler,
-            logging_level,
+            params.log_level,
             stat_tracker,
         )
-        for i in range(sensor_count)
+        for i in range(params.sensor_count)
     ]
 
-    return env, stat_tracker, log_stream, gateway, sensors, seed
+    return env, stat_tracker, log_stream, gateway, sensors, params.seed

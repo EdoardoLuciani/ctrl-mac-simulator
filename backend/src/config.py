@@ -1,4 +1,5 @@
-import argparse
+import argparse, logging
+from pydantic import BaseModel, Field, validator
 
 def configure_parser_and_get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
@@ -67,3 +68,27 @@ def configure_parser_and_get_args() -> argparse.Namespace:
 
 
     return parser.parse_args()
+
+
+class SimulationParams(BaseModel):
+    data_channels: int = Field(..., gt=0, description="Number of data channels available")
+    data_slots_per_channel: int = Field(..., gt=0, description="Number of data slots per channel")
+    request_slots: int = Field(..., gt=0, description="Number of request slots in RRM message")
+    rrm_period: float = Field(..., gt=0, description="RRM message period in seconds")
+    max_cycles: int = Field(..., gt=0, description="Maximum number of RRM cycles")
+    sensor_count: int = Field(..., gt=0, description="Number of sensors")
+    sensors_measurement_chance: float = Field(..., ge=0, le=1, description="Probability of sensor measurement")
+    log_level: str = Field(..., pattern="^(info|debug)$", description="Logging level")
+    seed: int | None = Field(None, description="Random seed for reproducibility")
+
+    @validator('sensors_measurement_chance')
+    def validate_measurement_chance(cls, v):
+        if not 0 <= v <= 1:
+            raise ValueError('sensors_measurement_chance must be between 0 and 1')
+        return v
+
+    @validator('log_level')
+    def validate_log_level(cls, v):
+        if v.lower() not in ['info', 'debug']:
+            raise ValueError('log_level must be either "info" or "debug"')
+        return getattr(logging, v.upper())
