@@ -6,7 +6,7 @@ from simulation.stat_tracker import StatTracker
 import random, simpy
 
 
-def test_scenario_random_seed():
+def test_setup_simulation_seed_123():
     env, stat_tracker, _, gateway, sensors, _ = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed="123")
 
     env.run(0.50)
@@ -37,7 +37,7 @@ def test_scenario_random_seed():
     assert len(stat_tracker.ftr_values) != 0
     assert len(stat_tracker.measurement_latencies) != 0
 
-def test_parameters_in_string():
+def test_setup_simulation_with_parameters_in_string():
     env, _, glmh, _, _, seed = setup_simulation(3, 2, 6, 0.5, 6, 6, 'info', 1.0, seed="123", server=True)
     env2, _, glmh2, _, _, seed2 = setup_simulation("3", "2", "6", "0.5", "6", "6", 'info', 1.0, seed=123, server=True)
 
@@ -47,7 +47,7 @@ def test_parameters_in_string():
     assert seed == seed2
 
 
-def test_scenario_lucky_seed_no_collision():
+def test_setup_simulation_no_collision():
     env, _, _, _, sensors, _ = setup_simulation(3, 2, 6, 0.5, 2, 6, 'info', 1.0, seed = "226")
 
     env.run()
