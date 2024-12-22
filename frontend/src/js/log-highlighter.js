@@ -24,6 +24,8 @@ export class LogHighlighter {
       }
       return acc;
     }, []);
+    // Remove the last empty group
+    logGroups.pop();
 
     this.prevHighlightIdx = null;
     const resultContainer = document.getElementById("result");
