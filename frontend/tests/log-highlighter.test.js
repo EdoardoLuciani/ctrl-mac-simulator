@@ -69,31 +69,39 @@ describe("LogHighlighter", () => {
 
   test("highlightLogGroup() should highlight correct group", () => {
     logHighlighter.setLog(testLog);
+
+    const lineContainers = document.querySelectorAll(".line-container");
+
     logHighlighter.highlightLogGroup(0);
-
-    const lineContainer = document.querySelector(".line-container");
-    const highlightedText = lineContainer.querySelector("mark");
-
+    let highlightedText = lineContainers[0].querySelector("mark");
     expect(highlightedText).not.toBeNull();
-    expect(highlightedText.innerHTML).toContain("Cycle: 0");
+    expect(highlightedText.innerHTML).toContain("Cycle: 0 | Time: 0.00");
+
+    logHighlighter.highlightLogGroup(1);
+    highlightedText = lineContainers[1].querySelector("mark");
+    expect(highlightedText).not.toBeNull();
+    expect(highlightedText.innerHTML).toContain("Cycle: 0 | Time: 0.03");
+
+    highlightedText = lineContainers[0].querySelector("mark");
+    expect(highlightedText).toBeNull();
   });
 
   test("createVisualLogGroup() should create correct DOM elements", () => {
     logHighlighter.setLog(testLog);
 
-    const lineContainer = document.querySelector(".line-container");
+    const lineContainers = document.querySelectorAll(".line-container");
 
     // Check basic structure
-    expect(lineContainer).not.toBeNull();
-    expect(lineContainer.className).toBe("line-container");
+    expect(lineContainers[0]).not.toBeNull();
+    expect(lineContainers[0].className).toBe("line-container");
 
     // Check button
-    const button = lineContainer.querySelector("button");
+    let button = lineContainers[0].querySelector("button");
     expect(button).not.toBeNull();
     expect(button.textContent).toBe("→");
 
     // Check details element
-    const details = lineContainer.querySelector("details");
+    const details = lineContainers[0].querySelector("details");
     expect(details).not.toBeNull();
 
     // Check summary content
@@ -105,5 +113,9 @@ describe("LogHighlighter", () => {
     // Verify button click triggers callback
     button.click();
     expect(mockCallback).toHaveBeenCalledWith(0);
+
+    button = lineContainers[1].querySelector("button");
+    button.click();
+    expect(mockCallback).toHaveBeenCalledWith(1);
   });
 });
