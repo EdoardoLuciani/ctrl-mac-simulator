@@ -4,7 +4,7 @@ import { matches_started_request_reply_message } from "../src/js/helpers/log-mat
 describe("request replay message", () => {
   test("matches request reply message", () => {
     const res = matches_started_request_reply_message(
-      "Gateway: Time 0.50: Started RequestReplyMessage transmission",
+      "INFO: Gateway: Time 0.50: Started RequestReplyMessage transmission",
     );
 
     expect(res).not.toBeUndefined();
@@ -12,7 +12,7 @@ describe("request replay message", () => {
 
   test("correctly rejects match", () => {
     const res = matches_started_request_reply_message(
-      "Gateway: Time 0.50: Started something else",
+      "INFO: Gateway: Time 0.50: Started something else",
     );
 
     expect(res).toBeNull();
