@@ -1,7 +1,6 @@
 import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { buildSensorArray } from "./helpers/build-sensor-array";
-import { VisualSensor } from "./visual-sensor";
 import { TweenTimeTraveler } from "./tween-time-traveler";
 import { LogHighligther } from "./log-highlighter";
 import * as logMatcher from "./helpers/log-matcher-helper";
