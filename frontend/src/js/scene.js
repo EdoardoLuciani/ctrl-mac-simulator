@@ -2,7 +2,7 @@ import Konva from "konva";
 import { VisualGateway } from "./visual-gateway";
 import { buildSensorArray } from "./helpers/build-sensor-array";
 import { TweenTimeTraveler } from "./tween-time-traveler";
-import { LogHighligther } from "./log-highlighter";
+import { LogHighlighter } from "./log-highlighter";
 import * as logMatcher from "./helpers/log-matcher-helper";
 
 export class Scene {
@@ -26,7 +26,7 @@ export class Scene {
     this.tweenTimeTraveler = new TweenTimeTraveler(() => {
       playPauseController.setState("paused");
     });
-    this.logHighlighter = new LogHighligther((index) => {
+    this.logHighlighter = new LogHighlighter((index) => {
       this.tweenTimeTraveler.goToGroup(index);
       playPauseController.setState("playing");
     });

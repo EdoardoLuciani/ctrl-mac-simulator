@@ -1,6 +1,6 @@
 import * as logMatcher from "./helpers/log-matcher-helper";
 
-export class LogHighligther {
+export class LogHighlighter {
   constructor(goToGroupCallback) {
     this.goToGroupCallback = goToGroupCallback;
     this.prevHighlightIdx = null;
