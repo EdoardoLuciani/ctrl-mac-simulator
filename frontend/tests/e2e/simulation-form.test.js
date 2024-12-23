@@ -39,4 +39,25 @@ test.describe("Ctrl-Mac Simulator", () => {
     // After max 5 seconds the loading text should be hidden
     await expect(page.locator("#loading-text")).toBeHidden();
   });
+
+  test("Should not show seed before request, but should show after completion, and not show after reset", async ({
+    page,
+  }) => {
+    await expect(page.locator("#seed-box")).toContainText(
+      "No simulation loaded",
+    );
+    await page.fill('input[name="seed"]', "226");
+
+    await page.click("#submit-button");
+
+    // The seed should be populated and visibile
+    await expect(page.locator("#seed-box")).toContainText(
+      "Seed of the simulation is: 226",
+    );
+
+    await page.click("#reset-button");
+    await expect(page.locator("#seed-box")).toContainText(
+      "No simulation loaded",
+    );
+  });
 });
