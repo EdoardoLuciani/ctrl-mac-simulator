@@ -60,4 +60,18 @@ test.describe("Ctrl-Mac Simulator", () => {
       "No simulation loaded",
     );
   });
+
+  test("When seed is empty it must be random", async ({ page }) => {
+    await page.fill('input[name="seed"]', "");
+
+    await page.click("#submit-button");
+
+    // The seed should be populated and visibile
+    await expect(page.locator("#seed-box")).toContainText(
+      "Seed of the simulation is:",
+    );
+    await expect(page.locator("#seed-box")).not.toContainText(
+      "Seed of the simulation is: 226",
+    );
+  });
 });
