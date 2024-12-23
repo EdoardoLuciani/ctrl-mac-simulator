@@ -40,7 +40,7 @@ test.describe("Ctrl-Mac Simulator", () => {
     await expect(page.locator("#loading-text")).toBeHidden();
   });
 
-  test("Should not show seed before request, but should show after completion, and not show after reset", async ({
+  test("Should not show seed before request, but should show after completion", async ({
     page,
   }) => {
     await expect(page.locator("#seed-box")).toContainText(
@@ -53,11 +53,6 @@ test.describe("Ctrl-Mac Simulator", () => {
     // The seed should be populated and visibile
     await expect(page.locator("#seed-box")).toContainText(
       "Seed of the simulation is: 226",
-    );
-
-    await page.click("#reset-button");
-    await expect(page.locator("#seed-box")).toContainText(
-      "No simulation loaded",
     );
   });
 
@@ -73,5 +68,30 @@ test.describe("Ctrl-Mac Simulator", () => {
     await expect(page.locator("#seed-box")).not.toContainText(
       "Seed of the simulation is: 226",
     );
+  });
+
+  test("Should clear seed when clicking reset", async ({ page }) => {
+    await page.fill('input[name="seed"]', "226");
+    await page.click("#submit-button");
+
+    // The seed should be populated and visibile
+    await expect(page.locator("#seed-box")).toContainText(
+      "Seed of the simulation is: 226",
+    );
+
+    await page.click("#reset-button");
+    await expect(page.locator("#seed-box")).toContainText(
+      "No simulation loaded",
+    );
+  });
+
+  test("Should clear form errors when clicking reset", async ({ page }) => {
+    await page.fill('input[name="sensor_count"]', "-1");
+    await page.click("#submit-button");
+
+    await expect(page.locator("#error-box")).toBeVisible();
+
+    await page.click("#reset-button");
+    await expect(page.locator("#error-box")).not.toBeVisible();
   });
 });
