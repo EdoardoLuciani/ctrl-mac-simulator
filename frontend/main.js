@@ -58,6 +58,7 @@ document
 // Button event listeners
 document.getElementById("reset-button").addEventListener("click", () => {
   document.getElementById("seed-box").textContent = "No simulation loaded!";
+  document.getElementById("error-box").textContent = null;
   scene.clearScene();
   plotter.clear();
   playPauseController.setState("paused");
