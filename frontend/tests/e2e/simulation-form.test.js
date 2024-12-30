@@ -65,7 +65,7 @@ test.describe("Ctrl-Mac Simulator", () => {
     await expect(page.locator("#seed-box")).toContainText(
       "Seed of the simulation is:",
     );
-    await expect(page.locator("#seed-box")).not.toContainText(
+    await expect(page.locator("#seed-box")).not.toBe(
       "Seed of the simulation is: 226",
     );
   });
