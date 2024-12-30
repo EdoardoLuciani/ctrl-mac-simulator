@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  frontend-tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,41 +18,24 @@ jobs:
         with:
           node-version: "22.x"
 
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm ci
-
       - name: Run frontend tests
         run: |
           cd frontend
+          npm ci
           npm test
-
-  backend-tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
 
-      - name: Install pangocairo
-        run: sudo apt-get install libsdl-pango-dev
-
-      - name: Set up Python
+      - name: Run backend tests
         run: |
           cd backend
           uv python install
           uv sync
-
-      - name: Run backend tests
-        run: |
-          cd backend
           uv run pytest tests
 
   deploy-frontend:
-    needs: [frontend-tests, backend-tests]
+    needs: [test]
     if: github.ref == 'refs/heads/main' # Only deploy on main branch
     runs-on: ubuntu-latest
     steps:
