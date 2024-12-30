@@ -53,7 +53,7 @@ module.exports = defineConfig({
     },
     {
       cwd: "../backend",
-      command: "source .venv/bin/activate && python src/main.py --server", // Adjust this path based on your Python backend entry point
+      command: "./.venv/bin/python src/main.py --server", // Adjust this path based on your Python backend entry point
       port: 5000,
       reuseExistingServer: !process.env.CI,
     },
