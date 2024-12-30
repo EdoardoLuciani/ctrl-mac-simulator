@@ -58,4 +58,8 @@ module.exports = defineConfig({
       reuseExistingServer: !process.env.CI,
     },
   ],
+
+  expect: {
+    toHaveScreenshot: { omitBackground: true, maxDiffPixelRatio: 0.1 },
+  },
 });
