@@ -37,7 +37,7 @@ jobs:
       - name: Run e2e tests
         run: |
           cd frontend
-          npx playwright install --with-deps
+          npx playwright install chromium firefox
           npm run e2e
 
   deploy-frontend:
