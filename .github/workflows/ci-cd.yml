@@ -64,7 +64,7 @@ jobs:
           entryPoint: frontend
 
   deploy-backend:
-    needs: [frontend-tests, backend-tests]
+    needs: [test]
     if: github.ref == 'refs/heads/main' # Only deploy on main branch
     runs-on: ubuntu-latest
 
