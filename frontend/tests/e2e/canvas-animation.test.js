@@ -50,25 +50,25 @@ test.describe("Ctrl-Mac Simulator", () => {
     ].forEach(({ playPause, next, prev, desc }) => {
       test(`should go forward and backwards ${desc}`, async ({ page }) => {
         // Start
-        playPause(page);
+        await playPause(page);
         // Stop
-        playPause(page);
+        await playPause(page);
 
         await expect(page.locator("canvas")).toHaveScreenshot("stage-0.png");
 
         // Go forward 2 steps
-        next(page);
-        next(page);
+        await next(page);
+        await next(page);
         // Stop
-        playPause(page);
+        await playPause(page);
 
         await expect(page.locator("canvas")).toHaveScreenshot("stage-3.png");
 
         // Go back at the start
-        prev(page);
-        prev(page);
+        await prev(page);
+        await prev(page);
         // Stop
-        playPause(page);
+        await playPause(page);
 
         await expect(page.locator("canvas")).toHaveScreenshot("stage-0.png");
       });
