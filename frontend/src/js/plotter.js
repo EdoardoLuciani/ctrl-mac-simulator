@@ -34,7 +34,7 @@ export class Plotter {
     const layout = {
       grid: { rows: 1, columns: 2, pattern: "independent" },
       height: 800,
-      margin: { l: 0, r: 0, t: 0, b: 0 },
+      margin: { l: 50, r: 50, t: 20, b: 50 },
       xaxis: {
         title: "Cycle Index",
       },
