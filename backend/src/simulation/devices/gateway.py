@@ -22,7 +22,7 @@ class Gateway:
         self._total_rrm_messages = total_rrm_messages
 
         if request_slots > data_channels * data_slots_per_channel:
-            raise ValueError("Not enough data channels or data slots to fill all the rrm request slots")
+            raise ValueError("Not enough data channels or data slots to fill all the rrm request slots. Increase the amount of channels or data slots per channel available!")
         self._rrm = RequestReplyMessage(
             self._env.now, data_channels, rrm_period / data_slots_per_channel, request_slots
         )
