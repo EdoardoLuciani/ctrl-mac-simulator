@@ -19,16 +19,14 @@ test.describe("Ctrl-Mac Simulator", () => {
     await expect(page.getByText(/About the Ctrl-Mac protocol/)).toBeVisible();
 
     // Test Instructions page navigation
-    await page.click('a[href="/src/pages/instructions.html"]');
-    await expect(page).toHaveURL(/.*instructions.html/);
-    await expect(
-      page.getByText(/Instructions on how to use the simulator/),
-    ).toBeVisible();
+    await page.click('a[href="/src/pages/tutorial.html"]');
+    await expect(page).toHaveURL(/.*tutorial.html/);
+    await expect(page.getByText(/How to use/)).toBeVisible();
 
     // Test About page navigation
     await page.click('a[href="/src/pages/about.html"]');
     await expect(page).toHaveURL(/.*about.html/);
-    await expect(page.getByText(/About the current project/)).toBeVisible();
+    await expect(page.getByText(/About Ctrl-Mac Simulator/)).toBeVisible();
 
     // Test navigation back to Simulator page
     await page.click('a[href="/index.html"]');
