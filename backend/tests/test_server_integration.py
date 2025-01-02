@@ -73,6 +73,17 @@ def test_invalid_parameters():
     assert response.status_code == 400
     assert "1 validation error for SimulationParams\nsensor_count\n  Input should be greater than 0" in data["detail"]
 
+def test_too_many_request_slots():
+    """Test simulation with too many request slots parameters"""
+    # Test negative values
+    new_params = default_params.copy()
+    new_params["request_slots"] = "200"
+    response = client.get("/api/simulate", params=new_params)
+    data = response.json()
+
+    assert response.status_code == 400
+    assert "Not enough data channels or data slots to fill all the rrm request slots" in data["detail"]
+
 def test_reproducibility():
     """Test if same seed produces same results"""
 
