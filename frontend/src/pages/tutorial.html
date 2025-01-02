@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tutorial - Ctrl-Mac Simulator</title>
+        <link rel="stylesheet" href="/src/css/common.css" />
+        <link rel="stylesheet" href="/src/css/more-information-page.css" />
+        <link rel="icon" href="/logo.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <load src="/src/pages/navbar.html" tutorial="active" />
+
+        <div class="more-information-div">
+            <h1>How to use the simulator</h1>
+            <p>
+                In order to generate the simulation, press on the
+                <b>Generate Simulation</b> button.
+                <img src="/highlight-generate.webp" />
+
+                After waiting a little, you can see the area on the left be
+                populated with the network components. In order to start the
+                visual simulation
+                <b>press the play button</b>, which afterwards can be clicked
+                again to pause. The <b>rewind and fast forward</b> buttons can
+                be clicked to go <b>back and forth</b> between the cycles.
+                <img src="/highlight-controls.webp" />
+                <b>Pro Tip: keyboard shortcuts</b> exists for the simulation:
+                start/stop can be activated with spacebar, and rewind and fast
+                forward with the left and right keyboard arrows.
+
+                <br /><br />
+                Additionally by scrolling down, graphs and stats about the
+                simulation can be seen. Now try changing the parameters of the
+                simulation and see how the visualization and stats changes!
+                <img src="/highlight-stats.webp" />
+            </p>
+            <h2>Parameter Explanation</h2>
+            <ul>
+                <li><b>Sensor Count:</b> How many sensors will be simulated</li>
+                <li><b>Max Cycles:</b> How many cycles will be simulated</li>
+                <li>
+                    <b>Seed:</b> Set to have consistent simulations, otherwise
+                    leave blank for full randomness
+                </li>
+                <li>
+                    <b>Request Slots:</b> How many slots for transmitting data
+                    simultaneously are available in the network
+                </li>
+            </ul>
+            The following parameters are available under the
+            <b>Advanced Parameters</b> section:
+            <ul>
+                <li>
+                    <b>Data Channels:</b> How many radio channels available for
+                    the sensor data tranmissions
+                </li>
+                <li>
+                    <b>Data Slots per Channel:</b> How many timeslots available
+                    for each channel
+                </li>
+                <li>
+                    <b>RRM Period:</b> How much time to pass between each
+                    gateway RRM message
+                </li>
+                <li>
+                    <b>Sensor Measurement Chance:</b> Chance that the sensor,
+                    when in idle state, senses a real phenomena and wakes up to
+                    send data
+                </li>
+            </ul>
+
+            <h2>Stats Explanation</h2>
+            <p>
+            <h4>FTR Line Chart</h4>
+                The FTR value represents the current number of sensors that are
+                backed off. A high FTR value means that there is high network
+                congestion and many sensors are currently awaiting their turn. A
+                low FTR value means that a small number of sensor is
+                awaiting their turn and the network is not busy. From the line
+                chart, it can be seen how the FTR evolves as time goes on.
+                <img src="/ftr-value-graph.webp" />
+                <br />
+                As an example the above graph has been generated for a high
+                congested network scenario (50 sensors with 6 slots). The FTR
+                value in the graph ramps up quick, and settles around 19. This
+                means that the FTR equilibrium value is around 19.
+
+                <br /><br />
+                <h4>Measurement Latency Distribution</h4>
+                The histogram on the right instead represents the distribution
+                of data transmission latencies. The latency in this case is
+                referred as the difference in time between when the data
+                transmission has been received by the gateway and by when the
+                data was first sensed.
+                <img src="/latency-histogram-graph.webp" />
+                As noted by the histogram (generated with the same 50 sensors
+                and 6 slots scenario), most of the messages arrive quick,
+                however there are a few outliers that are caused by the same
+                sensor getting incresedly backed off.
+            </p>
+        </div>
+    </body>
+</html>
