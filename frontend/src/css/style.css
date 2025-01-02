@@ -60,7 +60,8 @@ select {
     color: #ff0000;
     border-radius: 4px;
     display: none;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 #error-box:not(:empty) {
