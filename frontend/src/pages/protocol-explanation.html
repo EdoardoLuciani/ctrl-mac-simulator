@@ -28,14 +28,14 @@
 
             <ul>
                 <li>
-                    The gateway sends a message, called rrm, to all sensors,
+                    The gateway sends a message, called RRM, to all sensors,
                     which contains the status of the 6 slots, indicating if each
                     slot was free (no sensor picked it), had no contention (only
                     1 sensor picked it) and had a contention (more than 1 sensor
                     picked it)
                 </li>
                 <li>
-                    The sensors then receive this rrm message and randomly pick
+                    The sensors then receive this RRM message and randomly pick
                     a slot, by sending a transmission request message to the
                     gateway, indicating the slot they chose. This is basically
                     booking that slot, similar to a restaurant reservation (we
@@ -44,12 +44,12 @@
                 </li>
                 <li>
                     Once a certain time has passed, the gateway analyses all the
-                    transmission request messages received and sends another rrm
+                    transmission request messages received and sends another RRM
                     containing the status of the slots: free, no contention or
                     contention.
                 </li>
                 <li>
-                    The sensors read the rrm message received and if their
+                    The sensors read the RRM message received and if their
                     picked slot had no collision then they actually send their
                     data on the requested separate channel, continuing with the
                     restaurant analogy, basically they show up to their booked
