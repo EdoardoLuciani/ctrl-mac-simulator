@@ -74,30 +74,21 @@
                                 />
                             </label>
                             <label>
-                                Data Slots per Channel:
-                                <input
-                                    type="number"
-                                    name="data_slots_per_channel"
-                                    value="2"
-                                    title="Number of time based data slots for each channel"
-                                />
-                            </label>
-                            <label>
-                                RRM Period:
-                                <input
-                                    type="number"
-                                    name="rrm_period"
-                                    value="0.5"
-                                    title="Time in seconds, specifying the time between each rrm message"
-                                />
-                            </label>
-                            <label>
                                 Sensors Measurement Chance:
                                 <input
                                     type="string"
                                     value="1.0"
                                     name="sensors_measurement_chance"
                                     title="Chance of each sensor sensing data to send when in idle state"
+                                />
+                            </label>
+                            <label>
+                                Sensor Data Payload Size:
+                                <input
+                                    type="number"
+                                    name="sensor_data_payload_size"
+                                    value="12"
+                                    title="Size of the data payload sent by each sensor"
                                 />
                             </label>
                         </div>
