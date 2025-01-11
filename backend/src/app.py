@@ -14,7 +14,7 @@ async def simulate(request: Request):
     query_params = dict(request.query_params)
 
     try:
-        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**query_params, server=True)
+        env, stat_tracker, log_stream, gateway, sensors, seed, rrm_period = setup_simulation(**query_params, server=True)
     except (ValidationError, ValueError) as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -41,7 +41,8 @@ async def simulate(request: Request):
             "measurement_latency_75_percentile": measurement_latencies_percentiles[3],
             "measurement_latency_99_percentile": measurement_latencies_percentiles[4],
         },
-        "seed": seed
+        "seed": seed,
+        "rrm_period": rrm_period,
     }
 
 
@@ -111,4 +112,4 @@ def setup_simulation(
         for i in range(params.sensor_count)
     ]
 
-    return env, stat_tracker, log_stream, gateway, sensors, params.seed
+    return env, stat_tracker, log_stream, gateway, sensors, params.seed, gateway.rrm_period

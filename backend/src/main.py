@@ -9,5 +9,5 @@ if __name__ == "__main__":
         import uvicorn
         uvicorn.run("app:app", host=args.host, port=args.port, workers=args.workers, reload=args.reload)
     else:
-        env, _, _, _, _, _ = setup_simulation(**vars(args))
+        env, _, _, _, _, _, _ = setup_simulation(**vars(args))
         env.run()
