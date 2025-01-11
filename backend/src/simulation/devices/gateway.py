@@ -25,7 +25,9 @@ class Gateway:
         self._rrm = RequestReplyMessage(
             self._env.now, data_channels, sample_airtime, request_slots
         )
-        self._rrm_period = math.ceil(request_slots / data_channels) * sample_airtime
+
+        # Calculate the period of the RRM cycle, plus a 10% safety margin
+        self._rrm_period = (math.ceil(request_slots / data_channels) * sample_airtime) * 1.10
 
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
@@ -91,8 +93,8 @@ class Gateway:
         return self._sensor_data_messages
 
     @property
-    def rrm_period(self) -> int:
-        return self._rrm_period
+    def cycle_period(self) -> int:
+        return self._rrm_period + self._rrm.get_airtime()
 
     @staticmethod
     def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:
