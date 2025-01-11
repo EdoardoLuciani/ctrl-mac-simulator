@@ -90,6 +90,10 @@ class Gateway:
     def sensor_data_messages(self) -> simpy.Store:
         return self._sensor_data_messages
 
+    @property
+    def rrm_period(self) -> int:
+        return self._rrm_period
+
     @staticmethod
     def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:
         slot_counts = collections.defaultdict(int)
