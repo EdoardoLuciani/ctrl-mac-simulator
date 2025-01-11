@@ -5,11 +5,10 @@ from src.app import app
 client = TestClient(app)
 default_params = {
     "data_channels": "2",
-    "data_slots_per_channel": "3",
     "request_slots": "4",
-    "rrm_period": "0.3",
     "max_cycles": "3",
     "sensor_count": "4",
+    "sensor_data_payload_size": "12",
     "sensors_measurement_chance": "1",
     "log_level": "info",
     "seed": "12345"
@@ -46,14 +45,14 @@ def test_without_parameters():
     response = client.get("/api/simulate")
     data = response.json()
     assert response.status_code == 400
-    assert "8 validation errors for SimulationParams" in data["detail"]
+    assert "7 validation errors for SimulationParams" in data["detail"]
 
 def test_with_some_parameters():
     """Test simulation without parameters"""
     response = client.get("/api/simulate", params={"sensor_count" : 10})
     data = response.json()
     assert response.status_code == 400
-    assert "7 validation errors for SimulationParams" in data["detail"]
+    assert "6 validation errors for SimulationParams" in data["detail"]
 
 def test_without_seed():
     """Test simulation without seed"""
@@ -72,17 +71,6 @@ def test_invalid_parameters():
 
     assert response.status_code == 400
     assert "1 validation error for SimulationParams\nsensor_count\n  Input should be greater than 0" in data["detail"]
-
-def test_too_many_request_slots():
-    """Test simulation with too many request slots parameters"""
-    # Test negative values
-    new_params = default_params.copy()
-    new_params["request_slots"] = "200"
-    response = client.get("/api/simulate", params=new_params)
-    data = response.json()
-
-    assert response.status_code == 400
-    assert "Not enough data channels or data slots to fill all the rrm request slots" in data["detail"]
 
 def test_reproducibility():
     """Test if same seed produces same results"""
@@ -104,35 +92,27 @@ def test_reproducibility():
 
 def test_performance_bounds():
     """Test simulation performance metrics are within reasonable bounds"""
-
-    new_params = {
-        "data_channels": "2",
-        "data_slots_per_channel": "3",
-        "request_slots": "6",
-        "rrm_period": "0.5",
-        "max_cycles": "15",
-        "sensor_count": "20",
-        "sensors_measurement_chance": "1",
-        "log_level": "info",
-        "seed": "12345"
-    }
+    new_params = default_params.copy()
+    new_params["request_slots"] = "6"
+    new_params["max_cycles"] = "15"
+    new_params["sensor_count"] = "20"
 
     response = client.get("/api/simulate", params=new_params)
     assert response.status_code == 200
     data = response.json()
 
-    assert data["ftr_values"] == [0, 0, 0, 5, 5, 4, 3, 2, 3, 4, 5, 4, 4, 4, 5]
+    assert data["ftr_values"] == [0, 0, 0, 4, 4, 3, 3, 4, 3, 4, 5, 6, 5, 5, 5]
 
-    expected_latencies = [2.1239, 2.2905, 2.8215, 2.9882, 3.1858, 3.3525, 3.3525, 3.5191, 3.5191, 3.8834, 4.0501, 1.0619, 4.4144, 1.0619, 1.3952, 2.6548, 5.4764, 1.2286, 1.3952, 5.8407, 1.3952, 3.5191, 6.902, 1.3952, 7.4336, 3.7168, 4.0501]
+    expected_latencies = [0.4164, 0.5010, 0.5834, 0.7092, 0.7504, 0.8349, 0.8349, 0.8762, 1.0019, 1.0431, 1.1689, 1.1689, 1.2101, 0.3752, 1.2514, 0.4164, 1.0844, 1.6699, 0.4164, 1.1689, 1.9193, 2.0039, 0.3340, 1.1689, 0.3340, 1.1689, 0.3752]
     assert data["measurement_latencies"] == pytest.approx(expected_latencies, rel=1e-4)
 
     expected_stats = {
         'median_ftr': 4.0,
         'cycles_to_ftr_equilibrium': 3,
-        'measurement_latency_1_percentile': 1.062,
-        'measurement_latency_25_percentile': 1.76,
-        'measurement_latency_50_percentile': 3.353,
-        'measurement_latency_75_percentile': 3.967,
-        'measurement_latency_99_percentile': 7.296
+        'measurement_latency_1_percentile': 0.334,
+        'measurement_latency_25_percentile': 0.459,
+        'measurement_latency_50_percentile': 0.876,
+        'measurement_latency_75_percentile': 1.169,
+        'measurement_latency_99_percentile': 1.982
     }
     assert data["statistics"] == pytest.approx(expected_stats, rel=1e-3)
