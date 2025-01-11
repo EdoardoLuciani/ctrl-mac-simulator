@@ -47,25 +47,23 @@ async def simulate(request: Request):
 
 def setup_simulation(
     data_channels: int | str = None,
-    data_slots_per_channel: int | str = None,
     request_slots: int | str = None,
-    rrm_period: float | str = None,
     max_cycles: int | str = None,
     sensor_count: int | str = None,
-    log_level: str = None,
     sensors_measurement_chance: float | str = None,
+    sensor_data_payload_size: int | str = None,
+    log_level: str = None,
     seed: str = None,
     server: bool = False,
     **kwargs):
 
     params = SimulationParams(
         data_channels=data_channels,
-        data_slots_per_channel=data_slots_per_channel,
         request_slots=request_slots,
-        rrm_period=rrm_period,
         max_cycles=max_cycles,
         sensor_count=sensor_count,
         sensors_measurement_chance=sensors_measurement_chance,
+        sensor_data_payload_size=sensor_data_payload_size,
         log_level=log_level,
         seed=seed
     )
@@ -90,10 +88,9 @@ def setup_simulation(
     gateway = Gateway(
         env,
         params.data_channels,
-        params.data_slots_per_channel,
         params.request_slots,
-        params.rrm_period,
         params.max_cycles,
+        params.sensor_data_payload_size,
         handler,
         params.log_level,
         stat_tracker,
@@ -103,6 +100,7 @@ def setup_simulation(
             env,
             i,
             params.sensors_measurement_chance,
+            params.sensor_data_payload_size,
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,

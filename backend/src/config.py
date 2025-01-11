@@ -14,25 +14,11 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         help="Sets how many data channels are available for data transmission",
     )
     parser.add_argument(
-        "--data-slots-per-channel",
-        dest="data_slots_per_channel",
-        type=int,
-        default=2,
-        help="Sets how many data slots each channel have",
-    )
-    parser.add_argument(
         "--request-slots",
         dest="request_slots",
         type=int,
         default=6,
         help="Sets how many requests slots the RRM message has",
-    )
-    parser.add_argument(
-        "--rrm-period",
-        dest="rrm_period",
-        type=float,
-        default=0.5,
-        help="How often (in seconds) to send an rrm message",
     )
     parser.add_argument(
         "--max-cycles",
@@ -55,6 +41,13 @@ def configure_parser_and_get_args() -> argparse.Namespace:
         default=1,
         help="Sets how often the sensors sense new data when in idle state",
     )
+    parser.add_argument(
+        "--sensor-data-payload-size",
+        dest="sensor_data_payload_size",
+        type=int,
+        default=12,
+        help="Sets the size of the payload for the sensor data",
+    )
 
     # Misc Settings
     parser.add_argument("--log-level", dest="log_level", default="info", choices=["info", "debug"], help="Set the log level")
@@ -73,12 +66,11 @@ def configure_parser_and_get_args() -> argparse.Namespace:
 
 class SimulationParams(BaseModel):
     data_channels: int = Field(..., gt=0, description="Number of data channels available")
-    data_slots_per_channel: int = Field(..., gt=0, description="Number of data slots per channel")
     request_slots: int = Field(..., gt=0, description="Number of request slots in RRM message")
-    rrm_period: float = Field(..., gt=0, description="RRM message period in seconds")
     max_cycles: int = Field(..., gt=0, description="Maximum number of RRM cycles")
     sensor_count: int = Field(..., gt=0, description="Number of sensors")
     sensors_measurement_chance: float = Field(..., ge=0, le=1, description="Probability of sensor measurement")
+    sensor_data_payload_size: int = Field(..., gt=0, description="Size of sensor data payload")
     log_level: str = Field(..., pattern="^(info|debug)$", description="Logging level")
     seed: int | None = Field(None, description="Random seed for reproducibility")
 
