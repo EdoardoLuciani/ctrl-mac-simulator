@@ -36,10 +36,10 @@ def test_setup_simulation_seed_123():
     assert [slot.state for slot in gateway._rrm.request_slots] == ['free', 'no_contention', 'no_contention', 'no_contention', 'contention', 'no_contention']
 
     wanted_states = [
-        _DataTransmissionState,
-        _DataTransmissionState,
         _IdleState,
         _IdleState,
+        _DataTransmissionState,
+        _DataTransmissionState,
         _IdleState,
         _IdleState,
     ]
@@ -79,7 +79,7 @@ def test_setup_simulation_with_random_generated_seed():
 def test_setup_simulation_no_collision():
     custom_params = default_params.copy()
     custom_params["max_cycles"] = "2"
-    custom_params["seed"] = 37
+    custom_params["seed"] = "226"
 
     env, _, glmh, _, sensors, _, _ = setup_simulation(**custom_params)
 

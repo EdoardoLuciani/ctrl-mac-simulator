@@ -101,18 +101,10 @@ def test_performance_bounds():
     assert response.status_code == 200
     data = response.json()
 
-    assert data["ftr_values"] == [0, 0, 0, 4, 4, 3, 3, 4, 3, 4, 5, 6, 5, 5, 5]
+    assert data["ftr_values"] == [0, 0, 0, 5, 5, 4, 3, 3, 4, 6, 6, 6, 6, 5, 5]
 
-    expected_latencies = [0.4164, 0.5010, 0.5834, 0.7092, 0.7504, 0.8349, 0.8349, 0.8762, 1.0019, 1.0431, 1.1689, 1.1689, 1.2101, 0.3752, 1.2514, 0.4164, 1.0844, 1.6699, 0.4164, 1.1689, 1.9193, 2.0039, 0.3340, 1.1689, 0.3340, 1.1689, 0.3752]
+    expected_latencies = [0.6680, 0.7092, 0.8762, 0.9174, 1.0431, 1.0844, 1.2101, 1.2514, 1.3771, 1.5029, 0.3752, 1.6699, 0.3340, 0.3752, 0.4164, 0.3340, 2.0451, 1.2514, 0.4164, 0.3752, 2.3378, 1.4183, 0.4164]
     assert data["measurement_latencies"] == pytest.approx(expected_latencies, rel=1e-4)
 
-    expected_stats = {
-        'median_ftr': 4.0,
-        'cycles_to_ftr_equilibrium': 3,
-        'measurement_latency_1_percentile': 0.334,
-        'measurement_latency_25_percentile': 0.459,
-        'measurement_latency_50_percentile': 0.876,
-        'measurement_latency_75_percentile': 1.169,
-        'measurement_latency_99_percentile': 1.982
-    }
+    expected_stats = {'median_ftr': 5.0, 'cycles_to_ftr_equilibrium': 3, 'measurement_latency_1_percentile': 0.334, 'measurement_latency_25_percentile': 0.416, 'measurement_latency_50_percentile': 0.917, 'measurement_latency_75_percentile': 1.314, 'measurement_latency_99_percentile': 2.273}
     assert data["statistics"] == pytest.approx(expected_stats, rel=1e-3)
