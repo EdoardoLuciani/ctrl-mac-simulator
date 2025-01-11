@@ -4,7 +4,7 @@ from simulation.messages.abstract_message import AbstractMessage
 
 
 class SensorMeasurementMessage(AbstractMessage):
-    def __init__(self, sensor_id: int, data_channel: int, start_time: float, message_length: int = 12):
+    def __init__(self, sensor_id: int, data_channel: int, start_time: float, message_length: int):
         self.data = random.randbytes(message_length)
         self.sensor_id = sensor_id
         self.data_channel = data_channel
