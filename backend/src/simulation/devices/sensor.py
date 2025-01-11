@@ -13,6 +13,7 @@ class Sensor:
         env: simpy.Environment,
         id: int,
         measurement_chance: float,
+        payload_size: int,
         get_rrm_message_event_fn: Callable[[], simpy.Event],
         transmission_requests_queue: simpy.Store,
         data_messages_queue: simpy.Store,
@@ -23,6 +24,7 @@ class Sensor:
         self._env = env
         self._id = id
         self._measurement_chance = measurement_chance
+        self._payload_size = payload_size
         self._get_rrm_message_event_fn = get_rrm_message_event_fn
         self._transmission_requests_queue = transmission_requests_queue
         self._data_messages_queue = data_messages_queue
@@ -117,7 +119,7 @@ class _DataTransmissionState:
 
         if chosen_request_slot.state == "no_contention":
             yield simpy.Timeout(self.sensor._env, chosen_request_slot.data_slot)
-            message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now)
+            message = SensorMeasurementMessage(self.sensor._id, chosen_request_slot.data_channel, self.sensor._env.now, self.sensor._payload_size)
 
             if self.sensor._stat_tracker:
                 self.sensor._stat_tracker.append_measurement_latency(message.start_time - self.sensor._measurement_time)
