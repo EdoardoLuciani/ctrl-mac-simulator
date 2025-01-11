@@ -24,8 +24,10 @@ async def simulate(request: Request):
     median_ftr = np.median(ftr_values_array)
     cycles_to_ftr_equilibrium = np.where(ftr_values_array >= median_ftr)[0][0].item()
 
-    measurement_latencies_array = np.array(stat_tracker.measurement_latencies)
-    measurement_latencies_percentiles = np.round(np.percentile(measurement_latencies_array, [1, 25, 50, 75, 99]), decimals=3)
+    if len(stat_tracker.measurement_latencies) > 0:
+        measurement_latencies_percentiles = np.round(np.percentile(stat_tracker.measurement_latencies, [1, 25, 50, 75, 99]), decimals=3)
+    else:
+        measurement_latencies_percentiles = [0, 0, 0, 0, 0]
 
     # Prepare response
     return {
