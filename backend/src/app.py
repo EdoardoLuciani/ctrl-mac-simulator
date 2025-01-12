@@ -1,4 +1,4 @@
-import simpy, random, logging, os, sys, numpy as np
+import simpy, logging, sys, numpy as np
 from io import StringIO
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import ValidationError
@@ -70,11 +70,6 @@ def setup_simulation(
         log_level=log_level,
         seed=seed
     )
-
-    if params.seed is None:
-        params.seed = str(int.from_bytes(os.urandom(4), 'big'))
-    params.seed = str(params.seed)
-    random.seed(params.seed)
 
     # Set up and run the simulation
     env = simpy.Environment()

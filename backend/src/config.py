@@ -1,6 +1,6 @@
-import argparse, logging
+import argparse, logging, random, os
 from pydantic import BaseModel, Field
-from pydantic.functional_validators import field_validator
+from pydantic.functional_validators import field_validator, model_validator
 
 def configure_parser_and_get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simulate the Ctrl-Mac protocol")
@@ -73,6 +73,14 @@ class SimulationParams(BaseModel):
     sensor_data_payload_size: int = Field(..., gt=0, description="Size of sensor data payload")
     log_level: str = Field(..., pattern="^(info|debug)$", description="Logging level")
     seed: int | None = Field(None, description="Random seed for reproducibility")
+
+    @model_validator(mode='after')
+    def set_random_seed(self) -> 'SimulationParams':
+        if self.seed is None:
+            self.seed = str(int.from_bytes(os.urandom(4), 'big'))
+        self.seed = str(self.seed)  # Ensure seed is string
+        random.seed(self.seed)
+        return self
 
     @field_validator('sensors_measurement_chance')
     def validate_measurement_chance(cls, v):
