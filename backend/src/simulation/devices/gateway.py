@@ -1,6 +1,6 @@
 from simulation.stat_tracker import StatTracker
-import simpy, logging, collections
-from ..messages import RequestReplyMessage, TransmissionRequestMessage
+import simpy, logging, collections, math
+from ..messages import RequestReplyMessage, TransmissionRequestMessage, SensorMeasurementMessage
 from typing import Optional
 
 
@@ -9,23 +9,25 @@ class Gateway:
         self,
         env: simpy.Environment,
         data_channels: int,
-        data_slots_per_channel: int,
         request_slots: int,
-        rrm_period: float,
         total_rrm_messages: int,
+        sensor_data_payload_length: int,
         logger_handler: Optional[logging.Handler] = None,
         logger_level: Optional[int] = None,
         stat_tracker: Optional[StatTracker] = None,
     ):
         self._env = env
-        self._rrm_period = rrm_period
         self._total_rrm_messages = total_rrm_messages
 
-        if request_slots > data_channels * data_slots_per_channel:
-            raise ValueError("Not enough data channels or data slots to fill all the rrm request slots. Increase the amount of channels or data slots per channel available!")
+        # Create a dummy sensor measurement message to get its airtime
+        sample_airtime = SensorMeasurementMessage(0, 0, 0, sensor_data_payload_length).get_airtime();
+
         self._rrm = RequestReplyMessage(
-            self._env.now, data_channels, rrm_period / data_slots_per_channel, request_slots
+            self._env.now, data_channels, sample_airtime, request_slots
         )
+
+        # Calculate the period of the RRM cycle, plus a 10% safety margin
+        self._rrm_period = (math.ceil(request_slots / data_channels) * sample_airtime) * 1.10
 
         self._rrm_message_event = simpy.Event(env)
         self._transmission_request_messages = simpy.Store(env)
@@ -89,6 +91,10 @@ class Gateway:
     @property
     def sensor_data_messages(self) -> simpy.Store:
         return self._sensor_data_messages
+
+    @property
+    def cycle_period(self) -> int:
+        return self._rrm_period + self._rrm.get_airtime()
 
     @staticmethod
     def _get_request_slots_status(messages: list[TransmissionRequestMessage]) -> dict:

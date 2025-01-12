@@ -1,4 +1,4 @@
-import simpy, random, logging, os, sys, numpy as np
+import simpy, logging, sys, numpy as np
 from io import StringIO
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import ValidationError
@@ -14,7 +14,7 @@ async def simulate(request: Request):
     query_params = dict(request.query_params)
 
     try:
-        env, stat_tracker, log_stream, gateway, sensors, seed = setup_simulation(**query_params, server=True)
+        env, stat_tracker, log_stream, gateway, sensors, seed, cycle_period = setup_simulation(**query_params, server=True)
     except (ValidationError, ValueError) as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -24,8 +24,10 @@ async def simulate(request: Request):
     median_ftr = np.median(ftr_values_array)
     cycles_to_ftr_equilibrium = np.where(ftr_values_array >= median_ftr)[0][0].item()
 
-    measurement_latencies_array = np.array(stat_tracker.measurement_latencies)
-    measurement_latencies_percentiles = np.round(np.percentile(measurement_latencies_array, [1, 25, 50, 75, 99]), decimals=3)
+    if len(stat_tracker.measurement_latencies) > 0:
+        measurement_latencies_percentiles = np.round(np.percentile(stat_tracker.measurement_latencies, [1, 25, 50, 75, 99]), decimals=3)
+    else:
+        measurement_latencies_percentiles = [0, 0, 0, 0, 0]
 
     # Prepare response
     return {
@@ -41,39 +43,33 @@ async def simulate(request: Request):
             "measurement_latency_75_percentile": measurement_latencies_percentiles[3],
             "measurement_latency_99_percentile": measurement_latencies_percentiles[4],
         },
-        "seed": seed
+        "seed": seed,
+        "cycle_period": cycle_period,
     }
 
 
 def setup_simulation(
     data_channels: int | str = None,
-    data_slots_per_channel: int | str = None,
     request_slots: int | str = None,
-    rrm_period: float | str = None,
     max_cycles: int | str = None,
     sensor_count: int | str = None,
-    log_level: str = None,
     sensors_measurement_chance: float | str = None,
+    sensor_data_payload_size: int | str = None,
+    log_level: str = None,
     seed: str = None,
     server: bool = False,
     **kwargs):
 
     params = SimulationParams(
         data_channels=data_channels,
-        data_slots_per_channel=data_slots_per_channel,
         request_slots=request_slots,
-        rrm_period=rrm_period,
         max_cycles=max_cycles,
         sensor_count=sensor_count,
         sensors_measurement_chance=sensors_measurement_chance,
+        sensor_data_payload_size=sensor_data_payload_size,
         log_level=log_level,
         seed=seed
     )
-
-    if params.seed is None:
-        params.seed = str(int.from_bytes(os.urandom(4), 'big'))
-    params.seed = str(params.seed)
-    random.seed(params.seed)
 
     # Set up and run the simulation
     env = simpy.Environment()
@@ -90,10 +86,9 @@ def setup_simulation(
     gateway = Gateway(
         env,
         params.data_channels,
-        params.data_slots_per_channel,
         params.request_slots,
-        params.rrm_period,
         params.max_cycles,
+        params.sensor_data_payload_size,
         handler,
         params.log_level,
         stat_tracker,
@@ -103,6 +98,7 @@ def setup_simulation(
             env,
             i,
             params.sensors_measurement_chance,
+            params.sensor_data_payload_size,
             gateway.rrm_message_event,
             gateway.transmission_request_messages,
             gateway.sensor_data_messages,
@@ -113,4 +109,4 @@ def setup_simulation(
         for i in range(params.sensor_count)
     ]
 
-    return env, stat_tracker, log_stream, gateway, sensors, params.seed
+    return env, stat_tracker, log_stream, gateway, sensors, params.seed, gateway.cycle_period
