@@ -18,7 +18,7 @@
                 concerned with solving collisions during radio communications in
                 a network.<br /><br />
                 The network is made up of a gateway and a variable number of
-                sensors, and there is a limited number of channels that the
+                sensors, and there is a limited number of request slots that the
                 sensors can use to transmit their messages, which is typically
                 much lower than the number of sensors.<br />
                 As an example think of 25 sensors and 6 request slots, meaning
@@ -35,12 +35,16 @@
                     picked it)
                 </li>
                 <li>
-                    The sensors then receive this RRM message and randomly pick
-                    a slot, by sending a transmission request message to the
-                    gateway, indicating the slot they chose. This is basically
-                    booking that slot, similar to a restaurant reservation (we
-                    assume that due to the small size and quick transmission
-                    time, this message does not collide).
+                    The sensors then receive this RRM message. Some of them will
+                    be in sleep mode and will be woken up by this message, in
+                    this case they will perform a measurement of the
+                    environment. Other sensors, who already perfomed their
+                    measurement before, are ready for the transmission, hence
+                    they will randomly pick a slot, by sending a transmission
+                    request message to the gateway, indicating the slot they
+                    chose. This is basically booking that slot, similar to a
+                    restaurant reservation (we assume that due to the small size
+                    and quick transmission time, this message does not collide).
                 </li>
                 <li>
                     Once a certain time has passed, the gateway analyses all the
