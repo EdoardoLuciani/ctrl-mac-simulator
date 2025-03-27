@@ -38,3 +38,21 @@ Then, you can start the frontend by running:
 npm run dev
 ```
 Now if you navigate to `http://localhost:5173` in your browser, you should see the simulator. Make sure that the backend was also started in web server mode!
+
+### Testing Suite
+To run the test suits, follow the instructions below:
+
+#### Backend
+```
+cd backend && uv run pytest tests
+```
+
+#### Frontend
+```
+cd frontend && npm test
+```
+
+#### End-to-End
+```
+cd frontend && npx playwright install chromium firefox && npm run e2e
+```
